@@ -1,0 +1,88 @@
+This package is a first attempt at converting ruby gems to rpm's. Because
+of the differences between the two packaging schemes, it is impossible to
+come up with a completely automated way of doing the conversion, but the
+spec files produced by this package should be good enough for most
+pure-ruby gems. I wouldn't put too much hope into automating the gem->rpm
+process for gems with binary code such as database drivers. But even for
+those, gem2rpm provides a good starting point for the packaging gems as
+RPM's.
+
+Installation
+============
+
+Download the ruby gem or an RPM (TODO: more detail)
+
+Usage
+=====
+
+Run 'gem2rpm --help' for options
+
+At its simplest, download a gem (let's call that file GEM) and run
+  gem2rpm $GEM
+
+This will print an rpm spec file based on the information contained in the
+gem's spec file. In general, it is necessary to edit the generated spec
+file because the gem is missing some important information that is
+customarily provided in rpm's, most notably the license and the changelog.
+
+Rather than editing the generated specfile, edit the template from which
+the specfile is generated. This will make it easier to update the RPM when
+a new version of the Gem becomes available. 
+
+To support this process, it is recommended to first save the default
+template somewhere: 
+  gem2rpm -T > rubygem-GEM.spec.template
+
+Now, edit the template and then run gem2rpm to generate the spec file
+using the edited template:
+  gem2rpm -t rubygem-GEM.spec.template > rubygem-GEM.spec
+
+With that, you can now build your RPM as ususal. When a new version of the
+gem becomes available, you should edit the saved template and rerun
+gem2rpm over it.
+
+Template Details
+================
+
+The template is a standard erb file; there are three main variables
+available in the template file:
+  
+  format       - The Gem::Format for the gem
+  spec         - The Gem::Specification for the gem (the same as format.spec)
+
+Conventions
+===========
+
+A typical source RPM for a gem should consist of three files: the gem file
+itself, the template for the spec file and the spec file. To ensure that
+the template will be included in the source RPM, it must be listed as one
+of the sources in the spec file.
+
+The resulting rpms should follow the naming convention 'rubygem-$GEM'
+where GEM is the name of the packaged gem. The default template also makes
+sure that the resulting package provides 'ruby($GEM)', according to general
+packaging conventions for scripting languages.
+
+Gem Limitiations
+================
+
+Gem has some important limitations that make it next to impossible to
+fully automate the gem -> rpm conversion process. Amongst them are
+  
+  - No license field
+  - No changelog
+  - No distinction between build and install time (important for gems with
+    binary components)
+  - Because of its nature as a separate packaging system, gems can not
+    capture dependencies on non-gem system components, e.g., the ruby
+    PostgreSQL driver can not properly describe its build- and
+    runtime-dependencies on the various pieces of the PostgreSQL database
+
+See also
+========
+
+Fedora ruby and rubygem packaging guidelines:
+  http://fedoraproject.org/wiki/Packaging/Ruby
+
+Project website
+  http://rubyforge.org/projects/gem2rpm/

@@ -1,0 +1,77 @@
+# Generated from <%= format.gem_path %> by gem2rpm -*- rpm-spec -*-
+%define gemname <%= spec.name %>
+
+Summary: <%= spec.summary %>
+Name: ruby-gems-%{gemname}
+
+Version: <%= spec.version %>
+Release: 1
+Group: Development/Languages
+License: GPL
+URL: <%= spec.homepage %>
+Source0: %{gemname}-%{version}.gem
+# Make sure the spec template is included in the SRPM
+Source1: ruby-gems-%{gemname}.spec.in
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+Requires: ruby <%= spec.required_ruby_version.to_rpm %>
+Requires: ruby-gems >= <%= Gem::RubyGemsVersion %>
+<% for d in spec.dependencies %>
+Requires: ruby-gems-<%= d.name %> <%= d.version_requirements.to_rpm %>
+<% end %>
+BuildRequires: ruby <%= spec.required_ruby_version.to_rpm %>
+BuildRequires: ruby-gems >= <%= Gem::RubyGemsVersion %>
+BuildArch: noarch
+Provides: ruby(<%= spec.name.capitalize %>) = %{version}
+
+%define gemdir <%= Gem.dir %>
+%define gembuilddir %{buildroot}%{gemdir}
+
+%description
+<%= spec.description %>
+
+%prep
+%setup -T -c
+
+%build
+
+%install
+%{__rm} -rf %{buildroot}
+mkdir -p %{gembuilddir}
+<% rdoc_opt = spec.has_rdoc ? "--rdoc " : "" %>
+gem install --local --install-dir %{gembuilddir} --force <%= rdoc_opt %>%{SOURCE0}
+<% if ! spec.executables.empty? %>
+mkdir -p %{buildroot}/%{_bindir}
+mv %{gembuilddir}/bin/* %{buildroot}/%{_bindir}
+rmdir %{gembuilddir}/bin
+<% end %>
+
+%clean
+%{__rm} -rf %{buildroot}
+
+%files
+%defattr(-, root, root)
+<% for f in spec.executables %>
+%{_bindir}/<%= f %>
+<% end %>
+<% format.file_entries.each do |entry, data| %>
+<%   path = entry['path'] %>
+<%   doc_prefix = spec.extra_rdoc_files.include?(path) ? "%doc " : "" %>
+<%= doc_prefix %>%{gemdir}/gems/<%= spec.name %>-<%= spec.version %>/<%= path %>
+
+<% end %>
+<% if spec.has_rdoc %>
+%doc %{gemdir}/doc/<%= spec.name %>-<%= spec.version %>
+<% end %>
+%{gemdir}/cache/<%= format.gem_path %>
+%{gemdir}/specifications/<%= format.gem_path %>spec
+
+%changelog
+* Sat Jan 28 2006 David Lutterkort <dlutter@redhat.com> - 0.3-1
+- Generate %files from format.installed_files
+
+* Sat Jan 28 2006 David Lutterkort <dlutter@redhat.com> - 0.2-1
+- Rename spec template to *.spec.in
+
+* Tue Jan 10 2006 David Lutterkort <dlutter@redhat.com> - 0.1-1
+- Initial package
+

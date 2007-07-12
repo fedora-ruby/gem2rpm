@@ -1,0 +1,107 @@
+#!/usr/bin/env ruby
+# -*- ruby -*-
+
+$:.push(File.expand_path(File.dirname(__FILE__) + "/../lib"))
+
+require 'gem2rpm'
+require 'optparse'
+require 'rubygems/format'
+require 'fileutils'
+
+opts = OptionParser.new("#{$0} [OPTIONS] GEMFILE")
+opts.separator("  Convert ruby Gems to source RPMs and specfiles")
+opts.separator("  Uses a template to generate the RPM specfile")
+opts.separator("  from the Gem spec")
+
+template_file = nil
+output_file = nil
+srpm = false
+deps = false
+nongem = false
+
+opts.on("-T", "--default-template", "Print the default template") do |val|
+    puts Gem2Rpm::TEMPLATE
+    exit 0
+end
+opts.on("-t", "--template TEMPLATE", "Use TEMPLATE for the specfile") do |val|
+    template_file = val
+end
+opts.on("-v", "--version", "Print gem2rpm's version and exit") do
+    puts Gem2Rpm::VERSION
+    exit 0
+end
+opts.on("-o", "--output FILE", "Send the specfile to FILE") do |val|
+    output_file = val
+end
+opts.on("-s", "--srpm", "Create a source RPM") do |val|
+    srpm = true
+end
+opts.on("-d", "--dependencies", "Print the dependencies of the gem") do |val|
+    deps = true
+end
+opts.on("-n", "--nongem", "Generate a subpackage for non-gem use") do |val|
+    nongem = true
+end
+rest = opts.permute(ARGV)
+
+if rest.size != 1
+    $stderr.puts "Missing GEMFILE"
+    $stderr.puts opts
+    exit(1)
+end
+gemfile = rest[0]
+
+template = nil
+if template_file.nil?
+  template = Gem2Rpm::TEMPLATE
+else
+  begin
+      f = open(template_file, "r")
+  rescue Errno::ENOENT
+      $stderr.puts "Could not open template #{template_file}. Aborting"
+      exit(1)
+  end
+  template = f.read
+  f.close
+end
+
+srpmdir = nil
+gemname = nil
+srpmdir = nil
+specfile = nil
+if srpm
+    gemname = Gem::Format.from_file_by_path(gemfile).spec.name
+    srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
+    specfile = File::join(srpmdir, "rubygem-#{gemname}.spec")
+    if output_file.nil?
+        output_file = specfile
+    end
+end
+
+# Produce a specfile
+if output_file.nil?
+    Gem2Rpm::convert(gemfile, template, $stdout, nongem) unless deps
+else
+    begin
+        out = open(output_file, "w")
+        Gem2Rpm::convert(gemfile, template, out, nongem)
+    ensure
+        out.close()
+    end
+end
+
+# Create a  source RPM
+if srpm
+    unless File::exist?(specfile)
+        FileUtils::copy(output_file, specfile)
+    end
+    FileUtils::copy(gemfile, srpmdir)
+
+    system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{Dir::pwd}' #{specfile}")
+end
+
+if deps
+    Gem::Format.from_file_by_path(gemfile).spec.dependencies.each do |dep|
+        puts "rubygem(#{dep.name}) #{dep.version_requirements.to_rpm}"
+    end
+end
