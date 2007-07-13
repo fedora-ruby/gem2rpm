@@ -26,14 +26,22 @@ module Gem
 end
 
 module Gem2Rpm
-  Gem2Rpm::VERSION = "0.5.0"
+  Gem2Rpm::VERSION = "0.5.1"
 
-  def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout, nongem=true)
+  def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout, 
+                      nongem=true, local=false)
     format = Gem::Format.from_file_by_path(fname)
     spec = format.spec
     spec.description ||= spec.summary
-    dummy, download_path = Gem::RemoteInstaller.new.find_gem_to_install(spec.name, "=#{spec.version}")
-    download_path += "/gems/" if download_path.to_s != ""
+    download_path = ""
+    unless local
+      begin
+        dummy, download_path = Gem::RemoteInstaller.new.find_gem_to_install(spec.name, "=#{spec.version}")
+        download_path += "/gems/" if download_path.to_s != ""
+      rescue Gem::Exception
+        $stderr.puts "Warning: Could not retrieve full URL for #{spec.name}\nWarning: Edit the specfile and enter the full download URL as 'Source0' manually"
+      end
+    end
     template = ERB.new(template, 0, '<>')
     out.puts template.result(binding)
   end

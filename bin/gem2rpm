@@ -15,6 +15,7 @@ opts.separator("  from the Gem spec")
 
 template_file = nil
 output_file = nil
+local = false
 srpm = false
 deps = false
 nongem = false
@@ -35,6 +36,10 @@ opts.on("-o", "--output FILE", "Send the specfile to FILE") do |val|
 end
 opts.on("-s", "--srpm", "Create a source RPM") do |val|
     srpm = true
+end
+opts.on("-l", "--local", "Do not retrieve Gem information over
+#{' '*36} the network. Use on disconnected machines") do |val|
+    local = true
 end
 opts.on("-d", "--dependencies", "Print the dependencies of the gem") do |val|
     deps = true
@@ -80,7 +85,7 @@ end
 
 # Produce a specfile
 if output_file.nil?
-    Gem2Rpm::convert(gemfile, template, $stdout, nongem) unless deps
+    Gem2Rpm::convert(gemfile, template, $stdout, nongem, local) unless deps
 else
     begin
         out = open(output_file, "w")
