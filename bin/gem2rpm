@@ -89,7 +89,7 @@ if output_file.nil?
 else
     begin
         out = open(output_file, "w")
-        Gem2Rpm::convert(gemfile, template, out, nongem)
+        Gem2Rpm::convert(gemfile, template, out, nongem, local)
     ensure
         out.close()
     end
