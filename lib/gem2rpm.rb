@@ -66,14 +66,13 @@ module Gem2Rpm
 
 Summary: <%= spec.summary.gsub(/\.$/, "") %>
 Name: rubygem-%{gemname}
-
 Version: <%= spec.version %>
 Release: 1%{?dist}
 Group: Development/Languages
-License: Ruby License/GPL
+License: GPLv2+ or Ruby
 URL: <%= spec.homepage %>
 Source0: <%= download_path %>%{gemname}-%{version}.gem
-BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: rubygems
 <% for d in spec.dependencies %>
 Requires: rubygem(<%= d.name %>) <%= d.version_requirements.to_rpm %>
@@ -104,10 +103,11 @@ Provides: ruby(<%= p %>) = %{version}
 %build
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gemdir}
 <% rdoc_opt = spec.has_rdoc ? "--rdoc " : "" %>
-gem install --local --install-dir %{buildroot}%{gemdir} --force <%= rdoc_opt %>%{SOURCE0}
+gem install --local --install-dir %{buildroot}%{gemdir} \
+            --force <%= rdoc_opt %>%{SOURCE0}
 <% unless spec.executables.empty? %>
 mkdir -p %{buildroot}/%{_bindir}
 mv %{buildroot}%{gemdir}/bin/* %{buildroot}/%{_bindir}
@@ -122,10 +122,10 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% end # if nongem %>
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
-%defattr(-, root, root)
+%defattr(-, root, root, -)
 <% for f in spec.executables %>
 %{_bindir}/<%= f %>
 <% end %>
@@ -141,6 +141,7 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 
 <% if nongem %>
 %files -n ruby-%{gemname}
+%defattr(-, root, root, -)
 %{ruby_sitelib}/*
 <% end # if nongem %>
 
