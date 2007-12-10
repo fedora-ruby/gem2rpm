@@ -18,9 +18,10 @@ BuildRequires: rubygems
 BuildArch: noarch
 Provides: rubygem(%{gemname}) = %{version}
 
-%description
-Generate source rpms and rpm spec files from a Ruby Gem.  The spec file tries
-to follow the gem as closely as possible
+%description 
+Generate source rpms and rpm spec files from a Ruby Gem.  The spec file
+tries to follow the gem as closely as possible, and be compliant with the
+Fedora rubygem packaging guidelines
 
 
 %prep
@@ -43,10 +44,12 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root, -)
 %{_bindir}/gem2rpm
-%{gemdir}/gems/%{gemname}-%{version}/
 %doc %{geminstdir}/AUTHORS
+%{geminstdir}/bin
+%{geminstdir}/lib
 %doc %{geminstdir}/README
 %doc %{geminstdir}/LICENSE
+%{geminstdir}/rubygem-gem2rpm.spec
 %{gemdir}/cache/%{gemname}-%{version}.gem
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
