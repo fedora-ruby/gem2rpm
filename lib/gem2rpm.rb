@@ -26,7 +26,7 @@ module Gem
 end
 
 module Gem2Rpm
-  Gem2Rpm::VERSION = "0.5.1"
+  Gem2Rpm::VERSION = "0.5.2"
 
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout, 
                       nongem=true, local=false)

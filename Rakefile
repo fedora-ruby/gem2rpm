@@ -4,6 +4,8 @@ require 'rake/gempackagetask'
 require 'rake/clean'
 
 # Determine the current version
+PKG_NAME="gem2rpm"
+SPEC_FILE="rubygem-gem2rpm.spec"
 
 if `ruby -Ilib ./bin/gem2rpm --version` =~ /\S+$/
   CURRENT_VERSION = $&
@@ -22,7 +24,7 @@ PKG_FILES = FileList[
   'lib/**/*',
   'LICENSE',
   'README',
-  'rubygem-gem2rpm.spec'
+  SPEC_FILE
 ]
 
 spec = Gem::Specification.new do |s|
@@ -68,31 +70,14 @@ end
 
 CLEAN.include("pkg")
 
-#
-# FIXME: This is horked and needs love; just a copy-paste from puppet
-#
-# desc "Create an RPM"
-# task :rpm do
-#   tarball = File.join(Dir.getwd, "pkg", "gem2rpm-#{PKG_VERSION}.tgz")
-#   rpmname = 'rubygem-gem2rpm'
-#   sourcedir = `rpm --define 'name #{rpmname}' --define 'version #{PKG_VERSION}' --eval '%_sourcedir'`.chomp
-#   specdir = `rpm --define 'name #{rpmname}' --define 'version #{PKG_VERSION}' --eval '%_specdir'`.chomp
-#     basedir = File.dirname(sourcedir)
-
-#     if ! FileTest::exist?(sourcedir)
-#         FileUtils.mkdir_p(sourcedir)
-#     end
-#     FileUtils.mkdir_p(basedir)
-
-#     target = "#{sourcedir}/#{File::basename(tarball)}"
-
-#     sh %{cp %s %s} % [tarball, target]
-#     sh %{cp conf/redhat/puppet.spec %s/puppet.spec} % basedir
-
-#     Dir.chdir(basedir) do
-#         sh %{rpmbuild -ba puppet.spec}
-#     end
-
-#     sh %{mv %s/puppet.spec %s} % [basedir, specdir]
-# end
-
+desc "Build (S)RPM for #{PKG_NAME}"
+task :rpm => [ :package ] do |t|
+    system("sed -e 's/@VERSION@/#{PKG_VERSION}/' #{SPEC_FILE} > pkg/#{SPEC_FILE}")
+    Dir::chdir("pkg") do |dir|
+        dir = File::expand_path(".")
+        system("rpmbuild --define '_topdir #{dir}' --define '_sourcedir #{dir}' --define '_srcrpmdir #{dir}' --define '_rpmdir #{dir}' -ba #{SPEC_FILE} > rpmbuild.log 2>&1")
+        if $? != 0
+            raise "rpmbuild failed"
+        end
+    end
+end
