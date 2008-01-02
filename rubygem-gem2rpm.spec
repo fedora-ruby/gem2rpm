@@ -44,6 +44,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root, -)
 %{_bindir}/gem2rpm
+%dir %{geminstdir}
 %doc %{geminstdir}/AUTHORS
 %{geminstdir}/bin
 %{geminstdir}/lib
