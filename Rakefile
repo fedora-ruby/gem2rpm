@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/clean'
+require 'rake/testtask'
 
 # Determine the current version
 PKG_NAME="gem2rpm"
@@ -69,6 +70,14 @@ Rake::GemPackageTask.new(spec) do |pkg|
 end
 
 CLEAN.include("pkg")
+
+desc "Run tests by default"
+task :default => [:test]
+
+desc "Run unit tests"
+Rake::TestTask.new(:test) do |t|
+  t.test_files = FileList['test/*.rb']
+end
 
 desc "Build (S)RPM for #{PKG_NAME}"
 task :rpm => [ :package ] do |t|
