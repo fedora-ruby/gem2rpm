@@ -14,14 +14,18 @@ end
 
 module Gem
   class Requirement
-    def to_rpm
-      result = to_s
-      if result == "> 0.0.0"
-        return ""
-      else
-        return result
+    def rpm_version_transform(version)
+      if version == "> 0.0.0"
+        version = ""
       end
+      version
     end
+
+    def to_rpm
+      result = as_list
+      return result.map { |version| rpm_version_transform(version) }
+    end
+
   end
 end
 
@@ -75,7 +79,9 @@ Source0: <%= download_path %>%{gemname}-%{version}.gem
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: rubygems
 <% for d in spec.dependencies %>
-Requires: rubygem(<%= d.name %>) <%= d.version_requirements.to_rpm %>
+<% for req in d.version_requirements.to_rpm %>
+Requires: rubygem(<%= d.name %>) <%= req  %>
+<% end %>
 <% end %>
 BuildRequires: rubygems
 <% if spec.extensions.empty? %>

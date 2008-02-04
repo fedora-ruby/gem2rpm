@@ -7,11 +7,11 @@
 Summary: Generate rpm specfiles from gems
 Name: rubygem-%{gemname}
 Version: @VERSION@
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/Languages
 License: GPLv2+ or Ruby
 URL: http://rubyforge.org/projects/gem2rpm/
-Source0: %{gemname}-%{version}.gem
+Source0: http://gems.rubyforge.org/gems/%{gemname}-%{version}.gem
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: rubygems
 BuildRequires: rubygems
@@ -56,5 +56,9 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Mon Dec 10 2007 David Lutterkort (lutter at watzmann dot net) - 0.5.2-1
+* Thu Jan  3 2008 David Lutterkort <dlutter@redhat.com> - 0.5.2-2
+- Own geminstdir
+- Fix Source URL
+
+* Mon Dec 10 2007 David Lutterkort <dlutter@redhat.com> - 0.5.2-1
 - Initial package

@@ -18,7 +18,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Requires: ruby <%= spec.required_ruby_version.to_rpm %>
 Requires: ruby-gems >= <%= Gem::RubyGemsVersion %>
 <% for d in spec.dependencies %>
-Requires: ruby-gems-<%= d.name %> <%= d.version_requirements.to_rpm %>
+<% for req in d.version_requirements.to_rpm %>
+Requires: ruby-gems-<%= d.name %> <%= req %>
+<% end %>
 <% end %>
 BuildRequires: ruby <%= spec.required_ruby_version.to_rpm %>
 BuildRequires: ruby-gems >= <%= Gem::RubyGemsVersion %>
