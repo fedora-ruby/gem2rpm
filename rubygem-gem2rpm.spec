@@ -7,7 +7,7 @@
 Summary: Generate rpm specfiles from gems
 Name: rubygem-%{gemname}
 Version: @VERSION@
-Release: 2%{?dist}
+Release: 1%{?dist}
 Group: Development/Languages
 License: GPLv2+ or Ruby
 URL: http://rubyforge.org/projects/gem2rpm/
@@ -56,6 +56,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Mar 11 2008 David Lutterkort <dlutter@redhat.com> - @VERSION@-1
+- Bring in accordance with Fedora guidelines
+
 * Thu Jan  3 2008 David Lutterkort <dlutter@redhat.com> - 0.5.2-2
 - Own geminstdir
 - Fix Source URL
