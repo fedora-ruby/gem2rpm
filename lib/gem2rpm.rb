@@ -1,7 +1,16 @@
 require 'erb'
 require 'socket'
 require 'rubygems/format'
-require 'rubygems/remote_installer'
+
+# Adapt to the differences between rubygems < 1.0.0 and after
+# Once we can be reasonably certain that everybody has version >= 1.0.0
+# all this logic should be killed
+GEM_VERSION = Gem::Version.create(Gem::RubyGemsVersion)
+HAS_REMOTE_INSTALLER = GEM_VERSION < Gem::Version.create("1.0.0")
+
+if HAS_REMOTE_INSTALLER
+  require 'rubygems/remote_installer'
+end
 
 # Extend String with a word_wrap method, which we use in the ERB template
 # below.  Taken with modification from the word_wrap method in ActionPack.
@@ -32,7 +41,24 @@ end
 module Gem2Rpm
   Gem2Rpm::VERSION = "0.5.3"
 
-  def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout, 
+  if HAS_REMOTE_INSTALLER
+    def self.find_download_url(name, version)
+      installer = Gem::RemoteInstaller.new
+      dummy, download_path = installer.find_gem_to_install(name, "=#{version}")
+      download_path += "/gems/" if download_path.to_s != ""
+      return download_path
+    end
+  else
+    def self.find_download_url(name, version)
+      dep = Gem::Dependency.new(name, "=#{version}")
+      fetcher = Gem::SpecFetcher.fetcher
+      dummy, download_path = fetcher.find_matching(dep, false, false).first
+      download_path += "gems/" if download_path.to_s != ""
+      return download_path
+    end
+  end
+
+  def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
                       nongem=true, local=false)
     format = Gem::Format.from_file_by_path(fname)
     spec = format.spec
@@ -40,10 +66,10 @@ module Gem2Rpm
     download_path = ""
     unless local
       begin
-        dummy, download_path = Gem::RemoteInstaller.new.find_gem_to_install(spec.name, "=#{spec.version}")
-        download_path += "/gems/" if download_path.to_s != ""
-      rescue Gem::Exception
+        download_path = find_download_url(spec.name, spec.version)
+      rescue Gem::Exception => e
         $stderr.puts "Warning: Could not retrieve full URL for #{spec.name}\nWarning: Edit the specfile and enter the full download URL as 'Source0' manually"
+        $stderr.puts "#{e.inspect}"
       end
     end
     template = ERB.new(template, 0, '<>')
@@ -61,7 +87,7 @@ module Gem2Rpm
     packager
   end
 
-  TEMPLATE = 
+  TEMPLATE =
 %q{# Generated from <%= File::basename(format.gem_path) %> by gem2rpm -*- rpm-spec -*-
 %define ruby_sitelib %(ruby -rrbconfig -e "puts Config::CONFIG['sitelibdir']")
 %define gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
