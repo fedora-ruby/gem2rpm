@@ -1,0 +1,61 @@
+#
+# spec file for package rubygem-<%= spec.name %> (Version <%= spec.version %>)
+#
+# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+# norootforbuild
+
+Name:           rubygem-<%= spec.name %>
+Version:        <%= spec.version %>
+Release:        1
+%define mod_name <%= spec.name %>
+#
+Group:          Development/Languages/Ruby
+License:        GPLv2+ or Ruby
+#
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRequires:  rubygems_with_buildroot_patch
+Requires: rubygems >= <%= Gem::RubyGemsVersion %>
+BuildRequires: ruby <%= spec.required_ruby_version.to_rpm %>
+BuildRequires: rubygems >= <%= Gem::RubyGemsVersion %>
+
+<% for d in spec.dependencies %>
+<% for req in d.version_requirements.to_rpm %>
+Requires: rubygem-<%= d.name %> <%= req  %>
+<% end %>
+<% end %>
+Provides: rubygem-%{mod_name} = %{version}-%{release}
+<% if spec.extensions.empty? %>
+BuildArch: noarch
+<% end %>
+
+Url: <%= spec.homepage %>
+Source0: %{mod_name}-%{version}.gem
+
+Summary: <%= spec.summary.gsub(/\.$/, "") %>
+
+%description
+<%= spec.description.to_s.chomp.word_wrap(78) + "\n" %>
+
+%prep
+
+%build
+
+%install
+%gem_install %{S:0}
+
+%clean
+%{__rm} -rf %{buildroot}
+
+%files
+%defattr(-,root,root,-)
+%{_libdir}/ruby/gems/%{rb_ver}/cache/%{mod_name}-%{version}.gem
+%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_name}-%{version}/
+%{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_name}-%{version}.gemspec
+%doc %{_libdir}/ruby/gems/%{rb_ver}/doc/%{mod_name}-%{version}/
+
+%changelog
