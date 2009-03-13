@@ -18,7 +18,7 @@ BuildRequires: rubygems
 BuildArch: noarch
 Provides: rubygem(%{gemname}) = %{version}
 
-%description 
+%description
 Generate source rpms and rpm spec files from a Ruby Gem.  The spec file
 tries to follow the gem as closely as possible, and be compliant with the
 Fedora rubygem packaging guidelines
@@ -56,12 +56,15 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Tue Mar 11 2008 David Lutterkort <dlutter@redhat.com> - @VERSION@-1
+* Mon Oct  6 2008 David Lutterkort <dlutter@redhat.com> - 0.6.0-1
+- New version
+
+* Tue Mar 11 2008 David Lutterkort <dlutter@redhat.com> - 0.5.3-1
 - Bring in accordance with Fedora guidelines
 
 * Thu Jan  3 2008 David Lutterkort <dlutter@redhat.com> - 0.5.2-2
 - Own geminstdir
 - Fix Source URL
 
-* Mon Dec 10 2007 David Lutterkort <dlutter@redhat.com> - 0.5.2-1
+* Mon Dec 10 2007 David Lutterkort <dlutter@redhat.com> - 0.5.1-1
 - Initial package

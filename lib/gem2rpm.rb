@@ -39,7 +39,7 @@ module Gem
 end
 
 module Gem2Rpm
-  Gem2Rpm::VERSION = "0.5.3"
+  Gem2Rpm::VERSION = "0.6.0"
 
   if HAS_REMOTE_INSTALLER
     def self.find_download_url(name, version)
