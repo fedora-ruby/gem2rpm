@@ -1,17 +1,24 @@
 #
 # spec file for package rubygem-<%= spec.name %> (Version <%= spec.version %>)
 #
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
-# This file and all modifications and additions to the pristine
-# package are under the same license as the package itself.
+# Copyright (c) 2009 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
-# norootforbuild
 
+# norootforbuild
 Name:           rubygem-<%= spec.name %>
 Version:        <%= spec.version %>
-Release:        1
+Release:        0
 %define mod_name <%= spec.name %>
 #
 Group:          Development/Languages/Ruby
@@ -19,40 +26,44 @@ License:        GPLv2+ or Ruby
 #
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  rubygems_with_buildroot_patch
-Requires: rubygems >= <%= Gem::RubyGemsVersion %>
-BuildRequires: ruby <%= spec.required_ruby_version.to_rpm %>
-BuildRequires: rubygems >= <%= Gem::RubyGemsVersion %>
-
-<% for d in spec.dependencies %>
-<% for req in d.version_requirements.to_rpm %>
-Requires: rubygem-<%= d.name %> <%= req  %>
+Requires:       rubygems >= <%= Gem::RubyGemsVersion %>
+<%
+# no need to add a requires ruby >= 0 here. will be pulled in via rubygems already
+  unless spec.required_ruby_version.satisfied_by? Gem::Version.new(0)
+%>
+Requires:       ruby <%= spec.required_ruby_version.to_rpm %>
+BuildRequires:  ruby-devel <%= spec.required_ruby_version.to_rpm %>
+<% end %>
+<% spec.dependencies do |d| %>
+<% d.version_requirements.to_rpm do |req| %>
+BuildRequires:  rubygem-<%= d.name %> <%= req %>
+Requires:       rubygem-<%= d.name %> <%= req %>
 <% end %>
 <% end %>
-Provides: rubygem-%{mod_name} = %{version}-%{release}
-<% if spec.extensions.empty? %>
-BuildArch: noarch
-<% end %>
-
-Url: <%= spec.homepage %>
-Source0: %{mod_name}-%{version}.gem
-
-Summary: <%= spec.summary.gsub(/\.$/, "") %>
-
+#
+Url:            <%= spec.homepage %>
+Source:         %{mod_name}-%{version}.gem
+#
+Summary:        <%= spec.summary.gsub(/\.$/, "") %>
 %description
-<%= spec.description.to_s.chomp.word_wrap(78) + "\n" %>
+<%= spec.description.to_s.chomp + "\n" %>
 
 %prep
-
 %build
-
 %install
 %gem_install %{S:0}
+<% unless spec.extensions.empty? %>
+%gem_cleanup
+<% end %>
 
 %clean
 %{__rm} -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
+<% spec.executables.each do |executable|  %>
+%{_bindir}/<%= executable %>
+<% end %>
 %{_libdir}/ruby/gems/%{rb_ver}/cache/%{mod_name}-%{version}.gem
 %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_name}-%{version}/
 %{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_name}-%{version}.gemspec
