@@ -34,8 +34,8 @@ Requires:       rubygems >= <%= Gem::RubyGemsVersion %>
 Requires:       ruby <%= spec.required_ruby_version.to_rpm %>
 BuildRequires:  ruby-devel <%= spec.required_ruby_version.to_rpm %>
 <% end %>
-<% spec.dependencies do |d| %>
-<% d.version_requirements.to_rpm do |req| %>
+<% for d in spec.dependencies %>
+<% for req in d.version_requirements.to_rpm %>
 BuildRequires:  rubygem-<%= d.name %> <%= req %>
 Requires:       rubygem-<%= d.name %> <%= req %>
 <% end %>
