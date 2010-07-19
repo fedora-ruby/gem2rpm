@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   #### Dependencies and requirements.
 
   s.files = ['lib/testing_gem.rb']
+  s.required_rubygems_version = ">= 1.3.6"
   s.add_runtime_dependency('test_runtime', [">= 1.0.0"])
   s.add_development_dependency('test_development', [">=1.0.0"])
 

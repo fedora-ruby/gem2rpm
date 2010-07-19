@@ -109,7 +109,16 @@ URL: <%= spec.homepage %>
 <% end %>
 Source0: <%= download_path %>%{gemname}-%{version}.gem
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires: rubygems
+<%
+if spec.respond_to?(:required_rubygems_version)
+  rubygems_requirement = spec.required_rubygems_version.to_rpm
+else
+  rubygems_requirement = ['']
+end
+
+for req in rubygems_requirement %>
+Requires: rubygems <%= req %>
+<% end %>
 <% for d in spec.dependencies %>
 <% if (!d.respond_to?(:type)) or (d.respond_to?(:type) and d.type == :runtime) %>
 <%
@@ -123,7 +132,9 @@ Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end %>
 <% end %>
 <% end %>
-BuildRequires: rubygems
+<% for req in rubygems_requirement %>
+BuildRequires: rubygems <%= req %>
+<% end %>
 <% if spec.extensions.empty? %>
 BuildArch: noarch
 <% end %>

@@ -68,4 +68,14 @@ class TestVersionConversion < Test::Unit::TestCase
     assert_no_match(/\sURL: /, out.string)
   end
 
+  def test_rubygems_version_requirement
+    out = StringIO.new
+
+    gem_path = File.join(File.dirname(__FILE__), "artifacts", "testing_gem", "testing_gem-1.0.0.gem") 
+
+    Gem2Rpm::convert(gem_path, Gem2Rpm::TEMPLATE, out, false)
+
+    assert_match(/\sRequires: rubygems >= 1.3.6/, out.string)
+  end
+
 end
