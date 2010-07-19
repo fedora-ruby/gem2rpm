@@ -110,7 +110,7 @@ URL: <%= spec.homepage %>
 Source0: <%= download_path %>%{gemname}-%{version}.gem
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 <%
-if spec.respond_to?(:required_rubygems_version)
+if spec.respond_to?(:required_rubygems_version) and spec.required_rubygems_version
   rubygems_requirement = spec.required_rubygems_version.to_rpm
 else
   rubygems_requirement = ['']
