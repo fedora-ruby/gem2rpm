@@ -1,0 +1,2 @@
+This gem is for use with gem2rpm's unit tests.  Any time changes are made
+to this gem, you will need to rebuild it.  This is not done automatically.
