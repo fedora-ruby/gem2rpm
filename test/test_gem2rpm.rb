@@ -41,4 +41,16 @@ class TestVersionConversion < Test::Unit::TestCase
     end
   end
 
+  def test_omitting_development_requirements_from_spec
+    # Only run this test if rubygems 1.2.0 or later.
+    if Gem::Version.create(Gem::RubyGemsVersion) >= Gem::Version.create("1.2.0")
+      out = StringIO.new
+
+      gem_path = File.join(File.dirname(__FILE__), "artifacts", "test-1.0.0.gem") 
+      Gem2Rpm::convert(gem_path, Gem2Rpm::TEMPLATE, out, false)
+
+      assert_no_match(/\sRequires: rubygem\(test_development\)/, out.string)
+    end
+  end
+
 end

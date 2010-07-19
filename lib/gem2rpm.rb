@@ -109,8 +109,10 @@ Source0: <%= download_path %>%{gemname}-%{version}.gem
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: rubygems
 <% for d in spec.dependencies %>
+<% if (!d.respond_to?(:type)) or (d.respond_to?(:type) and d.type == :runtime) %>
 <% for req in d.version_requirements.to_rpm %>
 Requires: rubygem(<%= d.name %>) <%= req  %>
+<% end %>
 <% end %>
 <% end %>
 BuildRequires: rubygems
