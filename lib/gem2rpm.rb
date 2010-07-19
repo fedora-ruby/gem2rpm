@@ -110,7 +110,13 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: rubygems
 <% for d in spec.dependencies %>
 <% if (!d.respond_to?(:type)) or (d.respond_to?(:type) and d.type == :runtime) %>
-<% for req in d.version_requirements.to_rpm %>
+<%
+if d.respond_to?(:requirement)
+  requirement = d.requirement
+else
+  requirement = d.version_requirements
+end
+for req in requirement.to_rpm %>
 Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end %>
 <% end %>
