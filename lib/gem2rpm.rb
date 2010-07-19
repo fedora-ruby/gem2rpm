@@ -119,6 +119,11 @@ end
 for req in rubygems_requirement %>
 Requires: rubygems <%= req %>
 <% end %>
+<% if spec.respond_to?(:required_ruby_version) %>
+<% for req in spec.required_ruby_version.to_rpm %>
+Requires: ruby <%= req %>
+<% end %>
+<% end %>
 <% for d in spec.dependencies %>
 <% if (!d.respond_to?(:type)) or (d.respond_to?(:type) and d.type == :runtime) %>
 <%
@@ -134,6 +139,11 @@ Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end %>
 <% for req in rubygems_requirement %>
 BuildRequires: rubygems <%= req %>
+<% end %>
+<% if spec.respond_to?(:required_ruby_version) %>
+<% for req in spec.required_ruby_version.to_rpm %>
+BuildRequires: ruby <%= req %>
+<% end %>
 <% end %>
 <% if spec.extensions.empty? %>
 BuildArch: noarch
