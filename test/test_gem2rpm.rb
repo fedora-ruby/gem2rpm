@@ -53,4 +53,13 @@ class TestVersionConversion < Test::Unit::TestCase
     end
   end
 
+  def test_omitting_url_from_rpm_spec
+    out = StringIO.new
+
+    gem_path = File.join(File.dirname(__FILE__), "artifacts", "test-1.0.0.gem") 
+    Gem2Rpm::convert(gem_path, Gem2Rpm::TEMPLATE, out, false)
+
+    assert_no_match(/\sURL: /, out.string)
+  end
+
 end

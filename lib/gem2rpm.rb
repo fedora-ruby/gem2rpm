@@ -104,7 +104,9 @@ Version: <%= spec.version %>
 Release: 1%{?dist}
 Group: Development/Languages
 License: GPLv2+ or Ruby
+<% if spec.homepage %>
 URL: <%= spec.homepage %>
+<% end %>
 Source0: <%= download_path %>%{gemname}-%{version}.gem
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: rubygems
