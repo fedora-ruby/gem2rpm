@@ -115,8 +115,9 @@ if spec.respond_to?(:required_rubygems_version) and spec.required_rubygems_versi
 else
   rubygems_requirement = ['']
 end
-Requires:	ruby(abi) = %{rubyabi}
-for req in rubygems_requirement %>
+%>
+Requires: ruby(abi) = %{rubyabi}
+<%for req in rubygems_requirement %>
 Requires: rubygems <%= req %>
 <% end %>
 <% if spec.respond_to?(:required_ruby_version) %>
