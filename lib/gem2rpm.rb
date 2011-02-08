@@ -93,10 +93,11 @@ module Gem2Rpm
 
   TEMPLATE =
 %q{# Generated from <%= File::basename(format.gem_path) %> by gem2rpm -*- rpm-spec -*-
-%define ruby_sitelib %(ruby -rrbconfig -e "puts Config::CONFIG['sitelibdir']")
-%define gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
-%define gemname <%= spec.name %>
-%define geminstdir %{gemdir}/gems/%{gemname}-%{version}
+%global ruby_sitelib %(ruby -rrbconfig -e "puts Config::CONFIG['sitelibdir']")
+%global gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
+%global gemname <%= spec.name %>
+%global geminstdir %{gemdir}/gems/%{gemname}-%{version}
+%global rubyabi 1.8
 
 Summary: <%= spec.summary.gsub(/\.$/, "") %>
 Name: rubygem-%{gemname}
@@ -108,14 +109,13 @@ License: GPLv2+ or Ruby
 URL: <%= spec.homepage %>
 <% end %>
 Source0: <%= download_path %>%{gemname}-%{version}.gem
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 <%
 if spec.respond_to?(:required_rubygems_version) and spec.required_rubygems_version
   rubygems_requirement = spec.required_rubygems_version.to_rpm
 else
   rubygems_requirement = ['']
 end
-
+Requires:	ruby(abi) = %{rubyabi}
 for req in rubygems_requirement %>
 Requires: rubygems <%= req %>
 <% end %>
