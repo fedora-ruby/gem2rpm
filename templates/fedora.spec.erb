@@ -77,7 +77,6 @@ Provides: ruby(<%= p %>) = %{version}
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gemdir}
 <% rdoc_opt = spec.has_rdoc ? "--rdoc " : "" %>
 gem install --local --install-dir %{buildroot}%{gemdir} \
@@ -94,9 +93,6 @@ mkdir -p %{buildroot}%{ruby_sitelib}
 ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% end %>
 <% end # if nongem %>
-
-%clean
-rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root, -)
