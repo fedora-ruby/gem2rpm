@@ -13,6 +13,7 @@ opts.separator("  Convert ruby Gems to source RPMs and specfiles")
 opts.separator("  Uses a template to generate the RPM specfile")
 opts.separator("  from the Gem spec")
 
+print_template_file = nil
 template_file = nil
 output_file = nil
 local = false
@@ -21,8 +22,7 @@ deps = false
 nongem = false
 
 opts.on("-T", "--default-template", "Print the default template") do |val|
-    puts Gem2Rpm::TEMPLATE
-    exit 0
+    print_template_file = true
 end
 opts.on("-t", "--template TEMPLATE", "Use TEMPLATE for the specfile") do |val|
     template_file = val
@@ -49,13 +49,6 @@ opts.on("-n", "--nongem", "Generate a subpackage for non-gem use") do |val|
 end
 rest = opts.permute(ARGV)
 
-if rest.size != 1
-    $stderr.puts "Missing GEMFILE"
-    $stderr.puts opts
-    exit(1)
-end
-gemfile = rest[0]
-
 template = nil
 if template_file.nil?
   template = Gem2Rpm::TEMPLATE
@@ -69,6 +62,18 @@ else
   template = f.read
   f.close
 end
+
+if print_template_file
+  puts template
+  exit 0
+end
+
+if rest.size != 1
+    $stderr.puts "Missing GEMFILE"
+    $stderr.puts opts
+    exit(1)
+end
+gemfile = rest[0]
 
 srpmdir = nil
 gemname = nil
