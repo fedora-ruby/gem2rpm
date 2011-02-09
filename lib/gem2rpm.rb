@@ -84,10 +84,16 @@ module Gem2Rpm
   # gem2spec).  Taken from RPM macros if present, constructed from system
   # username and hostname otherwise.
   def Gem2Rpm.packager()
-    packager = `rpm --eval '%{packager}'`.chomp
-    if packager == '' or packager == '%{packager}'
+    packager = `rpmdev-packager`.chomp
+
+    if packager.empty?
+      packager = `rpm --eval '%{packager}'`.chomp
+    end
+
+    if packager.empty? or packager == '%{packager}'
       packager = "#{Etc::getpwnam(Etc::getlogin).gecos} <#{Etc::getlogin}@#{Socket::gethostname}>"
     end
+
     packager
   end
 
