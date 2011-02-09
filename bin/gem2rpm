@@ -21,7 +21,7 @@ srpm = false
 deps = false
 nongem = false
 
-opts.on("-T", "--default-template", "Print the default template") do |val|
+opts.on("-T", "--current-template", "Print the current template") do |val|
     print_template_file = true
 end
 opts.on("-t", "--template TEMPLATE", "Use TEMPLATE for the specfile") do |val|
