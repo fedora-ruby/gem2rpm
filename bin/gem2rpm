@@ -20,6 +20,7 @@ local = false
 srpm = false
 deps = false
 nongem = false
+doc_subpackage = true
 
 opts.on("-T", "--current-template", "Print the current template") do |val|
     print_template_file = true
@@ -46,6 +47,9 @@ opts.on("-d", "--dependencies", "Print the dependencies of the gem") do |val|
 end
 opts.on("-n", "--nongem", "Generate a subpackage for non-gem use") do |val|
     nongem = true
+end
+opts.on("--no-doc", "Disable document subpackage") do |val|
+  doc_subpackage = false
 end
 rest = opts.permute(ARGV)
 
@@ -90,11 +94,11 @@ end
 
 # Produce a specfile
 if output_file.nil?
-    Gem2Rpm::convert(gemfile, template, $stdout, nongem, local) unless deps
+    Gem2Rpm::convert(gemfile, template, $stdout, nongem, local, doc_subpackage) unless deps
 else
     begin
         out = open(output_file, "w")
-        Gem2Rpm::convert(gemfile, template, out, nongem, local)
+        Gem2Rpm::convert(gemfile, template, out, nongem, local, doc_subpackage)
     ensure
         out.close()
     end

@@ -60,6 +60,17 @@ Provides: rubygem(%{gemname}) = %{version}
 %description
 <%= spec.description.to_s.chomp.word_wrap(78) + "\n" %>
 
+
+<% if doc_subpackage %>
+%package doc
+Summary: Documentation for %{name}
+Group: Documentation
+Requires:%{name} = %{version}-%{release}
+
+%description doc
+Documentation for %{name}
+<% end # if doc_subpackage %>
+
 <% if nongem %>
 %package -n ruby-%{gemname}
 Summary: <%= spec.summary.gsub(/\.$/, "") %>
@@ -99,15 +110,28 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% for f in spec.executables %>
 %{_bindir}/<%= f %>
 <% end %>
-%{gemdir}/gems/%{gemname}-%{version}/
+%{geminstdir}/lib
+<% unless doc_subpackage %>
 <% if spec.has_rdoc %>
 %doc %{gemdir}/doc/%{gemname}-%{version}
 <% end %>
 <% for f in spec.extra_rdoc_files %>
 %doc %{geminstdir}/<%= f %>
 <% end %>
+<% end %>
 %{gemdir}/cache/%{gemname}-%{version}.gem
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
+
+<% if doc_subpackage %>
+%files doc
+%defattr(-, root, root, -)
+<% if spec.has_rdoc %>
+%doc %{gemdir}/doc/%{gemname}-%{version}
+<% end %>
+<% for f in spec.extra_rdoc_files %>
+%doc %{geminstdir}/<%= f %>
+<% end %>
+<% end # if doc_subpackage %>
 
 <% if nongem %>
 %files -n ruby-%{gemname}

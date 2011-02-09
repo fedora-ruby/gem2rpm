@@ -64,7 +64,7 @@ module Gem2Rpm
   end
 
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
-                      nongem=true, local=false)
+                      nongem=true, local=false, doc_subpackage = true)
     format = Gem::Format.from_file_by_path(fname)
     spec = format.spec
     spec.description ||= spec.summary
