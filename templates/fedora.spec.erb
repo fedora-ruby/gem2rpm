@@ -91,11 +91,12 @@ Provides: ruby(<%= p %>) = %{version}
 mkdir -p %{buildroot}%{gemdir}
 <% rdoc_opt = spec.has_rdoc ? "--rdoc " : "" %>
 gem install --local --install-dir %{buildroot}%{gemdir} \
+<% unless spec.executables.nil? or spec.executables.empty? %>
+            --bindir %{buildroot}%{_bindir} \
+<% end %>
             --force <%= rdoc_opt %>%{SOURCE0}
 <% unless spec.executables.empty? %>
-mkdir -p %{buildroot}/%{_bindir}
-mv %{buildroot}%{gemdir}/bin/* %{buildroot}/%{_bindir}
-rmdir %{buildroot}%{gemdir}/bin
+
 find %{buildroot}%{geminstdir}/bin -type f | xargs chmod a+x
 <% end %>
 <% if nongem %>
