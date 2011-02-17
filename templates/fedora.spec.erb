@@ -89,12 +89,11 @@ Provides: ruby(<%= p %>) = %{version}
 
 %install
 mkdir -p %{buildroot}%{gemdir}
-<% rdoc_opt = spec.has_rdoc ? "--rdoc " : "" %>
 gem install --local --install-dir %{buildroot}%{gemdir} \
 <% unless spec.executables.nil? or spec.executables.empty? %>
             --bindir %{buildroot}%{_bindir} \
 <% end %>
-            --force <%= rdoc_opt %>%{SOURCE0}
+            --force %{SOURCE0}
 <% unless spec.executables.empty? %>
 
 find %{buildroot}%{geminstdir}/bin -type f | xargs chmod a+x
@@ -113,9 +112,7 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% end %>
 %{geminstdir}/lib
 <% unless doc_subpackage %>
-<% if spec.has_rdoc %>
 %doc %{gemdir}/doc/%{gemname}-%{version}
-<% end %>
 <% for f in spec.extra_rdoc_files %>
 %doc %{geminstdir}/<%= f %>
 <% end %>
@@ -126,9 +123,7 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% if doc_subpackage %>
 %files doc
 %defattr(-, root, root, -)
-<% if spec.has_rdoc %>
 %doc %{gemdir}/doc/%{gemname}-%{version}
-<% end %>
 <% for f in spec.extra_rdoc_files %>
 %doc %{geminstdir}/<%= f %>
 <% end %>
