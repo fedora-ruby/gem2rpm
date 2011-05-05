@@ -84,18 +84,22 @@ Provides: ruby(<%= p %>) = %{version}
 <% end # if nongem %>
 
 %prep
+%setup -q -c -T
+mkdir -p .%{gemdir}
+gem install --local --install-dir .%{gemdir} \
+<% unless spec.executables.nil? or spec.executables.empty? %>
+            --bindir %{buildroot}%{_bindir} \
+<% end %>
+            --force %{SOURCE0}
 
 %build
 
 %install
 mkdir -p %{buildroot}%{gemdir}
-gem install --local --install-dir %{buildroot}%{gemdir} \
-<% unless spec.executables.nil? or spec.executables.empty? %>
-            --bindir %{buildroot}%{_bindir} \
-<% end %>
-            --force %{SOURCE0}
-<% unless spec.executables.empty? %>
+cp -a .%{gemdir}/* \
+        %{buildroot}%{gemdir}/
 
+<% unless spec.executables.empty? %>
 find %{buildroot}%{geminstdir}/bin -type f | xargs chmod a+x
 <% end %>
 <% if nongem %>
