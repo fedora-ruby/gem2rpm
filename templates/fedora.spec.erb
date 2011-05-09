@@ -11,9 +11,9 @@ Version: <%= spec.version %>
 Release: 1%{?dist}
 Group: Development/Languages
 License: GPLv2+ or Ruby
-<% if spec.homepage %>
+<% if spec.homepage -%>
 URL: <%= spec.homepage %>
-<% end %>
+<% end -%>
 Source0: <%= download_path %>%{gemname}-%{version}.gem
 <%
 if spec.respond_to?(:required_rubygems_version) and spec.required_rubygems_version
@@ -21,47 +21,46 @@ if spec.respond_to?(:required_rubygems_version) and spec.required_rubygems_versi
 else
   rubygems_requirement = ['']
 end
-%>
+-%>
 Requires: ruby(abi) = %{rubyabi}
-<%for req in rubygems_requirement %>
+<% for req in rubygems_requirement -%>
 Requires: rubygems <%= req %>
-<% end %>
-<% if spec.respond_to?(:required_ruby_version) %>
-<% for req in spec.required_ruby_version.to_rpm %>
+<% end -%>
+<% if spec.respond_to?(:required_ruby_version) -%>
+<% for req in spec.required_ruby_version.to_rpm -%>
 Requires: ruby <%= req %>
-<% end %>
-<% end %>
-<% for d in spec.dependencies %>
-<% if (!d.respond_to?(:type)) or (d.respond_to?(:type) and d.type == :runtime) %>
+<% end -%>
+<% end -%>
+<% for d in spec.dependencies -%>
+<% if (!d.respond_to?(:type)) or (d.respond_to?(:type) and d.type == :runtime) -%>
 <%
 if d.respond_to?(:requirement)
   requirement = d.requirement
 else
   requirement = d.version_requirements
 end
-for req in requirement.to_rpm %>
+for req in requirement.to_rpm -%>
 Requires: rubygem(<%= d.name %>) <%= req  %>
-<% end %>
-<% end %>
-<% end %>
-<% for req in rubygems_requirement %>
+<% end -%>
+<% end -%>
+<% end -%>
+<% for req in rubygems_requirement -%>
 BuildRequires: rubygems <%= req %>
-<% end %>
-<% if spec.respond_to?(:required_ruby_version) %>
-<% for req in spec.required_ruby_version.to_rpm %>
+<% end -%>
+<% if spec.respond_to?(:required_ruby_version) -%>
+<% for req in spec.required_ruby_version.to_rpm -%>
 BuildRequires: ruby <%= req %>
-<% end %>
-<% end %>
-<% if spec.extensions.empty? %>
+<% end -%>
+<% end -%>
+<% if spec.extensions.empty? -%>
 BuildArch: noarch
-<% end %>
+<% end -%>
 Provides: rubygem(%{gemname}) = %{version}
 
 %description
 <%= spec.description.to_s.chomp.word_wrap(78) + "\n" %>
 
-
-<% if doc_subpackage %>
+<% if doc_subpackage -%>
 %package doc
 Summary: Documentation for %{name}
 Group: Documentation
@@ -69,19 +68,19 @@ Requires:%{name} = %{version}-%{release}
 
 %description doc
 Documentation for %{name}
-<% end # if doc_subpackage %>
+<% end # if doc_subpackage -%>
 
-<% if nongem %>
+<% if nongem -%>
 %package -n ruby-%{gemname}
 Summary: <%= spec.summary.gsub(/\.$/, "") %>
 Group: Development/Languages
 Requires: rubygem(%{gemname}) = %{version}
-<% spec.files.select{ |f| spec.require_paths.include?(File::dirname(f)) }.reject { |f| f =~ /\.rb$/ }.collect { |f| File::basename(f) }.each do |p| %>
+<% spec.files.select{ |f| spec.require_paths.include?(File::dirname(f)) }.reject { |f| f =~ /\.rb$/ }.collect { |f| File::basename(f) }.each do |p| -%>
 Provides: ruby(<%= p %>) = %{version}
-<% end %>
+<% end -%>
 %description -n ruby-%{gemname}
-<%= spec.description.to_s.chomp.word_wrap(78) + "\n" %>
-<% end # if nongem %>
+<%= spec.description.to_s.chomp.word_wrap(78) + "\n" -%>
+<% end # if nongem -%>
 
 %prep
 %setup -q -c -T
@@ -89,7 +88,7 @@ mkdir -p .%{gemdir}
 gem install --local --install-dir .%{gemdir} \
 <% unless spec.executables.nil? or spec.executables.empty? %>
             --bindir %{buildroot}%{_bindir} \
-<% end %>
+<% end -%>
             --force %{SOURCE0}
 
 %build
@@ -99,43 +98,43 @@ mkdir -p %{buildroot}%{gemdir}
 cp -a .%{gemdir}/* \
         %{buildroot}%{gemdir}/
 
-<% unless spec.executables.empty? %>
+<% unless spec.executables.empty? -%>
 find %{buildroot}%{geminstdir}/bin -type f | xargs chmod a+x
-<% end %>
-<% if nongem %>
+<% end -%>
+<% if nongem -%>
 mkdir -p %{buildroot}%{ruby_sitelib}
-<% spec.files.select{ |f| spec.require_paths.include?(File::dirname(f)) }.each do |p| %>
+<% spec.files.select{ |f| spec.require_paths.include?(File::dirname(f)) }.each do |p| -%>
 ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
-<% end %>
-<% end # if nongem %>
+<% end -%>
+<% end # if nongem -%>
 
 %files
 %dir %{geminstdir}
-<% for f in spec.executables %>
+<% for f in spec.executables -%>
 %{_bindir}/<%= f %>
-<% end %>
+<% end -%>
 %{geminstdir}/lib
-<% unless doc_subpackage %>
+<% unless doc_subpackage -%>
 %doc %{gemdir}/doc/%{gemname}-%{version}
-<% for f in spec.extra_rdoc_files %>
+<% for f in spec.extra_rdoc_files -%>
 %doc %{geminstdir}/<%= f %>
-<% end %>
-<% end %>
+<% end -%>
+<% end -%>
 %{gemdir}/cache/%{gemname}-%{version}.gem
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
-<% if doc_subpackage %>
+<% if doc_subpackage -%>
 %files doc
 %doc %{gemdir}/doc/%{gemname}-%{version}
-<% for f in spec.extra_rdoc_files %>
+<% for f in spec.extra_rdoc_files -%>
 %doc %{geminstdir}/<%= f %>
-<% end %>
-<% end # if doc_subpackage %>
+<% end -%>
+<% end # if doc_subpackage -%>
 
-<% if nongem %>
+<% if nongem -%>
 %files -n ruby-%{gemname}
 %{ruby_sitelib}/*
-<% end # if nongem %>
+<% end # if nongem -%>
 
 %changelog
 * <%= Time.now.strftime("%a %b %d %Y") %> <%= packager %> - <%= spec.version %>-1
