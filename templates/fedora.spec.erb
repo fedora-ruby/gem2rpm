@@ -110,6 +110,7 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% end # if nongem %>
 
 %files
+%dir %{geminstdir}
 <% for f in spec.executables %>
 %{_bindir}/<%= f %>
 <% end %>
