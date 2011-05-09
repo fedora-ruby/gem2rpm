@@ -110,7 +110,6 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% end # if nongem %>
 
 %files
-%defattr(-, root, root, -)
 <% for f in spec.executables %>
 %{_bindir}/<%= f %>
 <% end %>
@@ -126,7 +125,6 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 
 <% if doc_subpackage %>
 %files doc
-%defattr(-, root, root, -)
 %doc %{gemdir}/doc/%{gemname}-%{version}
 <% for f in spec.extra_rdoc_files %>
 %doc %{geminstdir}/<%= f %>
@@ -135,7 +133,6 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 
 <% if nongem %>
 %files -n ruby-%{gemname}
-%defattr(-, root, root, -)
 %{ruby_sitelib}/*
 <% end # if nongem %>
 
