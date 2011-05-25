@@ -88,7 +88,7 @@ Provides: ruby(<%= p %>) = %{version}
 %setup -q -c -T
 mkdir -p .%{gemdir}
 gem install --local --install-dir .%{gemdir} \
-<% unless spec.executables.nil? or spec.executables.empty? %>
+<% unless spec.executables.nil? or spec.executables.empty? -%>
             --bindir %{buildroot}%{_bindir} \
 <% end -%>
             --force %{SOURCE0}
