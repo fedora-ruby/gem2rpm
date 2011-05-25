@@ -99,6 +99,12 @@ gem install --local --install-dir .%{gemdir} \
 mkdir -p %{buildroot}%{gemdir}
 cp -a .%{gemdir}/* \
         %{buildroot}%{gemdir}/
+<% unless spec.executables.nil? or spec.executables.empty? -%>
+
+mkdir -p %{buildroot}%{_bindir}
+cp -a .%{_bindir}/* \
+        %{buildroot}%{_bindir}/
+<% end -%>
 
 <% unless spec.executables.empty? -%>
 find %{buildroot}%{geminstdir}/bin -type f | xargs chmod a+x
