@@ -89,7 +89,7 @@ Provides: ruby(<%= p %>) = %{version}
 mkdir -p .%{gemdir}
 gem install --local --install-dir .%{gemdir} \
 <% unless spec.executables.nil? or spec.executables.empty? -%>
-            --bindir %{buildroot}%{_bindir} \
+            --bindir .%{_bindir} \
 <% end -%>
             --force %{SOURCE0}
 
