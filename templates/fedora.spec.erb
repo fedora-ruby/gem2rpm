@@ -118,8 +118,11 @@ ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 
 %files
 %dir %{geminstdir}
+<% unless spec.executables.nil? or spec.executables.empty? -%>
 <% for f in spec.executables -%>
 %{_bindir}/<%= f %>
+<% end -%>
+%{geminstdir}/bin
 <% end -%>
 %{geminstdir}/lib
 <% unless doc_subpackage -%>
