@@ -46,6 +46,7 @@ Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
 <% end -%>
 <% end -%>
+BuildRequires: ruby(abi) = %{rubyabi}
 <% for req in rubygems_requirement -%>
 BuildRequires: rubygems <%= req %>
 <% end -%>
