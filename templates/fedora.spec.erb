@@ -116,6 +116,11 @@ mkdir -p %{buildroot}%{ruby_sitelib}
 ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% end -%>
 <% end # if nongem -%>
+<% unless spec.extensions.empty? -%>
+<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
+# Remove the binary extension sources and build leftovers.
+rm -rf %{buildroot}%{geminstdir}/ext
+<% end -%>
 
 %files
 %dir %{geminstdir}
