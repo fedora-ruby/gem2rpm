@@ -89,6 +89,9 @@ Provides: ruby(<%= p %>) = %{version}
 %prep
 %setup -q -c -T
 mkdir -p .%{gemdir}
+<% if spec.extensions.empty? -%>
+export CONFIGURE_ARGS="--with-cflags='%{optflags}'"
+<% end -%>
 gem install --local --install-dir .%{gemdir} \
 <% unless spec.executables.nil? or spec.executables.empty? -%>
             --bindir .%{_bindir} \
