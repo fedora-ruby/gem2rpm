@@ -93,6 +93,9 @@ gem install --local --install-dir .%{gemdir} \
 <% unless spec.executables.nil? or spec.executables.empty? -%>
             --bindir .%{_bindir} \
 <% end -%>
+<% if spec.extensions.empty? -%>
+            -V \
+<% end -%>
             --force %{SOURCE0}
 
 %build
