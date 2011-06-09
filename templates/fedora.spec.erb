@@ -1,9 +1,10 @@
 # Generated from <%= File::basename(format.gem_path) %> by gem2rpm -*- rpm-spec -*-
+%global gemname <%= spec.name %>
+
 <% if nongem -%>
 %global ruby_sitelib %(ruby -rrbconfig -e "puts Config::CONFIG['sitelibdir']")
 <% end -%>
 %global gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
-%global gemname <%= spec.name %>
 %global geminstdir %{gemdir}/gems/%{gemname}-%{version}
 %global rubyabi 1.8
 
