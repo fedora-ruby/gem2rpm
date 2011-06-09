@@ -27,7 +27,7 @@ end
 -%>
 Requires: ruby(abi) = %{rubyabi}
 <% for req in rubygems_requirement -%>
-Requires: rubygems <%= req %>
+Requires: ruby(rubygems) <%= req %>
 <% end -%>
 <% if spec.respond_to?(:required_ruby_version) -%>
 <% for req in spec.required_ruby_version.to_rpm -%>
@@ -49,7 +49,7 @@ Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
 BuildRequires: ruby(abi) = %{rubyabi}
 <% for req in rubygems_requirement -%>
-BuildRequires: rubygems <%= req %>
+BuildRequires: ruby(rubygems) <%= req %>
 <% end -%>
 <% if spec.respond_to?(:required_ruby_version) -%>
 <% for req in spec.required_ruby_version.to_rpm -%>
