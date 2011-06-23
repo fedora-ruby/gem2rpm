@@ -13,7 +13,7 @@ Name: rubygem-%{gemname}
 Version: <%= spec.version %>
 Release: 1%{?dist}
 Group: Development/Languages
-License: GPLv2+ or Ruby
+License: <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and ") %>
 <% if spec.homepage -%>
 URL: <%= spec.homepage %>
 <% end -%>
