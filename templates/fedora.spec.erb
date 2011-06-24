@@ -18,15 +18,8 @@ License: <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and 
 URL: <%= spec.homepage %>
 <% end -%>
 Source0: <%= download_path %>%{gemname}-%{version}.gem
-<%
-if spec.respond_to?(:required_rubygems_version) and spec.required_rubygems_version
-  rubygems_requirement = spec.required_rubygems_version.to_rpm
-else
-  rubygems_requirement = ['']
-end
--%>
 Requires: ruby(abi) = %{rubyabi}
-<% for req in rubygems_requirement -%>
+<% for req in spec.required_rubygems_version -%>
 Requires: ruby(rubygems) <%= req %>
 <% end -%>
 <% if spec.respond_to?(:required_ruby_version) -%>
@@ -48,7 +41,7 @@ Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
 <% end -%>
 BuildRequires: ruby(abi) = %{rubyabi}
-<% for req in rubygems_requirement -%>
+<% for req in spec.required_rubygems_version -%>
 BuildRequires: ruby(rubygems) <%= req %>
 <% end -%>
 <% if spec.respond_to?(:required_ruby_version) -%>
