@@ -2,6 +2,7 @@ require 'erb'
 require 'socket'
 require 'rubygems/format'
 require 'gem2rpm/distro'
+require 'gem2rpm/specification'
 
 # Adapt to the differences between rubygems < 1.0.0 and after
 # Once we can be reasonably certain that everybody has version >= 1.0.0
@@ -66,7 +67,7 @@ module Gem2Rpm
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
                       nongem=true, local=false, doc_subpackage = true)
     format = Gem::Format.from_file_by_path(fname)
-    spec = format.spec
+    spec = Gem2Rpm::Specification.new(format.spec)
     spec.description ||= spec.summary
     download_path = ""
     unless local
