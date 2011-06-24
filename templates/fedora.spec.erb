@@ -62,7 +62,7 @@ BuildArch: noarch
 Provides: rubygem(%{gemname}) = %{version}
 
 %description
-<%= spec.description.to_s.chomp.word_wrap(78) + "\n" %>
+<%= spec.description %>
 
 <% if doc_subpackage -%>
 %package doc
@@ -84,7 +84,7 @@ Requires: rubygem(%{gemname}) = %{version}
 Provides: ruby(<%= p %>) = %{version}
 <% end -%>
 %description -n ruby-%{gemname}
-<%= spec.description.to_s.chomp.word_wrap(78) + "\n" -%>
+<%= spec.description -%>
 <% end # if nongem -%>
 
 %prep

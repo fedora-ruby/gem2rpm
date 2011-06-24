@@ -14,15 +14,6 @@ if HAS_REMOTE_INSTALLER
   require 'rubygems/remote_installer'
 end
 
-# Extend String with a word_wrap method, which we use in the ERB template
-# below.  Taken with modification from the word_wrap method in ActionPack.
-# Text::Format does the smae thing better.
-class String
-  def word_wrap(line_width = 80)
-    gsub(/\n/, "\n\n").gsub(/(.{1,#{line_width}})(\s+|$)/, "\\1\n").strip
-  end
-end
-
 module Gem
   class Requirement
     def rpm_version_transform(version)

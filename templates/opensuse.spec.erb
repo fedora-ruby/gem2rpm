@@ -46,7 +46,7 @@ Source:         %{mod_name}-%{version}.gem
 #
 Summary:        <%= spec.summary.gsub(/\.$/, "") %>
 %description
-<%= spec.description.to_s.chomp + "\n" %>
+<%= spec.description %>
 
 %prep
 %build
