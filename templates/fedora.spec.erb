@@ -22,10 +22,9 @@ Requires: ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
 Requires: ruby(rubygems) <%= req %>
 <% end -%>
-<% if spec.respond_to?(:required_ruby_version) -%>
-<% for req in spec.required_ruby_version.to_rpm -%>
+<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
+<% for req in spec.required_ruby_version -%>
 Requires: ruby <%= req %>
-<% end -%>
 <% end -%>
 <% for d in spec.dependencies -%>
 <% if (!d.respond_to?(:type)) or (d.respond_to?(:type) and d.type == :runtime) -%>
@@ -44,10 +43,9 @@ BuildRequires: ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
 BuildRequires: ruby(rubygems) <%= req %>
 <% end -%>
-<% if spec.respond_to?(:required_ruby_version) -%>
-<% for req in spec.required_ruby_version.to_rpm -%>
+<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
+<% for req in spec.required_ruby_version -%>
 BuildRequires: ruby <%= req %>
-<% end -%>
 <% end -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch

@@ -7,6 +7,13 @@ module Gem2Rpm
       word_wrap(super.to_s.chomp, 78) + "\n"
     end
 
+    # The version of Ruby required by the gem.
+    def required_ruby_version
+      super.to_rpm
+    rescue
+      ['']
+    end
+
     # The RubyGems version required by gem. For RubyGems < 0.9.5 returns only
     # empty string. However, this should happen only in rare cases.
     def required_rubygems_version
