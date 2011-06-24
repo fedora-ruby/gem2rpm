@@ -79,7 +79,7 @@ class TestVersionConversion < Test::Unit::TestCase
 
     Gem2Rpm::convert(gem_path, Gem2Rpm::TEMPLATE, out, false)
 
-    assert_match(/\sRequires: rubygems >= 1.3.6/, out.string)
+    assert_match(/\sRequires: ruby\(rubygems\) >= 1.3.6/, out.string)
   end
 
   def test_rubys_version_requirement
