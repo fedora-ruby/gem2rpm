@@ -19,7 +19,11 @@ class TestVersionConversion < Test::Unit::TestCase
 
   def test_match_ranged_version_conversion
     r = Gem::Requirement.new(["> 1.2", "< 2.0"])
-    assert_equal(["> 1.2", "< 2.0"] ,r.to_rpm)
+    if Gem::VERSION < "1.6.0"
+      assert_equal(["> 1.2", "< 2.0"] ,r.to_rpm)
+    else
+      assert_equal(["< 2.0", "> 1.2",] ,r.to_rpm)
+    end
   end
 
   def test_first_level_pessimistic_version_constraint
@@ -75,7 +79,7 @@ class TestVersionConversion < Test::Unit::TestCase
 
     Gem2Rpm::convert(gem_path, Gem2Rpm::TEMPLATE, out, false)
 
-    assert_match(/\sRequires: rubygems >= 1.3.6/, out.string)
+    assert_match(/\sRequires: ruby\(rubygems\) >= 1.3.6/, out.string)
   end
 
   def test_rubys_version_requirement
