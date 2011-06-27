@@ -77,7 +77,7 @@ module Gem2Rpm
         $stderr.puts "#{e.inspect}"
       end
     end
-    template = ERB.new(template, 0, '<>')
+    template = ERB.new(template, 0, '-')
     out.puts template.result(binding)
   end
 
