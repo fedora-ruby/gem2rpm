@@ -54,7 +54,6 @@ spec = Gem::Specification.new do |s|
 
   #### Documentation and testing.
 
-  s.has_rdoc = false
   s.extra_rdoc_files = ['AUTHORS', 'README', 'LICENSE']
 
   #### Author and project details.
