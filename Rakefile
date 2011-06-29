@@ -61,7 +61,7 @@ spec = Gem::Specification.new do |s|
 
   s.author = "David Lutterkort"
   s.email = "gem2rpm-devel@rubyforge.org"
-  s.homepage = "http://rubyforge.org/projects/gem2rpm/"
+  s.homepage = "https://github.com/lutter/gem2rpm/"
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|

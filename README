@@ -85,4 +85,4 @@ Fedora ruby and rubygem packaging guidelines:
   http://fedoraproject.org/wiki/Packaging/Ruby
 
 Project website
-  http://rubyforge.org/projects/gem2rpm/
+  https://github.com/lutter/gem2rpm/
