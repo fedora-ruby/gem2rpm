@@ -1,6 +1,6 @@
 # -*- ruby -*-
 require 'rubygems'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'rake/clean'
 require 'rake/testtask'
 
@@ -8,7 +8,7 @@ require 'rake/testtask'
 PKG_NAME="gem2rpm"
 SPEC_FILE="rubygem-gem2rpm.spec"
 
-if `ruby -Ilib ./bin/gem2rpm --version` =~ /\S+$/
+if `ruby -rubygems -Ilib ./bin/gem2rpm --version` =~ /\S+$/
   CURRENT_VERSION = $&
 else
   CURRENT_VERSION = "0.0.0"
@@ -50,7 +50,6 @@ spec = Gem::Specification.new do |s|
 
   s.bindir = "bin"                               # Use these for applications.
   s.executables = ["gem2rpm"]
-  s.default_executable = "gem2rpm"
 
   #### Documentation and testing.
 
@@ -58,12 +57,12 @@ spec = Gem::Specification.new do |s|
 
   #### Author and project details.
 
-  s.author = "David Lutterkort"
+  s.authors = ["David Lutterkort", "Vit Ondruch"]
   s.email = "gem2rpm-devel@rubyforge.org"
   s.homepage = "https://github.com/lutter/gem2rpm/"
 end
 
-Rake::GemPackageTask.new(spec) do |pkg|
+Gem::PackageTask.new(spec) do |pkg|
   pkg.need_zip = true
   pkg.need_tar = true
 end
@@ -75,7 +74,8 @@ task :default => [:test]
 
 desc "Run unit tests"
 Rake::TestTask.new(:test) do |t|
-  t.test_files = FileList['test/*.rb']
+  t.libs << 'test'
+  t.test_files = FileList['test/**/test_*.rb']
 end
 
 desc "Build (S)RPM for #{PKG_NAME}"
