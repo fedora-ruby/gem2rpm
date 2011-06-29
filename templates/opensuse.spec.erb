@@ -29,17 +29,17 @@ BuildRequires:  rubygems_with_buildroot_patch
 Requires:       rubygems >= <%= Gem::RubyGemsVersion %>
 <%
 # no need to add a requires ruby >= 0 here. will be pulled in via rubygems already
-  unless spec.required_ruby_version.satisfied_by? Gem::Version.new(0)
-%>
-Requires:       ruby <%= spec.required_ruby_version.to_rpm %>
-BuildRequires:  ruby-devel <%= spec.required_ruby_version.to_rpm %>
-<% end %>
-<% for d in spec.dependencies %>
-<% for req in d.version_requirements.to_rpm %>
+  unless spec.required_ruby_version == ['']
+-%>
+Requires:       ruby <%= spec.required_ruby_version %>
+BuildRequires:  ruby-devel <%= spec.required_ruby_version %>
+<% end -%>
+<% for d in spec.dependencies -%>
+<% for req in d.requirement -%>
 BuildRequires:  rubygem-<%= d.name %> <%= req %>
 Requires:       rubygem-<%= d.name %> <%= req %>
-<% end %>
-<% end %>
+<% end -%>
+<% end -%>
 #
 Url:            <%= spec.homepage %>
 Source:         %{mod_name}-%{version}.gem

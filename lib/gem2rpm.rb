@@ -14,27 +14,6 @@ if HAS_REMOTE_INSTALLER
   require 'rubygems/remote_installer'
 end
 
-module Gem
-  class Requirement
-    def rpm_version_transform(version)
-      if version == "> 0.0.0"
-        version = ""
-      elsif version =~ /^~> (.+)$/
-        next_version = Gem::Version.create($1).bump.to_s
-
-        version = ["=> #$1", "< #{next_version}"]
-      end
-      version
-    end
-
-    def to_rpm
-      result = as_list
-      return result.map { |version| rpm_version_transform(version) }.flatten
-    end
-
-  end
-end
-
 module Gem2Rpm
   Gem2Rpm::VERSION = "0.6.0"
 

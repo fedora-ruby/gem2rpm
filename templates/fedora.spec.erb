@@ -26,17 +26,9 @@ Requires: ruby(rubygems) <%= req %>
 <% for req in spec.required_ruby_version -%>
 Requires: ruby <%= req %>
 <% end -%>
-<% for d in spec.dependencies -%>
-<% if (!d.respond_to?(:type)) or (d.respond_to?(:type) and d.type == :runtime) -%>
-<%
-if d.respond_to?(:requirement)
-  requirement = d.requirement
-else
-  requirement = d.version_requirements
-end
-for req in requirement.to_rpm -%>
+<% for d in spec.runtime_dependencies -%>
+<% for req in d.requirement -%>
 Requires: rubygem(<%= d.name %>) <%= req  %>
-<% end -%>
 <% end -%>
 <% end -%>
 BuildRequires: ruby(abi) = %{rubyabi}
