@@ -23,6 +23,7 @@ end
 PKG_FILES = FileList[
   'bin/**/*',
   'lib/**/*',
+  'templates/**/*',
   'LICENSE',
   'README',
   SPEC_FILE
