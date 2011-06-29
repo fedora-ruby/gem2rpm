@@ -41,8 +41,7 @@ Provides: ruby(<%= spec.name.capitalize %>) = %{version}
 %install
 %{__rm} -rf %{buildroot}
 mkdir -p %{gembuilddir}
-<% rdoc_opt = spec.has_rdoc ? "--rdoc " : "" %>
-gem install --local --install-dir %{gembuilddir} --force <%= rdoc_opt %>%{SOURCE0}
+gem install --local --install-dir %{gembuilddir} --force %{SOURCE0}
 <% if ! spec.executables.empty? %>
 mkdir -p %{buildroot}/%{_bindir}
 mv %{gembuilddir}/bin/* %{buildroot}/%{_bindir}
@@ -63,9 +62,7 @@ rmdir %{gembuilddir}/bin
 <%= doc_prefix %>%{gemdir}/gems/<%= spec.name %>-<%= spec.version %>/<%= path %>
 
 <% end %>
-<% if spec.has_rdoc %>
 %doc %{gemdir}/doc/<%= spec.name %>-<%= spec.version %>
-<% end %>
 %{gemdir}/cache/<%= format.gem_path %>
 %{gemdir}/specifications/<%= format.gem_path %>spec
 
