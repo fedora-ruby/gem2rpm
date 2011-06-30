@@ -20,6 +20,15 @@ module Gem2Rpm
       super.map {|d| Gem2Rpm::Dependency.new d}
     end
 
+    # The license(s) for the library. Each license must be a short name,
+    # no more than 64 characters. Returns empty array if RubyGems does not
+    # provide the field.
+    def licenses
+      super
+    rescue
+      []
+    end
+
     # List of dependencies that will automatically be activated at runtime.
     def runtime_dependencies
       super.map {|d| Gem2Rpm::Dependency.new d}
