@@ -50,6 +50,8 @@ module Gem2Rpm
     end
     template = ERB.new(template, 0, '-')
     out.puts template.result(binding)
+  rescue Gem::Exception => e
+    puts e
   end
 
   # Returns the email address of the packager (i.e., the person running
