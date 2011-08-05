@@ -17,8 +17,14 @@ Usage
 
 Run 'gem2rpm --help' for options
 
-At its simplest, download a gem (let's call that file GEM) and run
-  gem2rpm $GEM
+At its simplest, download a gem (let's call it GEM) in its latest
+version (e.g. 1.2.3):
+
+  $ gem fetch GEM
+
+and run gem2rpm above the downloaded file:
+
+  $ gem2rpm GEM-1.2.3.gem
 
 This will print an rpm spec file based on the information contained in the
 gem's spec file. In general, it is necessary to edit the generated spec
