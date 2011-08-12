@@ -10,7 +10,7 @@ require 'fileutils'
 require 'open-uri'
 require 'uri'
 
-opts = OptionParser.new("Usage: #{$0} [OPTIONS] GEMFILE")
+opts = OptionParser.new("Usage: #{$0} [OPTIONS] GEM")
 opts.separator("  Convert ruby Gems to source RPMs and specfiles")
 opts.separator("  Uses a template to generate the RPM specfile")
 opts.separator("  from the Gem spec")
@@ -61,10 +61,9 @@ opts.on("--fetch", "Fetch the gem from rubygems.org") do |val|
 end
 opts.separator("")
 opts.separator("  Arguments:")
-opts.separator("    GEMFILE        the path to locally stored gem package file. The latest")
-opts.separator("                   version of the gem can be downloaded using:")
+opts.separator("    GEM            the path to locally stored gem package file or the name")
+opts.separator("                   of the gem when using --fetch.")
 opts.separator("")
-opts.separator("                       $ gem fetch GEMFILE")
 
 rest = opts.permute(ARGV)
 
