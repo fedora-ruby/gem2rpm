@@ -26,10 +26,15 @@ and run gem2rpm above the downloaded file:
 
   $ gem2rpm GEM-1.2.3.gem
 
+You can also use the --fetch flag to fetch the (latest) gem before generating the spec file, achieving the same effect as running 'gem fetch GEM' plus 'gem2rpm GEM-1.2.3.gem':
+
+  $ gem2rpm --fetch GEM
+
 This will print an rpm spec file based on the information contained in the
 gem's spec file. In general, it is necessary to edit the generated spec
 file because the gem is missing some important information that is
 customarily provided in rpm's, most notably the license and the changelog.
+
 
 Rather than editing the generated specfile, edit the template from which
 the specfile is generated. This will make it easier to update the RPM when

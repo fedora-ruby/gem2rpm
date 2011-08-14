@@ -7,8 +7,10 @@ require 'gem2rpm'
 require 'optparse'
 require 'rubygems/format'
 require 'fileutils'
+require 'open-uri'
+require 'uri'
 
-opts = OptionParser.new("Usage: #{$0} [OPTIONS] GEMFILE")
+opts = OptionParser.new("Usage: #{$0} [OPTIONS] GEM")
 opts.separator("  Convert ruby Gems to source RPMs and specfiles")
 opts.separator("  Uses a template to generate the RPM specfile")
 opts.separator("  from the Gem spec")
@@ -21,6 +23,7 @@ srpm = false
 deps = false
 nongem = false
 doc_subpackage = true
+fetch = false
 
 opts.separator("")
 opts.separator("  Options:")
@@ -53,12 +56,14 @@ end
 opts.on("--no-doc", "Disable document subpackage") do |val|
   doc_subpackage = false
 end
+opts.on("--fetch", "Fetch the gem from rubygems.org") do |val|
+  fetch = true
+end
 opts.separator("")
 opts.separator("  Arguments:")
-opts.separator("    GEMFILE        the path to locally stored gem package file. The latest")
-opts.separator("                   version of the gem can be downloaded using:")
+opts.separator("    GEM            the path to locally stored gem package file or the name")
+opts.separator("                   of the gem when using --fetch.")
 opts.separator("")
-opts.separator("                       $ gem fetch GEMFILE")
 
 rest = opts.permute(ARGV)
 
@@ -87,6 +92,17 @@ if rest.size != 1
     exit(1)
 end
 gemfile = rest[0]
+
+if fetch
+  gem_uri = ''
+  open("http://rubygems.org/api/v1/gems/#{gemfile}.json") do |f|
+    gem_uri = f.read.match(/"gem_uri":\s*"(.*?)",/m)[1]
+    gemfile = URI.parse(gem_uri).path.split('/').last
+    open(gemfile, 'w') do |gf|
+      gf.write(open(gem_uri).read)
+    end
+  end
+end
 
 srpmdir = nil
 gemname = nil
