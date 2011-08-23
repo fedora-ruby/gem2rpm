@@ -140,7 +140,9 @@ if srpm
 end
 
 if deps
-    Gem::Format.from_file_by_path(gemfile).spec.dependencies.each do |dep|
-        puts "rubygem(#{dep.name}) #{dep.version_requirements.to_rpm}"
+  Gem::Format.from_file_by_path(gemfile).spec.dependencies.each do |dep|
+    Gem2Rpm::Dependency.new(dep).requirement.each do |r|
+      puts "rubygem(#{dep.name}) #{r}"
     end
+  end
 end
