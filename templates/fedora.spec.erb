@@ -128,8 +128,8 @@ rm -rf %{buildroot}%{geminstdir}/ext
 %doc %{geminstdir}/<%= f %>
 <% end -%>
 <% end -%>
-%{gemdir}/cache/%{gemname}-%{version}.gem
-%exclude %{gemdir}/specifications/%{gemname}-%{version}.gemspec
+%exclude %{gemdir}/cache/%{gemname}-%{version}.gem
+%{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
 <% if doc_subpackage -%>
 %files doc
