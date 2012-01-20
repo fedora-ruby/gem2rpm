@@ -3,17 +3,41 @@ require 'helper'
 class TestFedoraVersions < Test::Unit::TestCase
 
   def Gem2Rpm::template_dir
-    File.join(File.dirname(__FILE__), 'templates')
+    File.join(File.dirname(__FILE__), 'fake_files')
   end
 
-  def test_template_for_unavailable_version
+  def test_get_template_for_unavailable_version
     assert_nil Gem2Rpm::Distro.get_fedora_template_by_version(16)
     assert_nil Gem2Rpm::Distro.get_fedora_template_by_version(0)
   end
 
-  def test_template_for_available_version
+  def test_get_template_for_available_version
     assert Gem2Rpm::Distro.get_fedora_template_by_version(17)
     assert Gem2Rpm::Distro.get_fedora_template_by_version(177)
+  end
+
+  def test_nature_for_unavailable_template
+    class << Gem2Rpm::Distro
+      define_method(:release_files) { [File.join(File.dirname(__FILE__), 'fake_files', 'fedora-release15')] }
+    end
+
+    assert "fedora", Gem2Rpm::Distro.nature.to_s
+  end
+
+  def test_nature_for_available_template
+    class << Gem2Rpm::Distro
+      define_method(:release_files) { [File.join(File.dirname(__FILE__), 'fake_files', 'fedora-release17')] }
+    end
+
+    assert "fedora-17-rawhide", Gem2Rpm::Distro.nature.to_s
+  end
+
+  def test_nature_for_two_release_files
+    class << Gem2Rpm::Distro
+      define_method(:release_files) { [File.join(File.dirname(__FILE__), 'fake_files', 'fedora-release15'), File.join(File.dirname(__FILE__), 'fake_files', 'fedora-release17')] }
+    end
+
+    assert "fedora", Gem2Rpm::Distro.nature.to_s
   end
 
 end
