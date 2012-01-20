@@ -1,0 +1,130 @@
+# Generated from <%= File::basename(format.gem_path) %> by gem2rpm -*- rpm-spec -*-
+%global gem_name <%= spec.name %>
+%global rubyabi 1.9.1
+
+Summary: <%= spec.summary.gsub(/\.$/, "") %>
+Name: rubygem-%{gem_name}
+Version: <%= spec.version %>
+Release: 1%{?dist}
+Group: Development/Languages
+License: <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and ") %>
+<% if spec.homepage -%>
+URL: <%= spec.homepage %>
+<% end -%>
+Source0: <%= download_path %>%{gemname}-%{version}.gem
+Requires: ruby(abi) = %{rubyabi}
+<% for req in spec.required_rubygems_version -%>
+Requires: ruby(rubygems) <%= req %>
+<% end -%>
+<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
+<% for req in spec.required_ruby_version -%>
+Requires: ruby <%= req %>
+<% end -%>
+<% for d in spec.runtime_dependencies -%>
+<% for req in d.requirement -%>
+Requires: rubygem(<%= d.name %>) <%= req  %>
+<% end -%>
+<% end -%>
+BuildRequires: ruby(abi) = %{rubyabi}
+<% for req in spec.required_rubygems_version -%>
+BuildRequires: ruby(rubygems) <%= req %>
+<% end -%>
+<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
+<% for req in spec.required_ruby_version -%>
+BuildRequires: ruby <%= req %>
+<% end -%>
+<% if spec.extensions.empty? -%>
+BuildArch: noarch
+<% end -%>
+Provides: rubygem(%{gem_name}) = %{version}
+
+%description
+<%= spec.description %>
+
+<% if doc_subpackage -%>
+%package doc
+Summary: Documentation for %{name}
+Group: Documentation
+Requires: %{name} = %{version}-%{release}
+BuildArch: noarch
+
+%description doc
+Documentation for %{name}
+<% end # if doc_subpackage -%>
+
+%prep
+%setup -q -c -T
+mkdir -p .%{gem_dir}
+<% unless spec.extensions.empty? -%>
+export CONFIGURE_ARGS="--with-cflags='%{optflags}'"
+<% end -%>
+gem install --local --install-dir .%{gem_dir} \
+<% unless spec.executables.nil? or spec.executables.empty? -%>
+            --bindir .%{_bindir} \
+<% end -%>
+<% unless spec.extensions.empty? -%>
+            -V \
+<% end -%>
+            --force %{SOURCE0}
+
+%build
+
+%install
+mkdir -p %{buildroot}%{gem_dir}
+cp -a .%{gem_dir}/* \
+        %{buildroot}%{gem_dir}/
+
+<% unless spec.extensions.empty? -%>
+mkdir -p %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>
+# TODO: move the extensions
+##mv %{buildroot}%{gem_instdir}/<%= spec.require_paths.first %>/shared_object.so %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>/
+<% end -%>
+
+<% unless spec.executables.nil? or spec.executables.empty? -%>
+mkdir -p %{buildroot}%{_bindir}
+cp -a .%{_bindir}/* \
+        %{buildroot}%{_bindir}/
+<% end -%>
+
+<% unless spec.executables.empty? -%>
+find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
+<% end -%>
+
+<% unless spec.extensions.empty? -%>
+<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
+# Remove the binary extension sources and build leftovers.
+rm -rf %{buildroot}%{geminstdir}/ext
+<% end -%>
+
+%files
+%dir %{gem_instdir}
+<% unless spec.executables.nil? or spec.executables.empty? -%>
+<% for f in spec.executables -%>
+%{_bindir}/<%= f %>
+<% end -%>
+%{gem_instdir}/bin
+<% end -%>
+%{gem_libdir}
+<% unless spec.extensions.empty? -%>
+%{gem_extdir}
+<% end -%>
+<% unless doc_subpackage -%>
+%doc %{gem_docdir}
+<% for f in spec.extra_rdoc_files -%>
+%doc %{gem_instdir}/<%= f %>
+<% end -%>
+<% end -%>
+%exclude %{gem_cache}
+%{gem_spec}
+
+<% if doc_subpackage -%>
+%files doc
+%doc %{gem_docdir}
+<% for f in spec.extra_rdoc_files -%>
+%doc %{gem_instdir}/<%= f %>
+<% end -%>
+<% end # if doc_subpackage -%>
+
+%changelog
+* <%= Time.now.strftime("%a %b %d %Y") %> <%= packager %> - <%= spec.version %>-1
+- Initial package
