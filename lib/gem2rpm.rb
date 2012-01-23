@@ -71,7 +71,11 @@ module Gem2Rpm
     packager
   end
 
-  TEMPLATE = File.read File.join(File.dirname(__FILE__), '..', 'templates', "#{Distro.nature.to_s}.spec.erb")
+  def Gem2Rpm.template_dir
+    File.join(File.dirname(__FILE__), '..', 'templates')
+  end
+
+  TEMPLATE = File.read File.join(template_dir, "#{Distro.nature.to_s}.spec.erb")
 end
 
 # Local Variables:
