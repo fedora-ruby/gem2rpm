@@ -11,7 +11,7 @@ License: <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and 
 <% if spec.homepage -%>
 URL: <%= spec.homepage %>
 <% end -%>
-Source0: <%= download_path %>%{gemname}-%{version}.gem
+Source0: <%= download_path %>%{gem_name}-%{version}.gem
 Requires: ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
 Requires: ruby(rubygems) <%= req %>
