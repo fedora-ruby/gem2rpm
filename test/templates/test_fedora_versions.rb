@@ -7,13 +7,13 @@ class TestFedoraVersions < Test::Unit::TestCase
   end
 
   def test_get_template_for_unavailable_version
-    assert_nil Gem2Rpm::Distro.get_fedora_template_by_version(16)
-    assert_nil Gem2Rpm::Distro.get_fedora_template_by_version(0)
+    assert_nil Gem2Rpm::Distro.get_template_by_os_version(Gem2Rpm::Distro::FEDORA, 16)
+    assert_nil Gem2Rpm::Distro.get_template_by_os_version(Gem2Rpm::Distro::FEDORA, 0)
   end
 
   def test_get_template_for_available_version
-    assert Gem2Rpm::Distro.get_fedora_template_by_version(17)
-    assert Gem2Rpm::Distro.get_fedora_template_by_version(177)
+    assert Gem2Rpm::Distro.get_template_by_os_version(Gem2Rpm::Distro::FEDORA, 17)
+    assert Gem2Rpm::Distro.get_template_by_os_version(Gem2Rpm::Distro::FEDORA, 177)
   end
 
   def test_nature_for_unavailable_template

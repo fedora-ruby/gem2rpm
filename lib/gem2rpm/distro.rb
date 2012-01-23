@@ -13,8 +13,10 @@ module Gem2Rpm
           versions << Regexp.last_match.to_s.to_i if Regexp.last_match
         end
 
+        versions.uniq!
+
         if versions.length == 1
-          get_fedora_template_by_version(versions.first) || FEDORA
+          get_template_by_os_version(FEDORA, versions.first) || FEDORA
         else # no version or more versions (=> don't know what to do)
           FEDORA
         end
@@ -29,9 +31,9 @@ module Gem2Rpm
       @@release_files ||= Dir.glob '/etc/*{_version,-release}*'
     end
 
-    def self.get_fedora_template_by_version(version)
+    def self.get_template_by_os_version(os, version)
       Dir.new(Gem2Rpm::template_dir).each do |file|
-        /fedora-([\w-]+).spec.erb/ =~ file
+        /#{os}-([\w-]+).spec.erb/ =~ file
         return file.gsub('.spec.erb', '') if Regexp.last_match and is_in_range?(version, Regexp.last_match[1].to_s.split('-'))
       end
 
