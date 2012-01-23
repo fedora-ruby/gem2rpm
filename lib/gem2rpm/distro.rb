@@ -31,7 +31,7 @@ module Gem2Rpm
       @@release_files ||= Dir.glob '/etc/*{_version,-release}*'
     end
 
-    def self.get_template_by_os_version(os, version)
+    def self.template_by_os_version(os, version)
       Dir.new(Gem2Rpm::template_dir).each do |file|
         /#{os}-([\w-]+).spec.erb/ =~ file
         return file.gsub('.spec.erb', '') if Regexp.last_match and is_in_range?(version, Regexp.last_match[1].to_s.split('-'))
@@ -40,7 +40,7 @@ module Gem2Rpm
       nil
     end
 
-    def self.is_in_range?(version, range)
+    def self.in_range?(version, range)
       return nil unless range
 
       if range.length == 1
