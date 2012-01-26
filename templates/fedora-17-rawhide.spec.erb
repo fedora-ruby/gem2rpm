@@ -27,7 +27,7 @@ Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
 BuildRequires: ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
-BuildRequires: ruby(rubygems) <%= req %>
+BuildRequires: rubygems-devel <%= req %>
 <% end -%>
 <%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
