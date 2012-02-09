@@ -15,7 +15,7 @@ if HAS_REMOTE_INSTALLER
 end
 
 module Gem2Rpm
-  Gem2Rpm::VERSION = "0.8.0"
+  Gem2Rpm::VERSION = "0.8.1"
 
   if HAS_REMOTE_INSTALLER
     def self.find_download_url(name, version)
