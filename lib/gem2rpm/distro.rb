@@ -28,7 +28,8 @@ module Gem2Rpm
     end
 
     def self.release_files
-      @@release_files ||= Dir.glob '/etc/*{_version,-release}*'
+      @@release_files ||=
+        Dir.glob('/etc/*{_version,-release}*').select {|e| File.file? e}
     end
 
     def self.template_by_os_version(os, version)
