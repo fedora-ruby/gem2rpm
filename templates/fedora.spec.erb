@@ -8,55 +8,55 @@
 %global geminstdir %{gemdir}/gems/%{gemname}-%{version}
 %global rubyabi 1.8
 
-Name: rubygem-%{gemname}
-Version: <%= spec.version %>
-Release: 1%{?dist}
-Summary: <%= spec.summary.gsub(/\.$/, "") %>
+Name:       rubygem-%{gemname}
+Version:    <%= spec.version %>
+Release:    1%{?dist}
+Summary:    <%= spec.summary.gsub(/\.$/, "") %>
 
 Group: Development/Languages
 
-License: <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and ") %>
+License:    <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and ") %>
 <% if spec.homepage -%>
-URL: <%= spec.homepage %>
+URL:    <%= spec.homepage %>
 <% end -%>
-Source0: <%= download_path %>%{gemname}-%{version}.gem
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source0:    <%= download_path %>%{gemname}-%{version}.gem
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 <% if spec.extensions.empty? -%>
-BuildArch: noarch
+BuildArch:  noarch
 <% end -%>
-BuildRequires: ruby(abi) = %{rubyabi}
+BuildRequires:  ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
-BuildRequires: ruby(rubygems) <%= req %>
+BuildRequires:  ruby(rubygems) <%= req %>
 <% end -%>
 <%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
-BuildRequires: ruby <%= req %>
+BuildRequires:  ruby <%= req %>
 <% end -%>
-Requires: ruby(abi) = %{rubyabi}
+Requires:       ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
-Requires: ruby(rubygems) <%= req %>
+Requires:       ruby(rubygems) <%= req %>
 <% end -%>
 <%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
-Requires: ruby <%= req %>
+Requires:       ruby <%= req %>
 <% end -%>
 <% for d in spec.runtime_dependencies -%>
 <% for req in d.requirement -%>
-Requires: rubygem(<%= d.name %>) <%= req  %>
+Requires:       rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
 <% end -%>
-Provides: rubygem(%{gemname}) = %{version}
+Provides:       rubygem(%{gemname}) = %{version}
 
 %description
 <%= spec.description %>
 
 <% if doc_subpackage -%>
 %package doc
-Summary: Documentation for %{name}
-Group: Documentation
-Requires: %{name} = %{version}-%{release}
-BuildArch: noarch
+Summary:    Documentation for %{name}
+Group:      Documentation
+Requires:   %{name} = %{version}-%{release}
+BuildArch:  noarch
 
 %description doc
 Documentation for %{name}
@@ -64,11 +64,11 @@ Documentation for %{name}
 
 <% if nongem -%>
 %package -n ruby-%{gemname}
-Summary: <%= spec.summary.gsub(/\.$/, "") %>
-Group: Development/Languages
-Requires: rubygem(%{gemname}) = %{version}
+Summary:    <%= spec.summary.gsub(/\.$/, "") %>
+Group:      Development/Languages
+Requires:   rubygem(%{gemname}) = %{version}
 <% spec.files.select{ |f| spec.require_paths.include?(File::dirname(f)) }.reject { |f| f =~ /\.rb$/ }.collect { |f| File::basename(f) }.each do |p| -%>
-Provides: ruby(<%= p %>) = %{version}
+Provides:   ruby(<%= p %>) = %{version}
 <% end -%>
 
 %description -n ruby-%{gemname}
