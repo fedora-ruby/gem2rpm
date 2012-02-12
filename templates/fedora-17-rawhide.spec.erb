@@ -2,16 +2,30 @@
 %global gem_name <%= spec.name %>
 %global rubyabi 1.9.1
 
-Summary: <%= spec.summary.gsub(/\.$/, "") %>
 Name: rubygem-%{gem_name}
 Version: <%= spec.version %>
 Release: 1%{?dist}
+Summary: <%= spec.summary.gsub(/\.$/, "") %>
+
 Group: Development/Languages
 License: <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and ") %>
 <% if spec.homepage -%>
 URL: <%= spec.homepage %>
 <% end -%>
 Source0: <%= download_path %>%{gem_name}-%{version}.gem
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+<% if spec.extensions.empty? -%>
+BuildArch: noarch
+<% end -%>
+BuildRequires: ruby(abi) = %{rubyabi}
+<% for req in spec.required_rubygems_version -%>
+BuildRequires: rubygems-devel <%= req %>
+<% end -%>
+<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
+<% for req in spec.required_ruby_version -%>
+BuildRequires: ruby <%= req %>
+<% end -%>
 Requires: ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
 Requires: ruby(rubygems) <%= req %>
@@ -24,17 +38,6 @@ Requires: ruby <%= req %>
 <% for req in d.requirement -%>
 Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
-<% end -%>
-BuildRequires: ruby(abi) = %{rubyabi}
-<% for req in spec.required_rubygems_version -%>
-BuildRequires: rubygems-devel <%= req %>
-<% end -%>
-<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
-<% for req in spec.required_ruby_version -%>
-BuildRequires: ruby <%= req %>
-<% end -%>
-<% if spec.extensions.empty? -%>
-BuildArch: noarch
 <% end -%>
 Provides: rubygem(%{gem_name}) = %{version}
 
@@ -70,6 +73,7 @@ gem install --local --install-dir .%{gem_dir} \
 %build
 
 %install
+rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
