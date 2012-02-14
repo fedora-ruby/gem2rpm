@@ -13,10 +13,9 @@ License:    <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" a
 URL:        <%= spec.homepage %>
 <% end -%>
 Source0:    <%= download_path %>%{gem_name}-%{version}.gem
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 <% if spec.extensions.empty? -%>
-BuildArch:  noarch
+BuildArch:      noarch
 <% end -%>
 BuildRequires:  ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
@@ -28,18 +27,18 @@ BuildRequires:  ruby <%= req %>
 <% end -%>
 Requires:       ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
-Requires:   ruby(rubygems) <%= req %>
+Requires:       ruby(rubygems) <%= req %>
 <% end -%>
 <%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
-Requires:   ruby <%= req %>
+Requires:       ruby <%= req %>
 <% end -%>
 <% for d in spec.runtime_dependencies -%>
 <% for req in d.requirement -%>
-Requires:   rubygem(<%= d.name %>) <%= req  %>
+Requires:       rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
 <% end -%>
-Provides:   rubygem(%{gem_name}) = %{version}
+Provides:       rubygem(%{gem_name}) = %{version}
 
 %description
 <%= spec.description %>
@@ -73,7 +72,6 @@ gem install --local --install-dir .%{gem_dir} \
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/

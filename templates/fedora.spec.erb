@@ -13,17 +13,16 @@ Version:    <%= spec.version %>
 Release:    1%{?dist}
 Summary:    <%= spec.summary.gsub(/\.$/, "") %>
 
-Group: Development/Languages
+Group:      Development/Languages
 
 License:    <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and ") %>
 <% if spec.homepage -%>
-URL:    <%= spec.homepage %>
+URL:        <%= spec.homepage %>
 <% end -%>
 Source0:    <%= download_path %>%{gemname}-%{version}.gem
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 <% if spec.extensions.empty? -%>
-BuildArch:  noarch
+BuildArch:      noarch
 <% end -%>
 BuildRequires:  ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
@@ -93,7 +92,6 @@ gem install --local --install-dir .%{gemdir} \
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{gemdir}
 cp -a .%{gemdir}/* \
         %{buildroot}%{gemdir}/
