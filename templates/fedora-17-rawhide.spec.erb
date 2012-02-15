@@ -110,7 +110,7 @@ rm -rf %{buildroot}%{geminstdir}/ext
 %doc %{gem_instdir}/<%= f %>
 <% end -%>
 <% end -%>
-%exclude %{gem_cache}
+%{gem_cache}
 %{gem_spec}
 
 <% if doc_subpackage -%>
