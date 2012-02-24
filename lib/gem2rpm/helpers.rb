@@ -14,6 +14,9 @@ module Gem2Rpm
 	  next_version = Gem::Version.create(r.last).bump
 	  output << ['=>', r.last]
 	  output << ['<', next_version]
+        elsif r.first == '!='
+          output << ['<', r.last]
+          output << ['>', r.last]
 	else
 	  output << r
 	end
