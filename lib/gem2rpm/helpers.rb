@@ -6,27 +6,37 @@ module Gem2Rpm
       text.gsub(/\n/, "\n\n").gsub(/(.{1,#{line_width}})(\s+|$)/, "\\1\n").strip
     end
 
-    # Expands the pesimistic version operator '~>' into equivalent '>=' and
-    # '<' pair.
-    def self.expand_pessimistic_requirement(requirements)
+    # Expands '~>' and '!=' gem requirements.
+    def self.expand_requirement(requirements)
       requirements.inject([]) do |output, r|
-        if r.first == '~>'
-	  next_version = Gem::Version.create(r.last).bump
-	  output << ['=>', r.last]
-	  output << ['<', next_version]
-        elsif r.first == '!='
-          output << ['<', r.last]
-          output << ['>', r.last]
+        output.concat case r.first
+        when '~>'
+          expand_pessimistic_requirement(r)
+        when '!='
+          expand_not_equal_requirement(r)
 	else
-	  output << r
+          [r]
 	end
       end
+    end
+
+    # Expands the pessimistic version operator '~>' into equivalent '>=' and
+    # '<' pair.
+    def self.expand_pessimistic_requirement(requirement)
+      next_version = Gem::Version.create(requirement.last).bump
+      return ['=>', requirement.last], ['<', next_version]
+    end
+
+    # Expands the not equal version operator '!=' into equivalent '<' and
+    # '>' pair.
+    def self.expand_not_equal_requirement(requirement)
+      return ['<', requirement.last], ['>', requirement.last]
     end
 
     # Converts Gem::Requirement into array of requirements strings compatible
     # with RPM .spec file.
     def self.requirement_versions_to_rpm(requirement)
-      self.expand_pessimistic_requirement(requirement.requirements).map do |op, version|
+      self.expand_requirement(requirement.requirements).map do |op, version|
         version == Gem::Version.new(0) ? "" : "#{op} #{version}"
       end
     end

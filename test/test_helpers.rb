@@ -40,4 +40,14 @@ class TestHelpers < Test::Unit::TestCase
     r = Gem::Requirement.new(["~> 1.12.3"])
     assert_equal(["=> 1.12.3", "< 1.13"], Gem2Rpm::Helpers.requirement_versions_to_rpm(r))
   end
+
+  def test_first_level_not_equal_version_constraint
+    r = Gem::Requirement.new(["!= 1.2"])
+    assert_equal(["< 1.2", "> 1.2"], Gem2Rpm::Helpers.requirement_versions_to_rpm(r))
+  end
+
+  def test_second_level_not_equal_version_constraint
+    r = Gem::Requirement.new(["!= 1.2.3"])
+    assert_equal(["< 1.2.3", "> 1.2.3"], Gem2Rpm::Helpers.requirement_versions_to_rpm(r))
+  end
 end
