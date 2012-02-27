@@ -53,12 +53,15 @@ Documentation for %{name}
 <% end # if doc_subpackage -%>
 
 %prep
-%setup -q -c -T
-mkdir -p .%{gem_dir}
+
+%build
+
+%install
+mkdir -p %{buildroot}%{gem_dir}
 <% unless spec.extensions.empty? -%>
 export CONFIGURE_ARGS="--with-cflags='%{optflags}'"
 <% end -%>
-gem install --local --install-dir .%{gem_dir} \
+gem install --local --install-dir %{buildroot}%{gemdir} \
 <% unless spec.executables.nil? or spec.executables.empty? -%>
             --bindir .%{_bindir} \
 <% end -%>
@@ -66,13 +69,6 @@ gem install --local --install-dir .%{gem_dir} \
             -V \
 <% end -%>
             --force %{SOURCE0}
-
-%build
-
-%install
-mkdir -p %{buildroot}%{gem_dir}
-cp -a .%{gem_dir}/* \
-        %{buildroot}%{gem_dir}/
 
 <% unless spec.extensions.empty? -%>
 mkdir -p %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>
@@ -114,7 +110,7 @@ rm -rf %{buildroot}%{geminstdir}/ext
 %doc %{gem_instdir}/<%= f %>
 <% end -%>
 <% end -%>
-%exclude %{gem_cache}
+%{gem_cache}
 %{gem_spec}
 
 <% if doc_subpackage -%>

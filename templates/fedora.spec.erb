@@ -71,12 +71,15 @@ Provides: ruby(<%= p %>) = %{version}
 <% end # if nongem -%>
 
 %prep
-%setup -q -c -T
-mkdir -p .%{gemdir}
+
+%build
+
+%install
+mkdir -p %{buildroot}%{gemdir}
 <% unless spec.extensions.empty? -%>
 export CONFIGURE_ARGS="--with-cflags='%{optflags}'"
 <% end -%>
-gem install --local --install-dir .%{gemdir} \
+gem install --local --install-dir %{buildroot}%{gemdir} \
 <% unless spec.executables.nil? or spec.executables.empty? -%>
             --bindir .%{_bindir} \
 <% end -%>
@@ -85,12 +88,6 @@ gem install --local --install-dir .%{gemdir} \
 <% end -%>
             --force %{SOURCE0}
 
-%build
-
-%install
-mkdir -p %{buildroot}%{gemdir}
-cp -a .%{gemdir}/* \
-        %{buildroot}%{gemdir}/
 <% unless spec.executables.nil? or spec.executables.empty? -%>
 
 mkdir -p %{buildroot}%{_bindir}
@@ -128,7 +125,7 @@ rm -rf %{buildroot}%{geminstdir}/ext
 %doc %{geminstdir}/<%= f %>
 <% end -%>
 <% end -%>
-%exclude %{gemdir}/cache/%{gemname}-%{version}.gem
+%{gemdir}/cache/%{gemname}-%{version}.gem
 %{gemdir}/specifications/%{gemname}-%{version}.gemspec
 
 <% if doc_subpackage -%>
