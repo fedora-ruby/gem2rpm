@@ -14,9 +14,9 @@ module Gem2Rpm
           expand_pessimistic_requirement(r)
         when '!='
           expand_not_equal_requirement(r)
-	else
+        else
           [r]
-	end
+        end
       end
     end
 
