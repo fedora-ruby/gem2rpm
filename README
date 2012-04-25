@@ -48,7 +48,7 @@ Now, edit the template and then run gem2rpm to generate the spec file
 using the edited template:
   gem2rpm -t rubygem-GEM.spec.template > rubygem-GEM.spec
 
-With that, you can now build your RPM as ususal. When a new version of the
+With that, you can now build your RPM as usual. When a new version of the
 gem becomes available, you should edit the saved template and rerun
 gem2rpm over it.
 
