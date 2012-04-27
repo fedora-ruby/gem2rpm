@@ -1,5 +1,6 @@
 # Generated from <%= File::basename(format.gem_path) %> by gem2rpm -*- rpm-spec -*-
 %global gem_name <%= spec.name %>
+<%# TODO: Try to check against spec.required_ruby_version -%>
 %global rubyabi 1.9.1
 
 Summary: <%= spec.summary.gsub(/\.$/, "") %>

@@ -6,6 +6,7 @@
 <% end -%>
 %global gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
 %global geminstdir %{gemdir}/gems/%{gemname}-%{version}
+<%# TODO: Try to check against spec.required_ruby_version -%>
 %global rubyabi 1.8
 
 Summary: <%= spec.summary.gsub(/\.$/, "") %>
@@ -21,10 +22,6 @@ Source0: <%= download_path %>%{gemname}-%{version}.gem
 Requires: ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
 Requires: ruby(rubygems) <%= req %>
-<% end -%>
-<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
-<% for req in spec.required_ruby_version -%>
-Requires: ruby <%= req %>
 <% end -%>
 <% for d in spec.runtime_dependencies -%>
 <% for req in d.requirement -%>
