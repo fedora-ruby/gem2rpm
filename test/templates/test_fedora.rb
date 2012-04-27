@@ -6,29 +6,26 @@ class TestFedora < Test::Unit::TestCase
     @template ||= File.read File.join(File.dirname(__FILE__), '..', '..', 'templates', 'fedora.spec.erb')
   end
 
+  def setup
+    @out = StringIO.new
+
+    Gem2Rpm::convert(gem_path, template, @out, false)
+  end
+
   def test_omitting_url_from_rpm_spec
-    out = StringIO.new
-
-    Gem2Rpm::convert(gem_path, template, out, false)
-
-    assert_no_match(/\sURL: /, out.string)
+    assert_no_match(/\sURL: /, @out.string)
   end
 
   def test_rubygems_version_requirement
-    out = StringIO.new
-
-    Gem2Rpm::convert(gem_path, template, out, false)
-
-    assert_match(/\sRequires: ruby\(rubygems\) >= 1.3.6/, out.string)
+    assert_match(/\sRequires: ruby\(rubygems\) >= 1.3.6/, @out.string)
   end
 
-  def test_rubys_version_requirement
-    out = StringIO.new
+  def test_rubys_version_build_requirement
+    assert_match(/\sBuildRequires: ruby >= 1.8.6/, @out.string)
+  end
 
-    Gem2Rpm::convert(gem_path, template, out, false)
-
-    assert_match(/\sRequires: ruby >= 1.8.6/, out.string)
-    assert_match(/\sBuildRequires: ruby >= 1.8.6/, out.string)
+  def test_ruby_is_not_reqiured
+    assert_not_match(/\sRequires: ruby >= 1.8.6/, @out.string)
   end
 
 end
