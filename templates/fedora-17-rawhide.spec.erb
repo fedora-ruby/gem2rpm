@@ -90,7 +90,7 @@ find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 <% unless spec.extensions.empty? -%>
 <%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
 # Remove the binary extension sources and build leftovers.
-rm -rf %{buildroot}%{geminstdir}/ext
+rm -rf %{buildroot}%{gem_instdir}/ext
 <% end -%>
 
 %files
