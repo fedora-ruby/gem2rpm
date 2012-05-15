@@ -28,7 +28,7 @@ BuildRequires: rubygems-devel <%= req %>
 <% end -%>
 <%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
-BuildRequires: ruby <%= req %>
+BuildRequires: ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
 <% end -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
