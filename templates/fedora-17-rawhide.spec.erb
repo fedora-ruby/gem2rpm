@@ -87,12 +87,6 @@ cp -a .%{_bindir}/* \
 find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 <% end -%>
 
-<% unless spec.extensions.empty? -%>
-<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
-# Remove the binary extension sources and build leftovers.
-rm -rf %{buildroot}%{gem_instdir}/ext
-<% end -%>
-
 %files
 %dir %{gem_instdir}
 <% unless spec.executables.nil? or spec.executables.empty? -%>
@@ -103,6 +97,8 @@ rm -rf %{buildroot}%{gem_instdir}/ext
 <% end -%>
 %{gem_libdir}
 <% unless spec.extensions.empty? -%>
+<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
+%exclude %{gem_instdir}/ext
 %{gem_extdir}
 <% end -%>
 <% unless doc_subpackage -%>
