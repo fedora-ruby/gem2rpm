@@ -20,6 +20,9 @@ module Gem2Rpm
         else # no version or more versions (=> don't know what to do)
           FEDORA
         end
+      elsif !release_files.grep(/redhat/).empty?
+        # Use Fedora's template for RHEL ATM.
+        FEDORA
       elsif !release_files.grep(/SuSe/).empty?
         OPENSUSE
       else

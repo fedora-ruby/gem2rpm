@@ -6,6 +6,7 @@
 <% end -%>
 %global gemdir %(ruby -rubygems -e 'puts Gem::dir' 2>/dev/null)
 %global geminstdir %{gemdir}/gems/%{gemname}-%{version}
+<%# TODO: Try to check against spec.required_ruby_version -%>
 %global rubyabi 1.8
 
 Summary: <%= spec.summary.gsub(/\.$/, "") %>
@@ -13,7 +14,7 @@ Name: rubygem-%{gemname}
 Version: <%= spec.version %>
 Release: 1%{?dist}
 Group: Development/Languages
-License: <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and ") %>
+License: <%= spec.licenses.join(" and ") %>
 <% if spec.homepage -%>
 URL: <%= spec.homepage %>
 <% end -%>
@@ -21,10 +22,6 @@ Source0: <%= download_path %>%{gemname}-%{version}.gem
 Requires: ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
 Requires: ruby(rubygems) <%= req %>
-<% end -%>
-<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
-<% for req in spec.required_ruby_version -%>
-Requires: ruby <%= req %>
 <% end -%>
 <% for d in spec.runtime_dependencies -%>
 <% for req in d.requirement -%>
@@ -37,7 +34,7 @@ BuildRequires: ruby(rubygems) <%= req %>
 <% end -%>
 <%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
-BuildRequires: ruby <%= req %>
+BuildRequires: ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
 <% end -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
@@ -107,11 +104,6 @@ mkdir -p %{buildroot}%{ruby_sitelib}
 ln -s %{gemdir}/gems/%{gemname}-%{version}/<%= p %> %{buildroot}%{ruby_sitelib}
 <% end -%>
 <% end # if nongem -%>
-<% unless spec.extensions.empty? -%>
-<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
-# Remove the binary extension sources and build leftovers.
-rm -rf %{buildroot}%{geminstdir}/ext
-<% end -%>
 
 %files
 %dir %{geminstdir}
@@ -122,6 +114,10 @@ rm -rf %{buildroot}%{geminstdir}/ext
 %{geminstdir}/bin
 <% end -%>
 %{geminstdir}/lib
+<% unless spec.extensions.empty? -%>
+<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
+%exclude %{geminstdir}/ext
+<% end -%>
 <% unless doc_subpackage -%>
 %doc %{gemdir}/doc/%{gemname}-%{version}
 <% for f in spec.extra_rdoc_files -%>

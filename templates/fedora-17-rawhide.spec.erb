@@ -1,5 +1,6 @@
 # Generated from <%= File::basename(format.gem_path) %> by gem2rpm -*- rpm-spec -*-
 %global gem_name <%= spec.name %>
+<%# TODO: Try to check against spec.required_ruby_version -%>
 %global rubyabi 1.9.1
 
 Summary: <%= spec.summary.gsub(/\.$/, "") %>
@@ -7,7 +8,7 @@ Name: rubygem-%{gem_name}
 Version: <%= spec.version %>
 Release: 1%{?dist}
 Group: Development/Languages
-License: <%= spec.licenses.empty? ? "GPLv2+ or Ruby" : spec.licenses.join(" and ") %>
+License: <%= spec.licenses.join(" and ") %>
 <% if spec.homepage -%>
 URL: <%= spec.homepage %>
 <% end -%>
@@ -27,7 +28,7 @@ BuildRequires: rubygems-devel <%= req %>
 <% end -%>
 <%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
-BuildRequires: ruby <%= req %>
+BuildRequires: ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
 <% end -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
@@ -86,12 +87,6 @@ cp -a .%{_bindir}/* \
 find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 <% end -%>
 
-<% unless spec.extensions.empty? -%>
-<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
-# Remove the binary extension sources and build leftovers.
-rm -rf %{buildroot}%{geminstdir}/ext
-<% end -%>
-
 %files
 %dir %{gem_instdir}
 <% unless spec.executables.nil? or spec.executables.empty? -%>
@@ -102,6 +97,8 @@ rm -rf %{buildroot}%{geminstdir}/ext
 <% end -%>
 %{gem_libdir}
 <% unless spec.extensions.empty? -%>
+<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
+%exclude %{gem_instdir}/ext
 %{gem_extdir}
 <% end -%>
 <% unless doc_subpackage -%>
