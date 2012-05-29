@@ -50,21 +50,33 @@ Documentation for %{name}
 <% end # if doc_subpackage -%>
 
 %prep
-%setup -q -c -T
+gem unpack %{SOURCE0}
+
+%setup -q -D -T -n  %{gem_name}-%{version}
+
+gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
+
+%build
 mkdir -p .%{gem_dir}
+
+# Create the gem as gem install only works on a gem file
+gem build %{gem_name}.gemspec
+
 <% unless spec.extensions.empty? -%>
+# gem install compiles any C extensions
 export CONFIGURE_ARGS="--with-cflags='%{optflags}'"
 <% end -%>
-gem install --local --install-dir .%{gem_dir} \
+
+# gem install installs into a directory.  We set that to be a local
+# directory so that we can move it into the buildroot in %install
+gem install --local --install-dir ./%{gem_dir} \
 <% unless spec.executables.nil? or spec.executables.empty? -%>
-            --bindir .%{_bindir} \
+            --bindir ./%{_bindir} \
 <% end -%>
 <% unless spec.extensions.empty? -%>
             -V \
 <% end -%>
-            --force %{SOURCE0}
-
-%build
+            --force --rdoc %{SOURCE0}
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
@@ -73,8 +85,7 @@ cp -pa .%{gem_dir}/* \
 
 <% unless spec.extensions.empty? -%>
 mkdir -p %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>
-# TODO: move the extensions
-##mv %{buildroot}%{gem_instdir}/<%= spec.require_paths.first %>/shared_object.so %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>/
+mv %{buildroot}%{gem_instdir}/<%= spec.require_paths.first %>/shared_object.so %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>/
 <% end -%>
 
 <% unless spec.executables.nil? or spec.executables.empty? -%>
