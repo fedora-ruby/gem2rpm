@@ -68,7 +68,7 @@ gem install --local --install-dir .%{gem_dir} \
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
-cp -a .%{gem_dir}/* \
+cp -pa .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 <% unless spec.extensions.empty? -%>
@@ -79,7 +79,7 @@ mkdir -p %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>
 
 <% unless spec.executables.nil? or spec.executables.empty? -%>
 mkdir -p %{buildroot}%{_bindir}
-cp -a .%{_bindir}/* \
+cp -pa .%{_bindir}/* \
         %{buildroot}%{_bindir}/
 <% end -%>
 
