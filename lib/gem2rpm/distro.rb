@@ -10,7 +10,7 @@ module Gem2Rpm
 
         release_files.each do |file|
           /\d+/ =~ File.open(file).readline
-          versions << Regexp.last_match.to_s.to_i if Regexp.last_match
+          versions << Regexp.last_match.to_s if Regexp.last_match
         end
 
         versions.uniq!
@@ -48,10 +48,10 @@ module Gem2Rpm
       return nil unless range
 
       if range.length == 1
-        return true if range.first.to_i == version
+        return true if range.first.to_s == version.to_s
       else # range: [xx, yy]
-        if range[0].to_i <= version
-          return true if range[1] == 'rawhide' or version <= range[1].to_i
+        if range[0].to_s <= version.to_s
+          return true if range[1] == 'rawhide' or version.to_s <= range[1].to_s
         end
       end
 
