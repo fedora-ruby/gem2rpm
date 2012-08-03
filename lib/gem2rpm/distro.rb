@@ -23,7 +23,7 @@ module Gem2Rpm
       elsif !release_files.grep(/redhat/).empty?
         # Use Fedora's template for RHEL ATM.
         FEDORA
-      elsif !release_files.grep(/SuSe/).empty?
+      elsif !release_files.grep(/SuSE/).empty?
         OPENSUSE
       else
         DEFAULT
