@@ -86,12 +86,12 @@ gem install --local --install-dir .%{gemdir} \
 
 %install
 mkdir -p %{buildroot}%{gemdir}
-cp -a .%{gemdir}/* \
+cp -pa .%{gemdir}/* \
         %{buildroot}%{gemdir}/
 <% unless spec.executables.nil? or spec.executables.empty? -%>
 
 mkdir -p %{buildroot}%{_bindir}
-cp -a .%{_bindir}/* \
+cp -pa .%{_bindir}/* \
         %{buildroot}%{_bindir}/
 <% end -%>
 
