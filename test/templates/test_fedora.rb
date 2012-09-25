@@ -24,8 +24,8 @@ class TestFedora < Test::Unit::TestCase
     assert_match(/\sBuildRequires: ruby >= 1.8.6/, @out.string)
   end
 
-  def test_ruby_is_not_reqiured
-    assert_not_match(/\sRequires: ruby >= 1.8.6/, @out.string)
+  def test_ruby_is_not_required
+    assert_no_match(/\sRequires: ruby >= 1.8.6/, @out.string)
   end
 
 end
