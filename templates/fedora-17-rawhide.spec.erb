@@ -3,10 +3,10 @@
 <%# TODO: Try to check against spec.required_ruby_version -%>
 %global rubyabi 1.9.1
 
-Summary: <%= spec.summary.gsub(/\.$/, "") %>
 Name: rubygem-%{gem_name}
 Version: <%= spec.version %>
 Release: 1%{?dist}
+Summary: <%= spec.summary.gsub(/\.$/, "") %>
 Group: Development/Languages
 License: <%= spec.licenses.join(" and ") %>
 <% if spec.homepage -%>
@@ -76,7 +76,7 @@ gem install --local --install-dir ./%{gem_dir} \
 <% unless spec.extensions.empty? -%>
             -V \
 <% end -%>
-            --force --rdoc %{SOURCE0}
+            --force --rdoc %{gem_name}-%{version}.gem
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
@@ -108,7 +108,6 @@ find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 <% end -%>
 %{gem_libdir}
 <% unless spec.extensions.empty? -%>
-<%# TODO: Is it possible to delete the folder specified by the spec.extensions? -%>
 %exclude %{gem_instdir}/ext
 %{gem_extdir}
 <% end -%>
