@@ -73,8 +73,9 @@ gem install --local --install-dir .%{gem_dir} \
             -V \
 <% end -%>
             --force %{SOURCE0}
-<%= if scl then '%{?scl:"}' end %>
-
+<% if scl -%>
+%{?scl:"}
+<% end %>
 %build
 
 %install
@@ -96,6 +97,11 @@ cp -pa .%{_bindir}/* \
 
 <% unless spec.executables.empty? -%>
 find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
+<% end -%>
+
+<% if scl -%>
+# Fix shebangs for SCL
+%{?scl:find %{buildroot} -type f -exec xargs sed -i 's|#!/usr/bin/ruby|#!/usr/bin/env ruby|' {} \;}
 <% end -%>
 
 %files
