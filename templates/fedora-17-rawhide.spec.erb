@@ -2,6 +2,7 @@
 <% if scl -%>
 %{?scl:%scl_package rubygem-%{gem_name}}
 %{!?scl:%global pkg_name %{name}}
+
 <% end -%>
 %global gem_name <%= spec.name %>
 <%# TODO: Try to check against spec.required_ruby_version -%>
@@ -72,7 +73,7 @@ gem install --local --install-dir .%{gem_dir} \
             -V \
 <% end -%>
             --force %{SOURCE0}
-<%= if scl then '%{?scl:"}' end -%>
+<%= if scl then '%{?scl:"}' end %>
 
 %build
 
