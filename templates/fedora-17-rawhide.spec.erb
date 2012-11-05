@@ -1,10 +1,15 @@
 # Generated from <%= File::basename(format.gem_path) %> by gem2rpm -*- rpm-spec -*-
+<% if scl -%>
+%{?scl:%scl_package rubygem-%{gem_name}}
+%{!?scl:%global pkg_name %{name}}
+
+<% end -%>
 %global gem_name <%= spec.name %>
 <%# TODO: Try to check against spec.required_ruby_version -%>
 %global rubyabi 1.9.1
 
 Summary: <%= spec.summary.gsub(/\.$/, "") %>
-Name: rubygem-%{gem_name}
+Name: <%= if scl then '%{?scl_prefix}' end %>rubygem-%{gem_name}
 Version: <%= spec.version %>
 Release: 1%{?dist}
 Group: Development/Languages
@@ -13,27 +18,27 @@ License: <%= spec.licenses.join(" and ") %>
 URL: <%= spec.homepage %>
 <% end -%>
 Source0: <%= download_path %>%{gem_name}-%{version}.gem
-Requires: ruby(abi) = %{rubyabi}
+Requires: <%= if scl then '%{?scl_prefix}' end %>ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
-Requires: ruby(rubygems) <%= req %>
+Requires: <%= if scl then '%{?scl_prefix}' end %>ruby(rubygems) <%= req %>
 <% end -%>
 <% for d in spec.runtime_dependencies -%>
 <% for req in d.requirement -%>
-Requires: rubygem(<%= d.name %>) <%= req  %>
+Requires: <%= if scl then '%{?scl_prefix}' end %>rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
 <% end -%>
-BuildRequires: ruby(abi) = %{rubyabi}
+BuildRequires: <%= if scl then '%{?scl_prefix}' end %>ruby(abi) = %{rubyabi}
 <% for req in spec.required_rubygems_version -%>
-BuildRequires: rubygems-devel <%= req %>
+BuildRequires: <%= if scl then '%{?scl_prefix}' end %>rubygems-devel <%= req %>
 <% end -%>
 <%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
-BuildRequires: ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
+BuildRequires: <%= if scl then '%{?scl_prefix}' end %>ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
 <% end -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
 <% end -%>
-Provides: rubygem(%{gem_name}) = %{version}
+Provides: <%= if scl then '%{?scl_prefix}' end %>rubygem(%{gem_name}) = %{version}
 
 %description
 <%= spec.description %>
@@ -55,6 +60,11 @@ mkdir -p .%{gem_dir}
 <% unless spec.extensions.empty? -%>
 export CONFIGURE_ARGS="--with-cflags='%{optflags}'"
 <% end -%>
+<% if scl -%>
+<%# We want to avoid newline when scl is false, but not when it is true; therefore we can't use this: -%>
+<%#= if scl then '%{?scl:scl enable %{scl} "}' end -%>
+%{?scl:scl enable %{scl} "}
+<% end -%>
 gem install --local --install-dir .%{gem_dir} \
 <% unless spec.executables.nil? or spec.executables.empty? -%>
             --bindir .%{_bindir} \
@@ -63,7 +73,9 @@ gem install --local --install-dir .%{gem_dir} \
             -V \
 <% end -%>
             --force %{SOURCE0}
-
+<% if scl -%>
+%{?scl:"}
+<% end %>
 %build
 
 %install
@@ -85,6 +97,11 @@ cp -pa .%{_bindir}/* \
 
 <% unless spec.executables.empty? -%>
 find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
+<% end -%>
+
+<% if scl -%>
+# Fix shebangs for SCL
+%{?scl:find %{buildroot} -type f -exec xargs sed -i 's|#!/usr/bin/ruby|#!/usr/bin/env ruby|' {} \;}
 <% end -%>
 
 %files

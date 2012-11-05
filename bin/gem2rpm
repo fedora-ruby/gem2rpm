@@ -24,6 +24,7 @@ deps = false
 nongem = false
 doc_subpackage = true
 fetch = false
+scl = false
 
 opts.separator("")
 opts.separator("  Options:")
@@ -58,6 +59,9 @@ opts.on("--no-doc", "Disable document subpackage") do |val|
 end
 opts.on("--fetch", "Fetch the gem from rubygems.org") do |val|
   fetch = true
+end
+opts.on("-c", "--scl", "Create an SCL-ready specfile") do |val|
+  scl = true
 end
 opts.separator("")
 opts.separator("  Arguments:")
@@ -120,7 +124,7 @@ end
 
 # Produce a specfile
 if output_file.nil?
-    Gem2Rpm::convert(gemfile, template, $stdout, nongem, local, doc_subpackage) unless deps
+    Gem2Rpm::convert(gemfile, template, $stdout, nongem, local, doc_subpackage, scl) unless deps
 else
     begin
         out = open(output_file, "w")
