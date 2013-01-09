@@ -68,7 +68,7 @@ export CONFIGURE_ARGS="--with-cflags='%{optflags}'"
 <% end -%>
 
 # gem install installs into a directory.  We set that to be a local
-# directory so that we can move it into the buildroot in %install
+# directory so that we can move it into the buildroot in install
 gem install --local --install-dir ./%{gem_dir} \
 <% unless spec.executables.nil? or spec.executables.empty? -%>
             --bindir ./%{_bindir} \
