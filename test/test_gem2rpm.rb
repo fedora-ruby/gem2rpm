@@ -1,4 +1,5 @@
 require 'helper'
+require 'stringio'
 
 class TestGem2Rpm < Test::Unit::TestCase
 
