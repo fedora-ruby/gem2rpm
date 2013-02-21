@@ -1,7 +1,5 @@
 # Generated from <%= File::basename(format.gem_path) %> by gem2rpm -*- rpm-spec -*-
 %global gem_name <%= spec.name %>
-<%# TODO: Try to check against spec.required_ruby_version -%>
-%global rubyabi 1.9.1
 
 Name: rubygem-%{gem_name}
 Version: <%= spec.version %>
@@ -13,7 +11,7 @@ License: <%= spec.licenses.join(" and ") %>
 URL: <%= spec.homepage %>
 <% end -%>
 Source0: <%= download_path %>%{gem_name}-%{version}.gem
-Requires: ruby(abi) = %{rubyabi}
+Requires: ruby(release)
 <% for req in spec.required_rubygems_version -%>
 Requires: ruby(rubygems) <%= req %>
 <% end -%>
@@ -57,26 +55,12 @@ gem unpack %{SOURCE0}
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
 
 %build
-mkdir -p .%{gem_dir}
-
 # Create the gem as gem install only works on a gem file
 gem build %{gem_name}.gemspec
 
-<% unless spec.extensions.empty? -%>
-# gem install compiles any C extensions
-export CONFIGURE_ARGS="--with-cflags='%{optflags}'"
-<% end -%>
-
-# gem install installs into a directory.  We set that to be a local
-# directory so that we can move it into the buildroot in %%install
-gem install --local --install-dir ./%{gem_dir} \
-<% unless spec.executables.nil? or spec.executables.empty? -%>
-            --bindir ./%{_bindir} \
-<% end -%>
-<% unless spec.extensions.empty? -%>
-            -V \
-<% end -%>
-            --force --rdoc %{gem_name}-%{version}.gem
+# %%gem_install compiles any C extensions and installs the gem into ./%gem_dir
+# by default, so that we can move it into the buildroot in %%install
+%gem_install
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
