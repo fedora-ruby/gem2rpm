@@ -84,9 +84,9 @@ cp -pa .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 <% unless spec.extensions.empty? -%>
-mkdir -p %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>
+mkdir -p %{buildroot}%{gem_extdir_mri}/<%= spec.require_paths.first %>
 # TODO: move the extensions
-mv %{buildroot}%{gem_instdir}/<%= spec.require_paths.first %>/shared_object.so %{buildroot}%{gem_extdir}/<%= spec.require_paths.first %>/
+mv %{buildroot}%{gem_instdir}/<%= spec.require_paths.first %>/shared_object.so %{buildroot}%{gem_extdir_mri}/<%= spec.require_paths.first %>/
 <% end -%>
 
 <% unless spec.executables.nil? or spec.executables.empty? -%>
@@ -110,7 +110,7 @@ find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 %{gem_libdir}
 <% unless spec.extensions.empty? -%>
 %exclude %{gem_instdir}/ext
-%{gem_extdir}
+%{gem_extdir_mri}
 <% end -%>
 <% unless doc_subpackage -%>
 %doc %{gem_docdir}
