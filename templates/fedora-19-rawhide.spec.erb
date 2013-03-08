@@ -20,11 +20,10 @@ Requires: ruby(rubygems) <%= req %>
 Requires: rubygem(<%= d.name %>) <%= req  %>
 <% end -%>
 <% end -%>
-BuildRequires: ruby(abi) = %{rubyabi}
+BuildRequires: ruby(release)
 <% for req in spec.required_rubygems_version -%>
 BuildRequires: rubygems-devel <%= req %>
 <% end -%>
-<%# TODO: Unfortunatelly this do not match with ruby(abi) yet -%>
 <% for req in spec.required_ruby_version -%>
 BuildRequires: ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
 <% end -%>
