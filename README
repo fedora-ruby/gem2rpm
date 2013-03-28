@@ -55,11 +55,11 @@ gem2rpm over it.
 Template Details
 ================
 
-The template is a standard erb file; there are three main variables
+The template is a standard erb file; there are two main variables
 available in the template file:
   
-  format       - The Gem::Format for the gem
-  spec         - The Gem::Specification for the gem (the same as format.spec)
+  package      - The Gem::Package for the gem (Gem::Format in case of RubyGems < 2)
+  spec         - The Gem::Specification for the gem (the same as package.spec)
 
 Conventions
 ===========

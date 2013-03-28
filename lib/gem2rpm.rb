@@ -1,6 +1,5 @@
 require 'erb'
 require 'socket'
-require 'rubygems/format'
 require 'gem2rpm/distro'
 require 'gem2rpm/specification'
 
@@ -10,8 +9,17 @@ require 'gem2rpm/specification'
 GEM_VERSION = Gem::Version.create(Gem::RubyGemsVersion)
 HAS_REMOTE_INSTALLER = GEM_VERSION < Gem::Version.create("1.0.0")
 
+# Adapt to changes that RubyGems 2.0.0 introduces
+RUBYGEMS_2 = GEM_VERSION >= Gem::Version.create("2.0.0")
+
 if HAS_REMOTE_INSTALLER
   require 'rubygems/remote_installer'
+end
+
+if RUBYGEMS_2
+  require 'rubygems/package'
+else
+  require 'rubygems/format'
 end
 
 module Gem2Rpm
@@ -28,7 +36,13 @@ module Gem2Rpm
     def self.find_download_url(name, version)
       dep = Gem::Dependency.new(name, "=#{version}")
       fetcher = Gem::SpecFetcher.fetcher
-      dummy, download_path = fetcher.find_matching(dep, false, false).first
+
+      if RUBYGEMS_2
+        dummy, download_path = fetcher.spec_for_dependency(dep, false).first
+      else
+        dummy, download_path = fetcher.find_matching(dep, false, false).first
+      end
+
       download_path += "gems/" if download_path.to_s != ""
       return download_path
     end
@@ -36,8 +50,16 @@ module Gem2Rpm
 
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
                       nongem=true, local=false, doc_subpackage = true)
-    format = Gem::Format.from_file_by_path(fname)
-    spec = Gem2Rpm::Specification.new(format.spec)
+    # For the template
+    gem_path = File::basename(fname)
+
+    if RUBYGEMS_2
+      package = Gem::Package.new(fname)
+    else
+      package = Gem::Format.from_file_by_path(fname)
+    end
+
+    spec = Gem2Rpm::Specification.new(package.spec)
     spec.description ||= spec.summary
     download_path = ""
     unless local

@@ -5,10 +5,15 @@ $:.push(File.expand_path(File.dirname(__FILE__) + "/../lib"))
 
 require 'gem2rpm'
 require 'optparse'
-require 'rubygems/format'
 require 'fileutils'
 require 'open-uri'
 require 'uri'
+
+if RUBYGEMS_2
+  require 'rubygems/package'
+else
+  require 'rubygems/format'
+end
 
 opts = OptionParser.new("Usage: #{$0} [OPTIONS] GEM")
 opts.separator("  Convert ruby Gems to source RPMs and specfiles")
@@ -105,12 +110,17 @@ if fetch
   end
 end
 
+if RUBYGEMS_2
+  package = Gem::Package.new(gemfile)
+else
+  package = Gem::Format.from_file_by_path(gemfile)
+end
 srpmdir = nil
 gemname = nil
 srpmdir = nil
 specfile = nil
 if srpm
-    gemname = Gem::Format.from_file_by_path(gemfile).spec.name
+    gemname = package.spec.name
     srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
     specfile = File::join(srpmdir, "rubygem-#{gemname}.spec")
     if output_file.nil?
@@ -141,7 +151,7 @@ if srpm
 end
 
 if deps
-  Gem::Format.from_file_by_path(gemfile).spec.dependencies.each do |dep|
+  package.spec.dependencies.each do |dep|
     Gem2Rpm::Dependency.new(dep).requirement.each do |r|
       puts "rubygem(#{dep.name}) #{r}"
     end
