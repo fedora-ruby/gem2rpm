@@ -9,12 +9,6 @@ require 'fileutils'
 require 'open-uri'
 require 'uri'
 
-if RUBYGEMS_2
-  require 'rubygems/package'
-else
-  require 'rubygems/format'
-end
-
 opts = OptionParser.new("Usage: #{$0} [OPTIONS] GEM")
 opts.separator("  Convert ruby Gems to source RPMs and specfiles")
 opts.separator("  Uses a template to generate the RPM specfile")
@@ -110,11 +104,8 @@ if fetch
   end
 end
 
-if RUBYGEMS_2
-  package = Gem::Package.new(gemfile)
-else
-  package = Gem::Format.from_file_by_path(gemfile)
-end
+# Keep format for backwards compatibility of custom templates for RubyGems < 2
+package = format = Gem2Rpm::Package.new(gemfile)
 srpmdir = nil
 gemname = nil
 srpmdir = nil

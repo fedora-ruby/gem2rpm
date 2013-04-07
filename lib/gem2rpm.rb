@@ -1,5 +1,6 @@
 require 'erb'
 require 'socket'
+require 'rubygems'
 require 'gem2rpm/distro'
 require 'gem2rpm/specification'
 
@@ -16,11 +17,7 @@ if HAS_REMOTE_INSTALLER
   require 'rubygems/remote_installer'
 end
 
-if RUBYGEMS_2
-  require 'rubygems/package'
-else
-  require 'rubygems/format'
-end
+require 'gem2rpm/package'
 
 module Gem2Rpm
   Gem2Rpm::VERSION = "0.8.4"
@@ -53,11 +50,8 @@ module Gem2Rpm
     # For the template
     gem_path = File::basename(fname)
 
-    if RUBYGEMS_2
-      package = Gem::Package.new(fname)
-    else
-      package = Gem::Format.from_file_by_path(fname)
-    end
+    # Keep format for backwards compatibility of custom templates for RubyGems < 2
+    package = format = Gem2Rpm::Package.new(fname)
 
     spec = Gem2Rpm::Specification.new(package.spec)
     spec.description ||= spec.summary
