@@ -17,32 +17,23 @@ if HAS_REMOTE_INSTALLER
   require 'rubygems/remote_installer'
 end
 
+require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/package'
 
 module Gem2Rpm
   Gem2Rpm::VERSION = "0.8.4"
 
-  if HAS_REMOTE_INSTALLER
-    def self.find_download_url(name, version)
+  def self.find_download_url(name, version)
+    if HAS_REMOTE_INSTALLER
       installer = Gem::RemoteInstaller.new
       dummy, download_path = installer.find_gem_to_install(name, "=#{version}")
-      download_path += "/gems/" if download_path.to_s != ""
-      return download_path
-    end
-  else
-    def self.find_download_url(name, version)
+    else
+      fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.new)
       dep = Gem::Dependency.new(name, "=#{version}")
-      fetcher = Gem::SpecFetcher.fetcher
-
-      if RUBYGEMS_2
-        dummy, download_path = fetcher.spec_for_dependency(dep, false).first
-      else
-        dummy, download_path = fetcher.find_matching(dep, false, false).first
-      end
-
-      download_path += "gems/" if download_path.to_s != ""
-      return download_path
+      dummy, download_path = fetcher.spec_for_dependency(dep).first
     end
+    download_path += "gems/" if download_path.to_s != ""
+    return download_path
   end
 
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
