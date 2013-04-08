@@ -3,20 +3,6 @@ require 'socket'
 require 'rubygems'
 require 'gem2rpm/distro'
 require 'gem2rpm/specification'
-
-# Adapt to the differences between rubygems < 1.0.0 and after
-# Once we can be reasonably certain that everybody has version >= 1.0.0
-# all this logic should be killed
-GEM_VERSION = Gem::Version.create(Gem::RubyGemsVersion)
-HAS_REMOTE_INSTALLER = GEM_VERSION < Gem::Version.create("1.0.0")
-
-# Adapt to changes that RubyGems 2.0.0 introduces
-RUBYGEMS_2 = GEM_VERSION >= Gem::Version.create("2.0.0")
-
-if HAS_REMOTE_INSTALLER
-  require 'rubygems/remote_installer'
-end
-
 require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/package'
 
@@ -24,13 +10,15 @@ module Gem2Rpm
   Gem2Rpm::VERSION = "0.8.4"
 
   def self.find_download_url(name, version)
-    if HAS_REMOTE_INSTALLER
-      installer = Gem::RemoteInstaller.new
-      dummy, download_path = installer.find_gem_to_install(name, "=#{version}")
-    else
+    # RubyGems < 1.0.0 uses RemoteInstaller
+    if Gem::Version.create(Gem::RubyGemsVersion) >= Gem::Version.create("1.0.0")
       fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.new)
       dep = Gem::Dependency.new(name, "=#{version}")
       dummy, download_path = fetcher.spec_for_dependency(dep).first
+    else
+      require 'rubygems/remote_installer'
+      installer = Gem::RemoteInstaller.new
+      dummy, download_path = installer.find_gem_to_install(name, "=#{version}")
     end
     download_path += "gems/" if download_path.to_s != ""
     return download_path
