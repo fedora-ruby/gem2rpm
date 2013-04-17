@@ -1,43 +1,38 @@
 require 'erb'
 require 'socket'
-require 'rubygems/format'
+require 'rubygems'
 require 'gem2rpm/distro'
 require 'gem2rpm/specification'
-
-# Adapt to the differences between rubygems < 1.0.0 and after
-# Once we can be reasonably certain that everybody has version >= 1.0.0
-# all this logic should be killed
-GEM_VERSION = Gem::Version.create(Gem::RubyGemsVersion)
-HAS_REMOTE_INSTALLER = GEM_VERSION < Gem::Version.create("1.0.0")
-
-if HAS_REMOTE_INSTALLER
-  require 'rubygems/remote_installer'
-end
+require 'gem2rpm/spec_fetcher'
+require 'gem2rpm/package'
 
 module Gem2Rpm
   Gem2Rpm::VERSION = "0.8.4"
 
-  if HAS_REMOTE_INSTALLER
-    def self.find_download_url(name, version)
+  def self.find_download_url(name, version)
+    # RubyGems < 1.0.0 uses RemoteInstaller
+    if Gem::Version.create(Gem::RubyGemsVersion) >= Gem::Version.create("1.0.0")
+      fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.new)
+      dep = Gem::Dependency.new(name, "=#{version}")
+      dummy, download_path = fetcher.spec_for_dependency(dep).first
+    else
+      require 'rubygems/remote_installer'
       installer = Gem::RemoteInstaller.new
       dummy, download_path = installer.find_gem_to_install(name, "=#{version}")
-      download_path += "/gems/" if download_path.to_s != ""
-      return download_path
     end
-  else
-    def self.find_download_url(name, version)
-      dep = Gem::Dependency.new(name, "=#{version}")
-      fetcher = Gem::SpecFetcher.fetcher
-      dummy, download_path = fetcher.find_matching(dep, false, false).first
-      download_path += "gems/" if download_path.to_s != ""
-      return download_path
-    end
+    download_path += "gems/" if download_path.to_s != ""
+    return download_path
   end
 
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
                       nongem=true, local=false, doc_subpackage = true)
-    format = Gem::Format.from_file_by_path(fname)
-    spec = Gem2Rpm::Specification.new(format.spec)
+    # For the template
+    gem_path = File::basename(fname)
+
+    # Keep format for backwards compatibility of custom templates for RubyGems < 2
+    package = format = Gem2Rpm::Package.new(fname)
+
+    spec = Gem2Rpm::Specification.new(package.spec)
     spec.description ||= spec.summary
     download_path = ""
     unless local
