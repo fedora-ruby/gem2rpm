@@ -2,6 +2,7 @@ require 'erb'
 require 'socket'
 require 'rubygems/format'
 require 'gem2rpm/distro'
+require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/specification'
 
 # Adapt to the differences between rubygems < 1.0.0 and after
@@ -27,7 +28,7 @@ module Gem2Rpm
   else
     def self.find_download_url(name, version)
       dep = Gem::Dependency.new(name, "=#{version}")
-      fetcher = Gem::SpecFetcher.fetcher
+      fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)
       dummy, download_path = fetcher.find_matching(dep, false, false).first
       download_path += "gems/" if download_path.to_s != ""
       return download_path
