@@ -1,8 +1,8 @@
 require 'erb'
 require 'socket'
-require 'rubygems/format'
 require 'gem2rpm/package'
 require 'gem2rpm/distro'
+require 'gem2rpm/format'
 require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/specification'
 
@@ -38,8 +38,9 @@ module Gem2Rpm
 
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
                       nongem=true, local=false, doc_subpackage = true)
-    format = Gem2Rpm::Package.new(fname)
-    spec = Gem2Rpm::Specification.new(format.spec)
+    package = Gem2Rpm::Package.new(fname)
+    format = Gem2Rpm::Format.new(package)
+    spec = Gem2Rpm::Specification.new(package.spec)
     spec.description ||= spec.summary
     download_path = ""
     unless local
