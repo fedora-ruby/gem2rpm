@@ -7,7 +7,7 @@ require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/specification'
 
 module Gem2Rpm
-  Gem2Rpm::VERSION = "0.8.4"
+  Gem2Rpm::VERSION = "0.9.0"
 
   def self.find_download_url(name, version)
     dep = Gem::Dependency.new(name, "=#{version}")
