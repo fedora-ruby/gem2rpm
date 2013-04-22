@@ -5,7 +5,6 @@ $:.push(File.expand_path(File.dirname(__FILE__) + "/../lib"))
 
 require 'gem2rpm'
 require 'optparse'
-require 'rubygems/format'
 require 'fileutils'
 require 'open-uri'
 require 'uri'
@@ -141,7 +140,7 @@ if srpm
 end
 
 if deps
-  Gem::Format.from_file_by_path(gemfile).spec.dependencies.each do |dep|
+  Gem2Rpm::Package.new(gemfile).spec.dependencies.each do |dep|
     Gem2Rpm::Dependency.new(dep).requirement.each do |r|
       puts "rubygem(#{dep.name}) #{r}"
     end
