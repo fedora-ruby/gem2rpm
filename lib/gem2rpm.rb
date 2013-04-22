@@ -6,37 +6,18 @@ require 'gem2rpm/format'
 require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/specification'
 
-# Adapt to the differences between rubygems < 1.0.0 and after
-# Once we can be reasonably certain that everybody has version >= 1.0.0
-# all this logic should be killed
-GEM_VERSION = Gem::Version.create(Gem::RubyGemsVersion)
-HAS_REMOTE_INSTALLER = GEM_VERSION < Gem::Version.create("1.0.0")
-
-if HAS_REMOTE_INSTALLER
-  require 'rubygems/remote_installer'
-end
-
 module Gem2Rpm
   Gem2Rpm::VERSION = "0.8.4"
 
-  if HAS_REMOTE_INSTALLER
-    def self.find_download_url(name, version)
-      installer = Gem::RemoteInstaller.new
-      dummy, download_path = installer.find_gem_to_install(name, "=#{version}")
-      download_path += "/gems/" if download_path.to_s != ""
-      return download_path
-    end
-  else
-    def self.find_download_url(name, version)
-      dep = Gem::Dependency.new(name, "=#{version}")
-      fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)
-      dummy, source = fetcher.spec_for_dependency(dep, false).first.first
+  def self.find_download_url(name, version)
+    dep = Gem::Dependency.new(name, "=#{version}")
+    fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)
+    dummy, source = fetcher.spec_for_dependency(dep, false).first.first
 
-      download_path = source.uri
+    download_path = source.uri
 
-      download_path += "gems/" if download_path.to_s != ""
-      return download_path
-    end
+    download_path += "gems/" if download_path.to_s != ""
+    return download_path
   end
 
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
