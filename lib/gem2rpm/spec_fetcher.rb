@@ -1,4 +1,5 @@
 require 'delegate'
+require 'ostruct'
 
 module Gem2Rpm
   class SpecFetcher < SimpleDelegator
@@ -8,7 +9,9 @@ module Gem2Rpm
     def spec_for_dependency(dependency, matching_platform=true)
       super
     rescue
-      find_matching(dependency, true, matching_platform)
+      spec, source = find_matching(dependency, true, matching_platform).first
+      source = OpenStruct.new(:uri => source)
+      [[[spec, source]]]
     end
   end
 end
