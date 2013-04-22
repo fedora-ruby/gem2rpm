@@ -30,7 +30,7 @@ module Gem2Rpm
     def self.find_download_url(name, version)
       dep = Gem::Dependency.new(name, "=#{version}")
       fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)
-      dummy, download_path = fetcher.find_matching(dep, false, false).first
+      dummy, download_path = fetcher.spec_for_dependency(dep, false).first
       download_path += "gems/" if download_path.to_s != ""
       return download_path
     end
