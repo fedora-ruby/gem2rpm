@@ -19,4 +19,9 @@ class TestGem2Rpm < Test::Unit::TestCase
     end
   end
 
+  # TODO: Make this test work offline.
+  def test_find_download_url_for_source_address
+    assert_match %r{http://rubygems.org/gems/}, Gem2Rpm::find_download_url("gem2rpm", "0.8.0")
+  end
+
 end

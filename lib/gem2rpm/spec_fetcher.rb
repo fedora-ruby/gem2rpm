@@ -8,7 +8,7 @@ module Gem2Rpm
     def spec_for_dependency(dependency, matching_platform=true)
       super
     rescue
-      find_matching(dependency, false, matching_platform)
+      find_matching(dependency, true, matching_platform)
     end
   end
 end
