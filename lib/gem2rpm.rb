@@ -35,7 +35,7 @@ module Gem2Rpm
         download_path = find_download_url(spec.name, spec.version)
       rescue Gem::Exception => e
         $stderr.puts "Warning: Could not retrieve full URL for #{spec.name}\nWarning: Edit the specfile and enter the full download URL as 'Source0' manually"
-        $stderr.puts "#{e.inspect}"
+        $stderr.puts e.inspect
       end
     end
     template = ERB.new(template, 0, '-')
