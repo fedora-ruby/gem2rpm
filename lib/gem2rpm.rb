@@ -12,12 +12,15 @@ module Gem2Rpm
   def self.find_download_url(name, version)
     dep = Gem::Dependency.new(name, "=#{version}")
     fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)
-    dummy, source = fetcher.spec_for_dependency(dep, false).first.first
+    spec_and_source, error = fetcher.spec_for_dependency(dep, false)
+    spec, source = spec_and_source.first
 
-    download_path = source.uri
+    if source && source.uri
+      download_path = source.uri.to_s
+      download_path += "gems/"
+    end
 
-    download_path += "gems/" if download_path.to_s != ""
-    return download_path
+    download_path
   end
 
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
