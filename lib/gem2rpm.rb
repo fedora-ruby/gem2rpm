@@ -9,10 +9,17 @@ require 'gem2rpm/specification'
 module Gem2Rpm
   Gem2Rpm::VERSION = "0.9.0"
 
+  class Exception < RuntimeError; end
+  class DownloadUrlError < Exception; end
+
   def self.find_download_url(name, version)
     dep = Gem::Dependency.new(name, "=#{version}")
     fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)
-    spec_and_source, error = fetcher.spec_for_dependency(dep, false)
+
+    spec_and_source, errors = fetcher.spec_for_dependency(dep, false)
+
+    raise DownloadUrlError.new(errors.first.error.message) unless errors.empty?
+
     spec, source = spec_and_source.first
 
     if source && source.uri
@@ -33,7 +40,7 @@ module Gem2Rpm
     unless local
       begin
         download_path = find_download_url(spec.name, spec.version)
-      rescue Gem::Exception => e
+      rescue DownloadUrlError => e
         $stderr.puts "Warning: Could not retrieve full URL for #{spec.name}\nWarning: Edit the specfile and enter the full download URL as 'Source0' manually"
         $stderr.puts e.inspect
       end

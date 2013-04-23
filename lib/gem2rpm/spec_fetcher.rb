@@ -9,9 +9,16 @@ module Gem2Rpm
     def spec_for_dependency(dependency, matching_platform=true)
       super
     rescue
-      spec, source = find_matching(dependency, true, matching_platform).first
+      errors = []
+
+      begin
+        spec, source = find_matching(dependency, true, matching_platform).first
+      rescue Gem::Exception => e
+        errors << OpenStruct.new(:error => e)
+      end
+
       source = OpenStruct.new(:uri => source)
-      [[[spec, source]]]
+      [[[spec, source]], errors]
     end
   end
 end
