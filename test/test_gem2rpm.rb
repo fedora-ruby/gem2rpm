@@ -4,7 +4,7 @@ require 'stringio'
 class TestGem2Rpm < Test::Unit::TestCase
 
   Dir.glob(File.join(File.dirname(__FILE__), '..', 'templates', '*')).each do |t|
-    template_name = File.basename(t)[/\w+/]
+    template_name = File.basename(t).split.first.gsub(/[.-]/, '_')
     template = File.read t
 
     define_method :"test_#{template_name}_omitting_development_requirements_from_spec" do
