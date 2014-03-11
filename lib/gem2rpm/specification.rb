@@ -6,7 +6,9 @@ module Gem2Rpm
   class Specification < SimpleDelegator
     # A long description of gem wrapped to 78 characters.
     def description
-      Helpers::word_wrap(super.to_s.chomp, 78) + "\n"
+      d = super.to_s.chomp
+      d.gsub!(/([^.])\Z/, "\\1.")
+      Helpers::word_wrap(d, 78) + "\n"
     end
 
     # A list of Gem::Dependency objects this gem depends on (includes every

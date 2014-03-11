@@ -33,7 +33,7 @@ BuildArch: noarch
 Provides: rubygem(%{gem_name}) = %{version}
 
 %description
-<%= spec.description.gsub(/([^.])$/, "\\1.") %>
+<%= spec.description %>
 
 <% if doc_subpackage -%>
 %package doc
