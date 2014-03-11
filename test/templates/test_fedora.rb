@@ -28,4 +28,10 @@ class TestFedora < Test::Unit::TestCase
     assert_no_match(/\sRequires: ruby >= 1.8.6/, @out.string)
   end
 
+  def test_description_end_with_dot
+    assert_match(/%description\n.*\.\n\n/, @out.string)
+    @out.rewind
+    assert_match(/%description doc\n.*\.\n\n/, @out.string)
+  end
+
 end
