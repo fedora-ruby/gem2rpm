@@ -3,7 +3,7 @@ require 'helper'
 class TestFedora < Test::Unit::TestCase
 
   def template
-    @template ||= File.read File.join(File.dirname(__FILE__), '..', '..', 'templates', 'fedora.spec.erb')
+    @template ||= Gem2Rpm::TEMPLATE
   end
 
   def setup
