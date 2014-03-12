@@ -109,7 +109,7 @@ gemname = nil
 srpmdir = nil
 specfile = nil
 if srpm
-    gemname = Gem::Format.from_file_by_path(gemfile).spec.name
+    gemname = Gem2Rpm::Package.new(gemfile).spec.name
     srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
     specfile = File::join(srpmdir, "rubygem-#{gemname}.spec")
     if output_file.nil?

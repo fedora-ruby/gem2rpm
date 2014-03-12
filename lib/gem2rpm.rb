@@ -33,6 +33,7 @@ module Gem2Rpm
   def Gem2Rpm.convert(fname, template=TEMPLATE, out=$stdout,
                       nongem=true, local=false, doc_subpackage = true)
     package = Gem2Rpm::Package.new(fname)
+    # Deprecate, kept just for backward compatibility.
     format = Gem2Rpm::Format.new(package)
     spec = Gem2Rpm::Specification.new(package.spec)
     spec.description ||= spec.summary
