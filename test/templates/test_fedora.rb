@@ -21,7 +21,7 @@ class TestFedora < Test::Unit::TestCase
   end
 
   def test_rubys_version_build_requirement
-    assert_match(/\sBuildRequires: ruby >= 1.8.6/, @out.string)
+    assert_match(/\sBuildRequires: ruby-devel >= 1.8.6/, @out.string)
   end
 
   def test_ruby_is_not_required
@@ -32,6 +32,10 @@ class TestFedora < Test::Unit::TestCase
     assert_match(/%description\n.*\.\n\n/, @out.string)
     @out.rewind
     assert_match(/%description doc\n.*\.\n\n/, @out.string)
+  end
+
+  def test_exclude_extension_directory
+    assert_match(/rm -rf %\{buildroot\}%\{gem_instdir\}\/ext\//, @out.string)
   end
 
 end

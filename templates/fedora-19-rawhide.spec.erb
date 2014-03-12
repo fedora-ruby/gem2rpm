@@ -70,6 +70,11 @@ cp -pa .%{gem_dir}/* \
 mkdir -p %{buildroot}%{gem_extdir_mri}/<%= spec.require_paths.first %>
 # TODO: move the extensions
 mv %{buildroot}%{gem_instdir}/<%= spec.require_paths.first %>/shared_object.so %{buildroot}%{gem_extdir_mri}/<%= spec.require_paths.first %>/
+
+<% for ext in spec.extensions -%>
+# Prevent dangling symlink in -debuginfo (rhbz#878863).
+rm -rf %{buildroot}%{gem_instdir}/<%= ext.split(File::SEPARATOR).first %>/
+<% end -%>
 <% end -%>
 
 <% unless spec.executables.nil? or spec.executables.empty? -%>
@@ -92,7 +97,6 @@ find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
 <% end -%>
 %{gem_libdir}
 <% unless spec.extensions.empty? -%>
-%exclude %{gem_instdir}/ext
 %{gem_extdir_mri}
 <% end -%>
 <% unless doc_subpackage -%>
