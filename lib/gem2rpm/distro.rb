@@ -9,7 +9,11 @@ module Gem2Rpm
         versions = []
 
         release_files.each do |file|
-          /\d+/ =~ File.open(file, "r:UTF-8").readline
+          /\d+/ =~ if RUBY_VERSION >= '1.8.7'
+            File.open(file, "r:UTF-8").readline
+          else
+            File.open(file).readline
+          end
           versions << Regexp.last_match.to_s if Regexp.last_match
         end
 
