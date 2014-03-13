@@ -3,7 +3,10 @@ require 'helper'
 class TestFedora < Test::Unit::TestCase
 
   def template
-    @template ||= Gem2Rpm::TEMPLATE
+    @template ||= begin
+      fedora_rawhide_template = Dir.glob(File.join(File.dirname(__FILE__), '..', '..', 'templates', '*rawhide*')).first
+      File.read fedora_rawhide_template
+    end
   end
 
   def setup
