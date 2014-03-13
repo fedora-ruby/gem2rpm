@@ -39,4 +39,8 @@ class TestFedora < Test::Unit::TestCase
     assert_match(/rm -rf %\{buildroot\}%\{gem_instdir\}\/ext\//, @out_string)
   end
 
+  def test_build_requires
+    assert_match(/^# BuildRequires: rubygem\(test_development\) >= 1\.0\.0$/, @out_string)
+  end
+
 end

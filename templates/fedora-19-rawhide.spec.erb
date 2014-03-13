@@ -27,6 +27,13 @@ BuildRequires: rubygems-devel <%= req %>
 <% for req in spec.required_ruby_version -%>
 BuildRequires: ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
 <% end -%>
+<% for d in spec.development_dependencies -%>
+<% unless ["rdoc", "rake", "bundler"].include? d.name -%>
+<% for req in d.requirement -%>
+# BuildRequires: rubygem(<%= d.name %>) <%= req  %>
+<% end -%>
+<% end -%>
+<% end -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
 <% end -%>
