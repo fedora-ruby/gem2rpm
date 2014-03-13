@@ -74,9 +74,8 @@ cp -pa .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 <% unless spec.extensions.empty? -%>
-mkdir -p %{buildroot}%{gem_extdir_mri}/<%= spec.require_paths.first %>
-# TODO: move the extensions
-mv %{buildroot}%{gem_instdir}/<%= spec.require_paths.first %>/shared_object.so %{buildroot}%{gem_extdir_mri}/<%= spec.require_paths.first %>/
+mkdir -p %{buildroot}%{gem_extdir_mri} spec.require_paths.first %>
+cp -pa .%{gem_extdir_mri}/* %{buildroot}%{gem_extdir_mri}/
 
 <% for ext in spec.extensions -%>
 # Prevent dangling symlink in -debuginfo (rhbz#878863).
