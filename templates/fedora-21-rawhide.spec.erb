@@ -11,15 +11,6 @@ License: <%= spec.licenses.join(" and ") %>
 URL: <%= spec.homepage %>
 <% end -%>
 Source0: <%= download_path %>%{gem_name}-%{version}.gem
-Requires: ruby(release)
-<% for req in spec.required_rubygems_version -%>
-Requires: ruby(rubygems) <%= req %>
-<% end -%>
-<% for d in spec.runtime_dependencies -%>
-<% for req in d.requirement -%>
-Requires: rubygem(<%= d.name %>) <%= req  %>
-<% end -%>
-<% end -%>
 BuildRequires: ruby(release)
 <% for req in spec.required_rubygems_version -%>
 BuildRequires: rubygems-devel <%= req %>
@@ -37,7 +28,6 @@ BuildRequires: ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
 <% end -%>
-Provides: rubygem(%{gem_name}) = %{version}
 
 %description
 <%= spec.description %>
