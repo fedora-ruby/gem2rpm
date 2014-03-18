@@ -70,7 +70,7 @@ gem build %{gem_name}.gemspec
 
 %install
 mkdir -p %{buildroot}%{gem_dir}
-cp -pa .%{gem_dir}/* \
+cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 <% unless spec.extensions.empty? -%>
@@ -86,7 +86,7 @@ rm -rf %{buildroot}%{gem_instdir}/<%= ext.split(File::SEPARATOR).first %>/
 
 <% unless spec.executables.nil? or spec.executables.empty? -%>
 mkdir -p %{buildroot}%{_bindir}
-cp -pa .%{_bindir}/* \
+cp -a .%{_bindir}/* \
         %{buildroot}%{_bindir}/
 <% end -%>
 
