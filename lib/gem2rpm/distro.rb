@@ -4,16 +4,19 @@ module Gem2Rpm
     OPENSUSE = :opensuse
     DEFAULT = :default
 
+    OPEN_MODE = # :nodoc:
+      if Object.const_defined? :Encoding
+        'r:UTF-8'
+      else
+        'r'
+      end
+
     def self.nature
       if !release_files.grep(/fedora/).empty?
         versions = []
 
         release_files.each do |file|
-          /\d+/ =~ if RUBY_VERSION >= '1.8.7'
-            File.open(file, "r:UTF-8").readline
-          else
-            File.open(file).readline
-          end
+          /\d+/ =~ File.open(file, OPEN_MODE).readline
           versions << Regexp.last_match.to_s if Regexp.last_match
         end
 
