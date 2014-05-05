@@ -1,7 +1,7 @@
 require 'helper'
 require 'stringio'
 
-class TestGem2Rpm < Test::Unit::TestCase
+class TestGem2Rpm < Minitest::Test
 
   Dir.glob(File.join(File.dirname(__FILE__), '..', 'templates', '*')).each do |t|
     template_name = File.basename(t).split.first.gsub(/[.-]/, '_')
@@ -14,7 +14,7 @@ class TestGem2Rpm < Test::Unit::TestCase
 
         Gem2Rpm::convert(gem_path, template, out, false)
 
-        assert_no_match(/\sRequires: rubygem\(test_development\)/, out.string)
+        refute_match(/\sRequires: rubygem\(test_development\)/, out.string)
       end
     end
   end

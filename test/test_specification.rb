@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestSpecification < Test::Unit::TestCase
+class TestSpecification < Minitest::Test
 
   def setup
     @gemspec = Gem::Specification.new

@@ -1,7 +1,7 @@
 require 'helper'
 require 'gem2rpm/helpers'
 
-class TestHelpers < Test::Unit::TestCase
+class TestHelpers < Minitest::Test
   def test_simple_conversion
     r = Gem::Requirement.new("> 1.0")
     assert_equal(["> 1.0"], Gem2Rpm::Helpers.requirement_versions_to_rpm(r))

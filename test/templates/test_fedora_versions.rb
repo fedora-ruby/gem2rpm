@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestFedoraVersions < Test::Unit::TestCase
+class TestFedoraVersions < Minitest::Test
 
   def Gem2Rpm::template_dir
     File.join(File.dirname(__FILE__), 'fake_files')

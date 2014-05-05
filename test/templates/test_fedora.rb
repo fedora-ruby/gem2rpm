@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestFedora < Test::Unit::TestCase
+class TestFedora < Minitest::Test
 
   def template
     @template ||= begin
@@ -18,7 +18,7 @@ class TestFedora < Test::Unit::TestCase
   end
 
   def test_omitting_url_from_rpm_spec
-    assert_no_match(/\sURL: /, @out_string)
+    refute_match(/\sURL: /, @out_string)
   end
 
   def test_rubys_version_build_requirement
@@ -26,7 +26,7 @@ class TestFedora < Test::Unit::TestCase
   end
 
   def test_ruby_is_not_required
-    assert_no_match(/\sRequires: ruby >= 1.8.6/, @out_string)
+    refute_match(/\sRequires: ruby >= 1.8.6/, @out_string)
   end
 
   def test_description_end_with_dot
@@ -43,15 +43,15 @@ class TestFedora < Test::Unit::TestCase
   end
 
   def test_rubygems_is_not_required
-    assert_no_match(/\sruby\(rubygems\)/, @out_string)
+    refute_match(/\sruby\(rubygems\)/, @out_string)
   end
 
   def test_nothing_is_required
-    assert_no_match(/\sRequires:\s*rubygem\(\w*\).*$/, @out_string)
+    refute_match(/\sRequires:\s*rubygem\(\w*\).*$/, @out_string)
   end
 
   def test_provides_is_not_generated_anymore
-    assert_no_match(/\sProvides:\s*rubygem\(%\{gem_name\}\)/, @out_string)
+    refute_match(/\sProvides:\s*rubygem\(%\{gem_name\}\)/, @out_string)
   end
 
 end
