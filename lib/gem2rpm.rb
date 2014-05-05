@@ -7,7 +7,7 @@ require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/specification'
 
 module Gem2Rpm
-  Gem2Rpm::VERSION = "0.10.0"
+  Gem2Rpm::VERSION = "0.10.1"
 
   class Exception < RuntimeError; end
   class DownloadUrlError < Exception; end
