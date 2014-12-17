@@ -8,18 +8,19 @@ module Gem2Rpm
     DEFAULT_MACROS = {
       :doc => '%doc',
       :license => '%doc',
-      :ignore => '%ignore'
+      :ignore => '%exclude'
     }
 
     DEFAULT_RULES = {
       :doc => [/\/?CHANGELOG.*/i, /\/?CONTRIBUTING.*/i, /\/?CONTRIBUTORS.*/i,
-                /\/?README.*/i, /\/?History.*/i, /\/?Release.*/i, /\/?doc(\/.*)?/],
+               /\/?AUTHORS.*/i,/\/?README.*/i, /\/?History.*/i, /\/?Release.*/i,
+               /\/?doc(\/.*)?/],
       :license => [/\/?MIT/, /\/?GPLv[0-9]+/, /\/?.*LICEN(C|S)E/, /\/?COPYING/],
       :ignore => ['.gemtest', '.gitignore', '.travis.yml', '.yardopts', '.rvmrc'],
       # Other files including test files that are not required for
       # runtime and therefore currently included in -doc
       :misc => [/.*.gemspec/, /Gemfile.*/, 'Rakefile', 'rakefile.rb', 'Vagrantfile',
-                /rspec.*/, /test(s|)/, /examples.*/]
+                /spec.*/, /rspec.*/, /test(s|)/, /examples.*/]
     }
 
     # Hash with macros for files categories
