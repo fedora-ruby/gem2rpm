@@ -37,6 +37,7 @@ module Gem2Rpm
     format = Gem2Rpm::Format.new(package)
     spec = Gem2Rpm::Specification.new(package.spec)
     spec.description ||= spec.summary
+    config = Gem2Rpm::Configuration.instance
     download_path = ""
     unless local
       begin
