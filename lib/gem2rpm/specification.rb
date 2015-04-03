@@ -1,9 +1,27 @@
 require 'delegate'
+require 'gem2rpm/configuration'
 require 'gem2rpm/dependency'
 require 'gem2rpm/helpers'
 
 module Gem2Rpm
   class Specification < SimpleDelegator
+
+    def self.doc_file?(file)
+      Helpers.check_str_on_conditions(file, Gem2Rpm::Configuration.instance.rule_for(:doc))
+    end
+
+    def self.license_file?(file)
+      Helpers.check_str_on_conditions(file, Gem2Rpm::Configuration.instance.rule_for(:license))
+    end
+
+    def self.ignore_file?(file)
+      Helpers.check_str_on_conditions(file, Gem2Rpm::Configuration.instance.rule_for(:ignore))
+    end
+
+    def self.misc_file?(file)
+      Helpers.check_str_on_conditions(file, Gem2Rpm::Configuration.instance.rule_for(:misc))
+    end
+
     # A long description of gem wrapped to 78 characters.
     def description
       d = super.to_s.chomp
@@ -54,6 +72,20 @@ module Gem2Rpm
       rescue
         ['']
       end
+    end
+
+    # File list block for the main package
+    def main_file_entries
+      entries = Helpers.top_level_from_file_list(self.files)
+      entries.delete_if{ |f| Specification.doc_file?(f) || Specification.misc_file?(f) }
+      Helpers.file_entries_to_rpm(entries)
+    end
+
+    # File list block for the doc sub-package
+    def doc_file_entries
+      entries = Helpers.top_level_from_file_list(self.files)
+      entries.keep_if{ |f| Specification.doc_file?(f) || Specification.misc_file?(f) }
+      Helpers.file_entries_to_rpm(entries)
     end
   end
 end

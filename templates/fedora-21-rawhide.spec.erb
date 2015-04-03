@@ -89,6 +89,10 @@ pushd .%{gem_instdir}
 
 popd
 
+<%
+# Use the new license macro
+config.macros[:license] = '%license'
+-%>
 %files
 %dir %{gem_instdir}
 <% unless spec.executables.nil? or spec.executables.empty? -%>
@@ -101,11 +105,10 @@ popd
 <% unless spec.extensions.empty? -%>
 %{gem_extdir_mri}
 <% end -%>
+<%= spec.main_file_entries %>
 <% unless doc_subpackage -%>
 %doc %{gem_docdir}
-<% for f in spec.extra_rdoc_files -%>
-%doc %{gem_instdir}/<%= f %>
-<% end -%>
+<%= spec.doc_file_entries -%>
 <% end -%>
 %exclude %{gem_cache}
 %{gem_spec}
@@ -113,9 +116,7 @@ popd
 <% if doc_subpackage -%>
 %files doc
 %doc %{gem_docdir}
-<% for f in spec.extra_rdoc_files -%>
-%doc %{gem_instdir}/<%= f %>
-<% end -%>
+<%= spec.doc_file_entries %>
 <% end # if doc_subpackage -%>
 
 %changelog

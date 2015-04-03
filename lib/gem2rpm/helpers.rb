@@ -40,5 +40,37 @@ module Gem2Rpm
         version == Gem::Version.new(0) ? "" : "#{op} #{version}"
       end
     end
+
+    def self.file_entries_to_rpm(entries)
+      rpm_file_list = entries.map{ |e| self.file_entry_to_rpm(e) }
+      rpm_file_list.join("\n")
+    end
+
+    def self.file_entry_to_rpm(entry)
+      config = Gem2Rpm::Configuration.instance
+      case true
+      when Gem2Rpm::Specification.doc_file?(entry)
+        "#{config.macro_for(:doc)} %{gem_instdir}/#{entry}".strip
+      when Gem2Rpm::Specification.license_file?(entry)
+        "#{config.macro_for(:license)} %{gem_instdir}/#{entry}".strip
+      when Gem2Rpm::Specification.ignore_file?(entry)
+        "#{config.macro_for(:ignore)} %{gem_instdir}/#{entry}".strip
+      else
+        "%{gem_instdir}/#{entry}"
+      end
+    end
+
+    # Returns a list of top level directories and files
+    # out of an array of file_list
+    def self.top_level_from_file_list(file_list)
+      file_list.map{ |f| f.gsub!(/([^\/]*).*/,"\\1") }.uniq
+    end
+
+    # Compares string to the given regexp conditions
+    def self.check_str_on_conditions(str, conditions)
+      conditions.any? do |condition|
+        condition.is_a?(Regexp) ? condition.match(str) : condition == str
+      end
+    end
   end
 end
