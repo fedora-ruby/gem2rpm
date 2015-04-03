@@ -94,8 +94,6 @@ getent group vagrant >/dev/null || groupadd -r vagrant
 %vagrant_plugin_unregister %{vagrant_plugin_name}
 
 <%
-# Use the new license macro
-config.macros[:license] = '%license'
 # Change instdir to
 config.macros[:instdir] = '%{vagrant_plugin_instdir}'
 -%>
