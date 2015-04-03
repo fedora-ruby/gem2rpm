@@ -50,13 +50,13 @@ module Gem2Rpm
       config = Gem2Rpm::Configuration.instance
       case true
       when Gem2Rpm::Specification.doc_file?(entry)
-        "#{config.macro_for(:doc)} %{gem_instdir}/#{entry}".strip
+        "#{config.macro_for(:doc)} #{config.macro_for(:instdir)}/#{entry}".strip
       when Gem2Rpm::Specification.license_file?(entry)
-        "#{config.macro_for(:license)} %{gem_instdir}/#{entry}".strip
+        "#{config.macro_for(:license)} #{config.macro_for(:instdir)}/#{entry}".strip
       when Gem2Rpm::Specification.ignore_file?(entry)
-        "#{config.macro_for(:ignore)} %{gem_instdir}/#{entry}".strip
+        "#{config.macro_for(:ignore)} #{config.macro_for(:instdir)}/#{entry}".strip
       else
-        "%{gem_instdir}/#{entry}"
+        "#{config.macro_for(:instdir)}/#{entry}"
       end
     end
 
