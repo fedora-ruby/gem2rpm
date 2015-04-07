@@ -11,7 +11,6 @@ License: <%= spec.licenses.join(" and ") %>
 URL: <%= spec.homepage %>
 <% end -%>
 Source0: <%= download_path %>%{vagrant_plugin_name}-%{version}.gem
-Requires(pre): shadow-utils
 Requires(posttrans): vagrant
 Requires(preun): vagrant
 Requires: vagrant
@@ -83,9 +82,6 @@ find %{buildroot}%{vagrant_plugin_instdir}/bin -type f | xargs chmod a+x
 pushd .%{vagrant_plugin_instdir}
 
 popd
-
-%pre
-getent group vagrant >/dev/null || groupadd -r vagrant
 
 %posttrans
 %vagrant_plugin_register %{vagrant_plugin_name}
