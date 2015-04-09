@@ -25,6 +25,7 @@ module Gem2Rpm
     # A long description of gem wrapped to 78 characters.
     def description
       d = super.to_s.chomp
+      d = summary.to_s.chomp if d.empty?
       d.gsub!(/([^.!?])\Z/, "\\1.")
       Helpers::word_wrap(d, 78) + "\n"
     end
