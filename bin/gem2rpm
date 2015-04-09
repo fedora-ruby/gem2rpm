@@ -68,7 +68,12 @@ rest = opts.permute(ARGV)
 
 template = nil
 if template_file.nil?
-  template = Gem2Rpm::TEMPLATE
+  template = case rest[0]
+  when /vagrant-.*/
+    Gem2Rpm::VAGRANT_PLUGIN_TEMPLATE
+  else
+    Gem2Rpm::RUBYGEM_TEMPLATE
+  end
 else
   begin
       f = open(template_file, "r") if File.exists?(template_file)
