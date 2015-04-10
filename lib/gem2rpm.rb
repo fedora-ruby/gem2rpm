@@ -76,7 +76,10 @@ module Gem2Rpm
   end
 
   RUBYGEM_TEMPLATE = File.read File.join(template_dir, "#{Distro.nature.to_s}.spec.erb")
-  VAGRANT_PLUGIN_TEMPLATE = File.read File.join(template_dir, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
+  VAGRANT_PLUGIN_TEMPLATE = begin
+    file = File.join(template_dir, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
+    File.read file if File.exist? file
+  end
 end
 
 # Local Variables:

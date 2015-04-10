@@ -45,8 +45,9 @@ module Gem2Rpm
     def self.template_by_os_version(os, version)
       Dir.new(Gem2Rpm::template_dir).each do |file|
         next if file =~ /^\./
-        /#{os}-([\w-]+).spec.erb/ =~ file
-        return file.gsub('.spec.erb', '') if Regexp.last_match and in_range?(version, Regexp.last_match[1].to_s.split('-'))
+        # We want only distro RubyGems templates to get the right versions
+        next unless file =~ /^#{os}((-[0-9]+){0,}(-rawhide){0,1}).spec.erb/
+        return file.gsub('.spec.erb', '') if Regexp.last_match and in_range?(version, Regexp.last_match[1].to_s.split('-').drop(1))
       end
 
       nil
@@ -67,4 +68,3 @@ module Gem2Rpm
     end
   end
 end
-

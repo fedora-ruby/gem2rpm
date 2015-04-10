@@ -4,7 +4,7 @@ class TestFedora < Minitest::Test
 
   def template
     @template ||= begin
-      fedora_rawhide_template = Dir.glob(File.join(File.dirname(__FILE__), '..', '..', 'templates', '*rawhide*')).first
+      fedora_rawhide_template = Dir.glob(File.join(File.dirname(__FILE__), '..', '..', 'templates', '*rawhide.spec.erb')).first
       File.read fedora_rawhide_template
     end
   end
