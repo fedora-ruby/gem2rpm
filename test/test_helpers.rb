@@ -50,4 +50,35 @@ class TestHelpers < Minitest::Test
     r = Gem::Requirement.new(["!= 1.2.3"])
     assert_equal(["< 1.2.3", "> 1.2.3"], Gem2Rpm::Helpers.requirement_versions_to_rpm(r))
   end
+
+  def test_file_entries_to_rpm
+    entries = ['lib/foo.rb', 'LICENSE']
+    result = "#{config.macro_for(:instdir)}/#{entries[0]}\n" +
+             "#{config.macro_for(:license)} #{config.macro_for(:instdir)}/#{entries[1]}"
+    assert_equal result, Gem2Rpm::Helpers.file_entries_to_rpm(entries)
+
+    entries = ['.gitignore', 'AUTHORS']
+    result = "#{config.macro_for(:ignore)} #{config.macro_for(:instdir)}/#{entries[0]}\n" +
+             "#{config.macro_for(:doc)} #{config.macro_for(:instdir)}/#{entries[1]}"
+    assert_equal result, Gem2Rpm::Helpers.file_entries_to_rpm(entries)
+  end
+
+  def test_file_entry_to_rpm
+    entry = 'lib/foo/bar.rb'
+    result = "#{config.macro_for(:instdir)}/#{entry}"
+    assert_equal result, Gem2Rpm::Helpers.file_entry_to_rpm(entry)
+  end
+
+  def def_top_level_from_file_list
+    file_list = ['foo.rb','first/bar.rb','first/second/bar.rb','first/foo.rb']
+    assert_equal ['foo.rb', 'first'], Gem2Rpm::Helpers.def_top_level_from_file_list(file_list)
+  end
+
+  def def_check_str_on_conditions
+    conditions = [/\/?CHANGELOG.*/i, 'FILE']
+    str = 'CHANGELOG'
+    assert_equal true, Gem2Rpm::Helpers.check_str_on_conditions(str, conditions)
+    str = 'FILE'
+    assert_equal true, Gem2Rpm::Helpers.check_str_on_conditions(str, conditions)
+  end
 end
