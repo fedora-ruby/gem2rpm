@@ -69,7 +69,7 @@ rest = opts.permute(ARGV)
 template = nil
 if template_file.nil?
   template = case rest[0]
-  when /vagrant-.*/
+  when /^vagrant(-|_).*/
     Gem2Rpm::VAGRANT_PLUGIN_TEMPLATE
   else
     Gem2Rpm::RUBYGEM_TEMPLATE

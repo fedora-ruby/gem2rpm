@@ -11,9 +11,7 @@ class TestFedora < Minitest::Test
 
   def setup
     @out = StringIO.new
-
     Gem2Rpm::convert(gem_path, template, @out, false)
-
     @out_string = @out.string
   end
 
