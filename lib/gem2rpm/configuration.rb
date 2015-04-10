@@ -24,14 +24,21 @@ module Gem2Rpm
                 /spec.*/, /rspec.*/, /test(s|)/, /examples.*/]
     }
 
+    # Set the configuration back to default
+    def to_default
+      @_macros = nil
+      @_rules = nil
+      self
+    end
+
     # Hash with macros for files categories
     def macros
-      @_macros ||= DEFAULT_MACROS
+      @_macros ||= DEFAULT_MACROS.dup
     end
 
     # Hash with rules for file categorization
     def rules
-      @_rules ||= DEFAULT_RULES
+      @_rules ||= DEFAULT_RULES.dup
     end
 
     def macro_for(category)
