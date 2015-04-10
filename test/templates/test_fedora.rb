@@ -52,4 +52,16 @@ class TestFedora < Minitest::Test
     refute_match(/\sProvides:\s*rubygem\(%\{gem_name\}\)/, @out_string)
   end
 
+  def test_file_list
+    assert_match(/\s%dir %\{gem_instdir\}/, @out_string)
+    assert_match(/\s%\{gem_instdir\}\/lib/, @out_string)
+    assert_match(/\s%\{gem_instdir\}\/runtime/, @out_string)
+    assert_match(/\s%\{gem_instdir\}\/Gemfile/, @out_string)
+    assert_match(/\s%\{gem_instdir\}\/Rakefile/, @out_string)
+    assert_match(/\s%\{gem_spec\}/, @out_string)
+    assert_match(/\s%doc %\{gem_docdir\}/, @out_string)
+    assert_match(/\s%doc %\{gem_instdir\}\/README/, @out_string)
+    assert_match(/\s%exclude %\{gem_instdir\}\/\.travis\.yml/, @out_string)
+  end
+
 end
