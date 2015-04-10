@@ -3,6 +3,7 @@ module Gem2Rpm
     FEDORA = :fedora
     OPENSUSE = :opensuse
     DEFAULT = :default
+    ROLLING_RELEASES = ['rawhide', 'factory', 'tumbleweed']
 
     OPEN_MODE = # :nodoc:
       if Object.const_defined? :Encoding
@@ -46,7 +47,7 @@ module Gem2Rpm
       Dir.new(Gem2Rpm::template_dir).each do |file|
         next if file =~ /^\./
         # We want only distro RubyGems templates to get the right versions
-        next unless file =~ /^#{os}((-[0-9]+){0,}(-rawhide){0,1}).spec.erb/
+        next unless file =~ /^#{os}((-([0-9]+\.{0,1}[0-9]+){0,}){0,}(-(#{ROLLING_RELEASES.join('|')})){0,1}).spec.erb/
         return file.gsub('.spec.erb', '') if Regexp.last_match and in_range?(version, Regexp.last_match[1].to_s.split('-').drop(1))
       end
 
@@ -60,7 +61,7 @@ module Gem2Rpm
         return true if range.first.to_s == version.to_s
       else # range: [xx, yy]
         if range[0].to_s <= version.to_s
-          return true if range[1] == 'rawhide' or version.to_s <= range[1].to_s
+          return true if ROLLING_RELEASES.include? range[1] or version.to_s <= range[1].to_s
         end
       end
 
