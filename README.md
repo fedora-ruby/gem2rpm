@@ -117,4 +117,4 @@ Fedora ruby and rubygem packaging guidelines:
 -  http://fedoraproject.org/wiki/Packaging/Ruby
 
 Project website
--  https://github.com/lutter/gem2rpm/
+-  https://github.com/fedora-ruby/gem2rpm
