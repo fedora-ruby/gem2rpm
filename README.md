@@ -2,8 +2,6 @@
 
 gem2rpm converts RubyGems packages to RPM spec files.
 
-*Note:* Because of the differences between the two packaging schemes, it is impossible to come up with a completely automated way of doing the conversion, but the spec files produced by this package should be good enough for most pure-ruby gems.
-
 ## Installation
 
 You can install gem2rpm as any other gem from RubyGems.org:
@@ -20,7 +18,7 @@ or download gem2rpm from Fedora repositories as RPM package:
 
 ## Usage
 
-Run `gem2rpm --help` for options
+Run `gem2rpm --help` to see all of the options.
 
 At its simplest, download a gem (let's call it GEM) in its latest
 version (e.g. 1.2.3):
@@ -64,7 +62,6 @@ $ gem2rpm -t rubygem-GEM.spec.template > rubygem-GEM.spec
 With this new template you can now build your RPM as usual and when a new version of the gem becomes available, you just edit the saved template and rerun gem2rpm over it.
 
 ## Templates
-
 
 The template is a standard ERB file that comes with three main variables:
 
@@ -110,17 +107,9 @@ where GEM is the name of the packaged gem. The default template also makes
 sure that the resulting package provides 'ruby($GEM)', according to general
 packaging conventions for scripting languages.
 
-## Gem Limitiations
+## Limitiations
 
-Gems have some limitations that make them almost impossible to convert to RPM files in an automatic fashion. Some of them are:
-
-- No changelog
-- No distinction between build and install time (important for gems with
-    binary components)
-- Because of its nature as a separate packaging system, gems can not
-    capture dependencies on non-gem system components, e.g., the ruby
-    PostgreSQL driver can not properly describe its build- and
-    runtime-dependencies on the various pieces of the PostgreSQL database
+Because of the differences between the two packaging schemes, it is impossible to come up with a completely automated way of doing the conversion, but the spec files produced by this package should be good enough for most pure-ruby gems.
 
 ## See also
 
