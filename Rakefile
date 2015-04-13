@@ -29,14 +29,14 @@ PKG_FILES = FileList[
 ]
 
 spec = Gem::Specification.new do |s|
-    
+
   #### Basic information.
 
   s.name = 'gem2rpm'
   s.version = PKG_VERSION
   s.summary = "Generate rpm specfiles from gems"
   s.description = <<-EOF
-  Generate source rpms and rpm spec files from a Ruby Gem. 
+  Generate source rpms and rpm spec files from a Ruby Gem.
   The spec file tries to follow the gem as closely as possible
   EOF
 
@@ -53,7 +53,7 @@ spec = Gem::Specification.new do |s|
 
   #### Documentation and testing.
 
-  s.extra_rdoc_files = ['AUTHORS', 'README', 'LICENSE']
+  s.extra_rdoc_files = ['AUTHORS', 'README.md', 'LICENSE']
 
   #### Author and project details.
 

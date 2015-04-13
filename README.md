@@ -1,3 +1,5 @@
+# gem2rpm
+
 This package is a first attempt at converting ruby gems to rpm's. Because
 of the differences between the two packaging schemes, it is impossible to
 come up with a completely automated way of doing the conversion, but the
@@ -7,28 +9,42 @@ process for gems with binary code such as database drivers. But even for
 those, gem2rpm provides a good starting point for the packaging gems as
 RPM's.
 
-Installation
-============
+## Installation
 
-Download the ruby gem or an RPM (TODO: more detail)
+You can install gem2rpm as any other gem from RubyGems.org:
 
-Usage
-=====
+```
+$ gem install gem2rpm
+```
 
-Run 'gem2rpm --help' for options
+or download gem2rpm from Fedora repositories as RPM package:
+
+```
+# yum install rubygem-gem2rpm
+```
+
+## Usage
+
+Run `gem2rpm --help` for options
 
 At its simplest, download a gem (let's call it GEM) in its latest
 version (e.g. 1.2.3):
 
-  $ gem fetch GEM
+```
+$ gem fetch GEM
+```
 
 and run gem2rpm above the downloaded file:
 
-  $ gem2rpm GEM-1.2.3.gem
+```
+$ gem2rpm GEM-1.2.3.gem
+```
 
-You can also use the --fetch flag to fetch the (latest) gem before generating the spec file, achieving the same effect as running 'gem fetch GEM' plus 'gem2rpm GEM-1.2.3.gem':
+You can also use the `--fetch` flag to fetch the (latest) gem before generating the spec file, achieving the same effect as running 'gem fetch GEM' plus 'gem2rpm GEM-1.2.3.gem':
 
-  $ gem2rpm --fetch GEM
+```
+$ gem2rpm --fetch GEM
+```
 
 This will print an rpm spec file based on the information contained in the
 gem's spec file. In general, it is necessary to edit the generated spec
@@ -38,37 +54,37 @@ customarily provided in rpm's, most notably the license and the changelog.
 
 Rather than editing the generated specfile, edit the template from which
 the specfile is generated. This will make it easier to update the RPM when
-a new version of the Gem becomes available. 
+a new version of the Gem becomes available.
 
 To support this process, it is recommended to first save the default
-template somewhere: 
-  gem2rpm -T > rubygem-GEM.spec.template
+template somewhere:
+```
+gem2rpm -T > rubygem-GEM.spec.template
+```
 
 Now, edit the template and then run gem2rpm to generate the spec file
 using the edited template:
-  gem2rpm -t rubygem-GEM.spec.template > rubygem-GEM.spec
+```
+gem2rpm -t rubygem-GEM.spec.template > rubygem-GEM.spec
+```
 
 With that, you can now build your RPM as usual. When a new version of the
 gem becomes available, you should edit the saved template and rerun
 gem2rpm over it.
 
-Template Details
-================
+## Template Details
 
 The template is a standard erb file; there are two main variables available
 in the template file:
-  
-  package      - The Gem::Package for the gem
-  spec         - The Gem::Specification for the gem (the same as format.spec)
+
+-  package      - The Gem::Package for the gem
+-  spec         - The Gem::Specification for the gem (the same as format.spec)
 
 Deprecated:
 
-  format       - The Gem::Format for the gem. Please note that this is kept
-                 just for compatibility reasons, since RubyGems 2.0 removed
-                 this class.
+-  format       - The Gem::Format for the gem. Please note that this is kept just for compatibility reasons, since RubyGems 2.0 removed this class.
 
-Conventions
-===========
+## Conventions
 
 A typical source RPM for a gem should consist of three files: the gem file
 itself, the template for the spec file and the spec file. To ensure that
@@ -80,12 +96,11 @@ where GEM is the name of the packaged gem. The default template also makes
 sure that the resulting package provides 'ruby($GEM)', according to general
 packaging conventions for scripting languages.
 
-Gem Limitiations
-================
+## Gem Limitiations
 
 Gem has some important limitations that make it next to impossible to
 fully automate the gem -> rpm conversion process. Amongst them are
-  
+
   - No license field
   - No changelog
   - No distinction between build and install time (important for gems with
@@ -95,11 +110,10 @@ fully automate the gem -> rpm conversion process. Amongst them are
     PostgreSQL driver can not properly describe its build- and
     runtime-dependencies on the various pieces of the PostgreSQL database
 
-See also
-========
+## See also
 
 Fedora ruby and rubygem packaging guidelines:
-  http://fedoraproject.org/wiki/Packaging/Ruby
+-  http://fedoraproject.org/wiki/Packaging/Ruby
 
 Project website
-  https://github.com/lutter/gem2rpm/
+-  https://github.com/lutter/gem2rpm/
