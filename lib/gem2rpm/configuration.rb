@@ -23,7 +23,7 @@ module Gem2Rpm
       # Other files including test files that are not required for
       # runtime and therefore currently included in -doc
       :misc => [/.*.gemspec/, /Gemfile.*/, 'Rakefile', 'rakefile.rb', 'Vagrantfile',
-                /spec.*/, /rspec.*/, /test(s|)/, /examples.*/]
+                /^spec.*/, /^rspec.*/, /^test(s|)/, /^examples.*/]
     }
 
     # Set the configuration back to default
