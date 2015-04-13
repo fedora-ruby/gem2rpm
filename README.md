@@ -1,13 +1,8 @@
 # gem2rpm
 
-This package is a first attempt at converting ruby gems to rpm's. Because
-of the differences between the two packaging schemes, it is impossible to
-come up with a completely automated way of doing the conversion, but the
-spec files produced by this package should be good enough for most
-pure-ruby gems. I wouldn't put too much hope into automating the gem->rpm
-process for gems with binary code such as database drivers. But even for
-those, gem2rpm provides a good starting point for the packaging gems as
-RPM's.
+gem2rpm converts RubyGems packages to RPM spec files.
+
+*Note:* Because of the differences between the two packaging schemes, it is impossible to come up with a completely automated way of doing the conversion, but the spec files produced by this package should be good enough for most pure-ruby gems.
 
 ## Installation
 
@@ -34,7 +29,7 @@ version (e.g. 1.2.3):
 $ gem fetch GEM
 ```
 
-and run gem2rpm above the downloaded file:
+and run gem2rpm:
 
 ```
 $ gem2rpm GEM-1.2.3.gem
@@ -46,43 +41,62 @@ You can also use the `--fetch` flag to fetch the (latest) gem before generating 
 $ gem2rpm --fetch GEM
 ```
 
-This will print an rpm spec file based on the information contained in the
-gem's spec file. In general, it is necessary to edit the generated spec
-file because the gem is missing some important information that is
+This will print an rpm spec file based on the information contained in the gem's spec file. In general, it is necessary to edit the generated spec file because the gem is missing some important information that is
 customarily provided in rpm's, most notably the license and the changelog.
 
 
 Rather than editing the generated specfile, edit the template from which
-the specfile is generated. This will make it easier to update the RPM when
-a new version of the Gem becomes available.
+the specfile is generated. This will make it easier to update the RPM when a new version of the Gem becomes available.
 
 To support this process, it is recommended to first save the default
 template somewhere:
-```
-gem2rpm -T > rubygem-GEM.spec.template
-```
 
-Now, edit the template and then run gem2rpm to generate the spec file
-using the edited template:
 ```
-gem2rpm -t rubygem-GEM.spec.template > rubygem-GEM.spec
+$ gem2rpm -T > rubygem-GEM.spec.template
 ```
 
-With that, you can now build your RPM as usual. When a new version of the
-gem becomes available, you should edit the saved template and rerun
-gem2rpm over it.
+Now you can edit the template and then run gem2rpm to generate the spec file using the edited template:
 
-## Template Details
+```
+$ gem2rpm -t rubygem-GEM.spec.template > rubygem-GEM.spec
+```
 
-The template is a standard erb file; there are two main variables available
-in the template file:
+With this new template you can now build your RPM as usual and when a new version of the gem becomes available, you just edit the saved template and rerun gem2rpm over it.
 
--  package      - The Gem::Package for the gem
--  spec         - The Gem::Specification for the gem (the same as format.spec)
+## Templates
 
-Deprecated:
 
--  format       - The Gem::Format for the gem. Please note that this is kept just for compatibility reasons, since RubyGems 2.0 removed this class.
+The template is a standard ERB file that comes with three main variables:
+
+- `package` - the `Gem::Package` for the gem
+- `spec` - the `Gem::Specification` for the gem (the same as `format.spec`)
+- `config` - the `Gem2Rpm::Configuration` that can redefine default macros or rules used in `spec` template helpers
+
+The following variables still work, but are now deprecated:
+
+- `format` - The `Gem::Format` for the gem. Please note that this is kept just for compatibility reasons, since RubyGems 2.0 removed this class.
+
+### Template Configuration
+
+To make the templates lighter and more complete, Gem2Rpm introduced in version 0.11.0 new configurable `spec` helpers such as `spec.main_file_entries` or `spec.doc_file_entries` that can be further configured via local `config` variable as follows:
+
+```ruby
+# Change macros for Vagrant packaging
+config.macros[:instdir] = '%{vagrant_plugin_instdir}'
+config.macros[:libdir] = '%{vagrant_plugin_libdir}'
+
+# Change what files go to the -doc sub-package
+config.rules[:doc] = [/\/?doc(\/.*)?/]
+
+```
+
+To see all the defaults that can be changed (from https://github.com/fedora-ruby/gem2rpm/blob/master/lib/gem2rpm/configuration.rb):
+
+```ruby
+$ irb -rgem2rpm
+> Gem2Rpm::Configuration::DEFAULT_MACROS
+> Gem2Rpm::Configuration::DEFAULT_RULES
+```
 
 ## Conventions
 
@@ -91,21 +105,19 @@ itself, the template for the spec file and the spec file. To ensure that
 the template will be included in the source RPM, it must be listed as one
 of the sources in the spec file.
 
-The resulting rpms should follow the naming convention 'rubygem-$GEM'
+The resulting RPMs should follow the naming convention 'rubygem-$GEM'
 where GEM is the name of the packaged gem. The default template also makes
 sure that the resulting package provides 'ruby($GEM)', according to general
 packaging conventions for scripting languages.
 
 ## Gem Limitiations
 
-Gem has some important limitations that make it next to impossible to
-fully automate the gem -> rpm conversion process. Amongst them are
+Gems have some limitations that make them almost impossible to convert to RPM files in an automatic fashion. Some of them are:
 
-  - No license field
-  - No changelog
-  - No distinction between build and install time (important for gems with
+- No changelog
+- No distinction between build and install time (important for gems with
     binary components)
-  - Because of its nature as a separate packaging system, gems can not
+- Because of its nature as a separate packaging system, gems can not
     capture dependencies on non-gem system components, e.g., the ruby
     PostgreSQL driver can not properly describe its build- and
     runtime-dependencies on the various pieces of the PostgreSQL database
