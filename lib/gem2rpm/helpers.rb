@@ -55,6 +55,9 @@ module Gem2Rpm
         "#{config.macro_for(:license)} #{config.macro_for(:instdir)}/#{entry}".strip
       when Gem2Rpm::Specification.ignore_file?(entry)
         "#{config.macro_for(:ignore)} #{config.macro_for(:instdir)}/#{entry}".strip
+      # /lib should have its own macro
+      when entry == 'lib'
+        "#{config.macro_for(:libdir)}"
       else
         "#{config.macro_for(:instdir)}/#{entry}"
       end

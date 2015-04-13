@@ -55,7 +55,7 @@ class TestFedoraVagrantPlugin < Minitest::Test
 
   def test_file_list
     assert_match(/\s%dir %\{vagrant_plugin_instdir\}/, @out_string)
-    assert_match(/\s%\{vagrant_plugin_instdir\}\/lib/, @out_string)
+    assert_match(/\s%\{vagrant_plugin_libdir\}/, @out_string)
     assert_match(/\s%\{vagrant_plugin_spec\}/, @out_string)
     assert_match(/\s%doc %\{vagrant_plugin_docdir\}/, @out_string)
     assert_match(/\s%license %\{vagrant_plugin_instdir\}\/MIT/, @out_string)

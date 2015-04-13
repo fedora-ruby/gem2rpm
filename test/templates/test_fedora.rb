@@ -54,7 +54,7 @@ class TestFedora < Minitest::Test
 
   def test_file_list
     assert_match(/\s%dir %\{gem_instdir\}/, @out_string)
-    assert_match(/\s%\{gem_instdir\}\/lib/, @out_string)
+    assert_match(/\s%\{gem_libdir\}/, @out_string)
     assert_match(/\s%\{gem_instdir\}\/runtime/, @out_string)
     assert_match(/\s%\{gem_instdir\}\/Gemfile/, @out_string)
     assert_match(/\s%\{gem_instdir\}\/Rakefile/, @out_string)

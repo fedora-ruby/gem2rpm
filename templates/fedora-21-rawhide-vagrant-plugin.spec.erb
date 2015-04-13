@@ -90,8 +90,9 @@ popd
 %vagrant_plugin_unregister %{vagrant_plugin_name}
 
 <%
-# Change instdir to
+# Change macros for Vagrant packaging
 config.macros[:instdir] = '%{vagrant_plugin_instdir}'
+config.macros[:libdir] = '%{vagrant_plugin_libdir}'
 -%>
 %files
 %dir %{vagrant_plugin_instdir}
@@ -101,7 +102,6 @@ config.macros[:instdir] = '%{vagrant_plugin_instdir}'
 <% end -%>
 %{vagrant_plugin_instdir}/bin
 <% end -%>
-%{vagrant_plugin_libdir}
 <% unless spec.extensions.empty? -%>
 %{vagrant_plugin_extdir_mri}
 <% end -%>

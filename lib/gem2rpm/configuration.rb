@@ -7,6 +7,7 @@ module Gem2Rpm
     # The defaults should mostly work
     DEFAULT_MACROS = {
       :instdir => '%{gem_instdir}',
+      :libdir => '%{gem_libdir}',
       :doc => '%doc',
       :license => '%license',
       :ignore => '%exclude'
