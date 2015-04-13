@@ -25,7 +25,7 @@ PKG_FILES = FileList[
   'lib/**/*',
   'templates/**/*',
   'LICENSE',
-  'README'
+  'README.md'
 ]
 
 spec = Gem::Specification.new do |s|
