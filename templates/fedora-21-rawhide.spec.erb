@@ -95,7 +95,6 @@ popd
 <% for f in spec.executables -%>
 %{_bindir}/<%= f %>
 <% end -%>
-%{gem_instdir}/bin
 <% end -%>
 <% unless spec.extensions.empty? -%>
 %{gem_extdir_mri}

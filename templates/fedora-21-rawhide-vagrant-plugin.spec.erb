@@ -100,7 +100,6 @@ config.macros[:libdir] = '%{vagrant_plugin_libdir}'
 <% for f in spec.executables -%>
 %{_bindir}/<%= f %>
 <% end -%>
-%{vagrant_plugin_instdir}/bin
 <% end -%>
 <% unless spec.extensions.empty? -%>
 %{vagrant_plugin_extdir_mri}
