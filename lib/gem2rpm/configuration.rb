@@ -18,7 +18,8 @@ module Gem2Rpm
                /\/?AUTHORS.*/i,/\/?README.*/i, /\/?History.*/i, /\/?Release.*/i,
                /\/?doc(\/.*)?/, 'NEWS'],
       :license => [/\/?MIT/, /\/?GPLv[0-9]+/, /\/?.*LICEN(C|S)E/, /\/?COPYING/],
-      :ignore => ['.gemtest', '.gitignore', '.travis.yml', '.yardopts', '.rvmrc'],
+      :ignore => ['.gemtest', '.gitignore', '.travis.yml', '.yardopts', '.rvmrc',
+                  '.rubocop.yml', /^\..*rc$/i],
       # Other files including test files that are not required for
       # runtime and therefore currently included in -doc
       :misc => [/.*.gemspec/, /Gemfile.*/, 'Rakefile', 'rakefile.rb', 'Vagrantfile',
