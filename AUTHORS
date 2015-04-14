@@ -3,16 +3,25 @@ gem2rpm Authors
 
 Initiated and maintained by:
 
-  David Lutterkort   lutter@watzmann.net
+  David Lutterkort      lutter@watzmann.net
 
 Maintained by:
-  Vít Ondruch        vondruch at gmail dot com
+  Vít Ondruch           vondruch at gmail dot com
+  Josef Strzibny        strzibny at strzibny.name
 
 Patches from:
 
-  Brian Candler      B.Candler at pobox dot com
-  Josh Kelley        joshkel at gmail dot com
-  Paul Nasrat        pauln at truemesh.com
-  Chris Ess          caess at ithiriel.com
-  Matthew Kent       mattkent at rubyforge.com
-  Michal Fojtík      mi at mifo dot sk
+  Brian Candler         B.Candler at pobox dot com
+  Josh Kelley           joshkel at gmail dot com
+  Paul Nasrat           pauln at truemesh.com
+  Chris Ess             caess at ithiriel.com
+  Matthew Kent          mattkent at rubyforge.com
+  Michal Fojtík         mi at mifo dot sk
+  Elan Ruusamäe         glen at delfi.ee
+  Achilleas Pipinellis  axilleas at archlinux.gr
+  Russell Harrison      rharriso at redhat.com
+  Nicolas Dupeux        nicolas.dupeux at arkea.com
+  Ken Dreyer            ktdreyer at ktdreyer.com
+  Bohuslav Kabrda       bkabrda@redhat.com
+  Saleem Ansari         tuxdna@gmail.com
+  Sergio Rubio          rubiojr@frameos.org
