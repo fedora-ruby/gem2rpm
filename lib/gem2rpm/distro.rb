@@ -1,6 +1,7 @@
 module Gem2Rpm
   class Distro
     FEDORA = :fedora
+    PLD = :pld
     OPENSUSE = :opensuse
     DEFAULT = :default
     ROLLING_RELEASES = ['rawhide', 'factory', 'tumbleweed']
@@ -33,6 +34,8 @@ module Gem2Rpm
         FEDORA
       elsif !release_files.grep(/SuSE/).empty?
         OPENSUSE
+      elsif !release_files.grep(/pld/).empty?
+        PLD
       else
         DEFAULT
       end
