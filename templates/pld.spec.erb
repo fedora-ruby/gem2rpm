@@ -1,0 +1,92 @@
+<% if ! spec.development_dependencies.empty? -%>
+#
+# Conditional build:
+%bcond_without	tests		# build without tests
+
+<% end -%>
+%define	pkgname	<%= spec.name %>
+Summary:	<%= spec.summary %>
+Name:		ruby-%{pkgname}
+Version:	<%= spec.version %>
+Release:	0.1
+License:	<%= spec.licenses.empty? ? "GPL v2+ or Ruby" : spec.licenses.join(", ") %>
+Group:		Development/Languages
+Source0:	http://rubygems.org/downloads/%{pkgname}-%{version}.gem
+# Source0-md5:	-
+URL:		<%= spec.homepage %>
+BuildRequires:	rpm-rubyprov
+BuildRequires:	rpmbuild(macros) >= 1.656
+<% if ! spec.extensions.empty? -%>
+BuildRequires:	ruby-devel
+<% end -%>
+<% if ! spec.executables.empty? -%>
+BuildRequires:	sed >= 4.0
+<% end -%>
+<% if ! spec.development_dependencies.empty? -%>
+%if %{with tests}
+<% for d in spec.development_dependencies.sort -%>
+<% for req in d.requirement -%>
+BuildRequires:	ruby-<%= d.name %> <%= req %>
+<% end -%>
+<% end -%>
+%endif
+<% end -%>
+<% if ! spec.required_rubygems_version.empty? and ! spec.required_rubygems_version.first.empty? -%>
+Requires:	ruby-rubygems <%= spec.required_rubygems_version.first %>
+<% end -%>
+<% for d in spec.runtime_dependencies.sort -%>
+<% for req in d.requirement -%>
+Requires:	ruby-<%= d.name %> <%= req %>
+<% end -%>
+<% end -%>
+<% if spec.extensions.empty? -%>
+BuildArch:	noarch
+<% end -%>
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%description
+<%= spec.description %>
+
+%prep
+%setup -q -n %{pkgname}-%{version}
+<% if ! spec.executables.empty? -%>
+%{__sed} -i -e '1 s,#!.*ruby,#!%{__ruby},' bin/*
+<% end -%>
+
+%build
+# write .gemspec
+%__gem_helper spec
+
+<% if !spec.extensions.empty? -%>
+cd ext/%{pkgname}
+%{__ruby} extconf.rb
+%{__make} \
+	CC="%{__cc}" \
+	LDFLAGS="%{rpmldflags}" \
+	CFLAGS="%{rpmcflags} -fPIC"
+<% end -%>
+
+%install
+rm -rf $RPM_BUILD_ROOT
+<% if spec.executables.empty? -%>
+install -d $RPM_BUILD_ROOT{%{ruby_vendorlibdir},%{ruby_specdir}}
+<% else -%>
+install -d $RPM_BUILD_ROOT{%{ruby_vendorlibdir},%{ruby_specdir},%{_bindir}}
+<% end -%>
+cp -a lib/* $RPM_BUILD_ROOT%{ruby_vendorlibdir}
+<% if ! spec.executables.empty? -%>
+cp -a bin/* $RPM_BUILD_ROOT%{_bindir}
+<% end -%>
+cp -p %{pkgname}-%{version}.gemspec $RPM_BUILD_ROOT%{ruby_specdir}
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(644,root,root,755)
+<% for f in spec.executables.sort -%>
+%attr(755,root,root) %{_bindir}/<%= f %>
+<% end -%>
+%{ruby_vendorlibdir}/%{pkgname}.rb
+%{ruby_vendorlibdir}/%{pkgname}
+%{ruby_specdir}/%{pkgname}-%{version}.gemspec
