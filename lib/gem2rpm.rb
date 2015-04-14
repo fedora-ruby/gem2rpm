@@ -5,8 +5,11 @@ require 'gem2rpm/distro'
 require 'gem2rpm/format'
 require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/specification'
+require 'gem2rpm/template_helpers'
 
 module Gem2Rpm
+  extend Gem2Rpm::TemplateHelpers
+
   Gem2Rpm::VERSION = "0.10.1"
 
   class Exception < RuntimeError; end
@@ -47,6 +50,7 @@ module Gem2Rpm
         $stderr.puts e.inspect
       end
     end
+
     template = ERB.new(template, 0, '-')
     out.puts template.result(binding)
   rescue Gem::Exception => e

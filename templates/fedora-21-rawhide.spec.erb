@@ -99,10 +99,10 @@ popd
 <% unless spec.extensions.empty? -%>
 %{gem_extdir_mri}
 <% end -%>
-<%= spec.main_file_entries %>
+<%= main_file_entries(spec) %>
 <% unless doc_subpackage -%>
 %doc %{gem_docdir}
-<%= spec.doc_file_entries -%>
+<%= doc_file_entries(spec) -%>
 <% end -%>
 %exclude %{gem_cache}
 %{gem_spec}
@@ -110,7 +110,7 @@ popd
 <% if doc_subpackage -%>
 %files doc
 %doc %{gem_docdir}
-<%= spec.doc_file_entries %>
+<%= doc_file_entries(spec) %>
 <% end # if doc_subpackage -%>
 
 %changelog
