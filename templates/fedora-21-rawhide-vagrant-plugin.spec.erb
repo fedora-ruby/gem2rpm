@@ -18,6 +18,7 @@ BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
 BuildRequires: ruby
 BuildRequires: vagrant
+<%= gem_build_requires(spec) %>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
 <% end -%>
