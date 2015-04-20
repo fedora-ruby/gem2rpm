@@ -69,12 +69,12 @@ class TestHelpers < Minitest::Test
     assert_equal result, Gem2Rpm::Helpers.file_entry_to_rpm(entry)
   end
 
-  def def_top_level_from_file_list
+  def test_top_level_from_file_list
     file_list = ['foo.rb','first/bar.rb','first/second/bar.rb','first/foo.rb']
-    assert_equal ['foo.rb', 'first'], Gem2Rpm::Helpers.def_top_level_from_file_list(file_list)
+    assert_equal ['foo.rb', 'first'], Gem2Rpm::Helpers.top_level_from_file_list(file_list)
   end
 
-  def def_check_str_on_conditions
+  def test_check_str_on_conditions
     conditions = [/\/?CHANGELOG.*/i, 'FILE']
     str = 'CHANGELOG'
     assert_equal true, Gem2Rpm::Helpers.check_str_on_conditions(str, conditions)
