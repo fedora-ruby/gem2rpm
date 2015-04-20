@@ -13,15 +13,15 @@ URL: <%= spec.homepage %>
 Source0: <%= download_path %>%{gem_name}-%{version}.gem
 BuildRequires: ruby(release)
 <% for req in spec.required_rubygems_version -%>
-BuildRequires: rubygems-devel <%= req %>
+BuildRequires: <%= requirement 'rubygems-devel', req %>
 <% end -%>
 <% for req in spec.required_ruby_version -%>
-BuildRequires: ruby<%= "-devel" unless spec.extensions.empty? %> <%= req %>
+BuildRequires: <%= requirement "ruby#{'-devel' unless spec.extensions.empty?}", req %>
 <% end -%>
 <% for d in spec.development_dependencies -%>
 <% unless ["rdoc", "rake", "bundler"].include? d.name -%>
 <% for req in d.requirement -%>
-# BuildRequires: rubygem(<%= d.name %>) <%= req  %>
+# BuildRequires: <%= requirement "rubygem(#{d.name})", req %>
 <% end -%>
 <% end -%>
 <% end -%>
