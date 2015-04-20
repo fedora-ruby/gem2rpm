@@ -14,7 +14,7 @@ module Gem2Rpm
       Helpers.file_entries_to_rpm(entries)
     end
 
-    # Provides well formated requirement with version.
+    # Provides well formatted requirement with version.
     def requirement(name, version = nil)
       version = nil if version && version.to_s.empty?
       [name, version].compact.join(' ')
