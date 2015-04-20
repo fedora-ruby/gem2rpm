@@ -13,5 +13,11 @@ module Gem2Rpm
       entries.keep_if{ |f| Helpers.doc_file?(f) || Helpers.misc_file?(f) }
       Helpers.file_entries_to_rpm(entries)
     end
+
+    # Provides well formated requirement with version.
+    def requirement(name, version = nil)
+      version = nil if version && version.to_s.empty?
+      [name, version].compact.join(' ')
+    end
   end
 end
