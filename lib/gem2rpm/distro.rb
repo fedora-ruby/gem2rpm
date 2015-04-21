@@ -47,7 +47,7 @@ module Gem2Rpm
     end
 
     def self.template_by_os_version(os, version)
-      Dir.new(Gem2Rpm::template_dir).each do |file|
+      Dir.new(Templates::location).each do |file|
         next if file =~ /^\./
         # We want only distro RubyGems templates to get the right versions
         next unless file =~ /^#{os}((-([0-9]+\.{0,1}[0-9]+){0,}){0,}(-(#{ROLLING_RELEASES.join('|')})){0,1}).spec.erb/

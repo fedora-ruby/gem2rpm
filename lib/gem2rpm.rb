@@ -6,6 +6,7 @@ require 'gem2rpm/format'
 require 'gem2rpm/spec_fetcher'
 require 'gem2rpm/specification'
 require 'gem2rpm/template_helpers'
+require 'gem2rpm/templates'
 
 module Gem2Rpm
   extend Gem2Rpm::TemplateHelpers
@@ -75,13 +76,9 @@ module Gem2Rpm
     packager
   end
 
-  def Gem2Rpm.template_dir
-    File.join(File.dirname(__FILE__), '..', 'templates')
-  end
-
-  RUBYGEM_TEMPLATE = File.read File.join(template_dir, "#{Distro.nature.to_s}.spec.erb")
+  RUBYGEM_TEMPLATE = File.read File.join(Templates::location, "#{Distro.nature.to_s}.spec.erb")
   VAGRANT_PLUGIN_TEMPLATE = begin
-    file = File.join(template_dir, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
+    file = File.join(Templates::location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
     File.read file if File.exist? file
   end
 end

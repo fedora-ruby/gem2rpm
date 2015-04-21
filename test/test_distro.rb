@@ -2,8 +2,8 @@ require 'helper'
 
 class TestDistro < Minitest::Test
 
-  def Gem2Rpm::template_dir
-    File.join(File.dirname(__FILE__), 'templates', 'fake_files')
+  module Gem2Rpm::Templates
+    define_method(:location) { File.join(File.dirname(__FILE__), 'templates', 'fake_files') }
   end
 
   def test_get_template_for_unavailable_version
