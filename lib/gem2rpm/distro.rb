@@ -39,6 +39,10 @@ module Gem2Rpm
         Dir.glob('/etc/*{_version,-release}*').select {|e| File.file? e}
     end
 
+    def self.release_files=(files)
+      @@release_files = files
+    end
+
     def self.template_by_os_version(os, version)
       Template.list.each do |file|
         next if file =~ /^\./
