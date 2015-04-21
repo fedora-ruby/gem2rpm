@@ -76,14 +76,13 @@ if template_file.nil?
   end
 else
   begin
-      f = open(template_file, "r") if File.exists?(template_file)
-      f = open(File.join(Template::default_location, template_file + '.spec.erb'), "r") unless f
-  rescue Errno::ENOENT
+      t = Gem2Rpm::Template.new(template_file) if File.exists?(template_file)
+      t = Gem2Rpm::Template.new(File.join(Gem2Rpm::Template::default_location, template_file + '.spec.erb')) unless t
+  rescue Gem2Rpm::Template::TemplateError
       $stderr.puts "Could not open template #{template_file}. Aborting"
       exit(1)
   end
-  template = f.read
-  f.close
+  template = t.read
 end
 
 if print_template_file

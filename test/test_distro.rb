@@ -2,8 +2,13 @@ require 'helper'
 
 class TestDistro < Minitest::Test
 
-  module Gem2Rpm::Template
-    define_method(:default_location) { File.join(File.dirname(__FILE__), 'templates', 'fake_files') }
+  def setup
+    @original_default_location = Gem2Rpm::Template.default_location
+    Gem2Rpm::Template.default_location = File.join(File.dirname(__FILE__), 'templates', 'fake_files')
+  end
+
+  def teardown
+    Gem2Rpm::Template.default_location = @original_default_location
   end
 
   def test_get_template_for_unavailable_version

@@ -16,6 +16,13 @@ module Gem2Rpm
   class Exception < RuntimeError; end
   class DownloadUrlError < Exception; end
 
+  OPEN_MODE = # :nodoc:
+    if Object.const_defined? :Encoding
+      'r:UTF-8'
+    else
+      'r'
+    end
+
   def self.find_download_url(name, version)
     dep = Gem::Dependency.new(name, "=#{version}")
     fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)
@@ -76,11 +83,12 @@ module Gem2Rpm
     packager
   end
 
-  RUBYGEM_TEMPLATE = File.read File.join(Template::default_location, "#{Distro.nature.to_s}.spec.erb")
+  RUBYGEM_TEMPLATE = Template.new(File.join(Template::default_location, "#{Distro.nature.to_s}.spec.erb")).read
   VAGRANT_PLUGIN_TEMPLATE = begin
     file = File.join(Template::default_location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
-    File.read file if File.exist? file
+    Template.new(file).read if File.exist? file
   end
+
 end
 
 # Local Variables:

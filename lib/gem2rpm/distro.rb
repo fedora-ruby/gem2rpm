@@ -6,13 +6,6 @@ module Gem2Rpm
     DEFAULT = :default
     ROLLING_RELEASES = ['rawhide', 'factory', 'tumbleweed']
 
-    OPEN_MODE = # :nodoc:
-      if Object.const_defined? :Encoding
-        'r:UTF-8'
-      else
-        'r'
-      end
-
     def self.nature
       if !release_files.grep(/fedora/).empty?
         versions = []
