@@ -2,7 +2,7 @@ require 'helper'
 
 class TestDistro < Minitest::Test
 
-  module Gem2Rpm::Templates
+  module Gem2Rpm::Template
     define_method(:location) { File.join(File.dirname(__FILE__), 'templates', 'fake_files') }
   end
 

@@ -77,7 +77,7 @@ if template_file.nil?
 else
   begin
       f = open(template_file, "r") if File.exists?(template_file)
-      f = open(File.join(Templates::location, template_file + '.spec.erb'), "r") unless f
+      f = open(File.join(Template::location, template_file + '.spec.erb'), "r") unless f
   rescue Errno::ENOENT
       $stderr.puts "Could not open template #{template_file}. Aborting"
       exit(1)

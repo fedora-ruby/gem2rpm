@@ -1,5 +1,5 @@
 module Gem2Rpm
-  module Templates
+  module Template
     def self.location
       @@location ||= File.join(File.dirname(__FILE__), '..', '..', 'templates')
     end
