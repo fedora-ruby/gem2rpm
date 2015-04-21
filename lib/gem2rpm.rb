@@ -76,9 +76,9 @@ module Gem2Rpm
     packager
   end
 
-  RUBYGEM_TEMPLATE = File.read File.join(Template::location, "#{Distro.nature.to_s}.spec.erb")
+  RUBYGEM_TEMPLATE = File.read File.join(Template::default_location, "#{Distro.nature.to_s}.spec.erb")
   VAGRANT_PLUGIN_TEMPLATE = begin
-    file = File.join(Template::location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
+    file = File.join(Template::default_location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
     File.read file if File.exist? file
   end
 end
