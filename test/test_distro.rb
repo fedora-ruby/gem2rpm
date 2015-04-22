@@ -45,4 +45,7 @@ class TestDistro < Minitest::Test
     assert "fedora", Gem2Rpm::Distro.nature.to_s
   end
 
+  def test_release_files_is_memoized
+    assert_same Gem2Rpm::Distro.release_files, Gem2Rpm::Distro.release_files
+  end
 end
