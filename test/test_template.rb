@@ -2,7 +2,7 @@ require 'helper'
 
 class TestTemplate < Minitest::Test
   def test_default_location_is_memoized
-    assert_equal Gem2Rpm::Template.default_location.object_id, Gem2Rpm::Template.default_location.object_id
+    assert_same Gem2Rpm::Template.default_location, Gem2Rpm::Template.default_location
   end
 
   def test_list
@@ -20,7 +20,7 @@ class TestTemplate < Minitest::Test
   end
 
   def test_list_is_memoized
-    assert_equal Gem2Rpm::Template.list.object_id, Gem2Rpm::Template.list.object_id
+    assert_same Gem2Rpm::Template.list, Gem2Rpm::Template.list
   end
 
   def test_find_without_argument
