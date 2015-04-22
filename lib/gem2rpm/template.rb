@@ -10,6 +10,7 @@ module Gem2Rpm
 
     def self.default_location=(location)
       @@location = location
+      @@list = nil
     end
 
     def self.list
