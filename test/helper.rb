@@ -1,8 +1,10 @@
 $:.unshift File.join(File.dirname(__FILE__), "..", "lib")
 
-require 'minitest/autorun'
 require 'rubygems'
 require 'rubygems/version'
+
+require 'minitest/autorun'
+
 require 'gem2rpm'
 
 def config
