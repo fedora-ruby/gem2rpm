@@ -10,7 +10,7 @@ module Gem2Rpm
     # File list block for the doc sub-package
     def doc_file_entries(spec)
       entries = Helpers.top_level_from_file_list(spec.files)
-      entries.keep_if{ |f| Helpers.doc_file?(f) || Helpers.misc_file?(f) }
+      entries.delete_if{ |f| !(Helpers.doc_file?(f) || Helpers.misc_file?(f)) }
       Helpers.file_entries_to_rpm(entries)
     end
 
