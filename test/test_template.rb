@@ -17,7 +17,6 @@ class TestTemplate < Minitest::Test
         opensuse.spec.erb
         pld.spec.erb
       ), Gem2Rpm::Template.list
-    assert_equal Gem2Rpm::Template.list.object_id, Gem2Rpm::Template.list.object_id
   end
 
   def test_list_is_memoized
