@@ -69,7 +69,7 @@ module Gem2Rpm
   # gem2spec).  Taken from RPM macros if present, constructed from system
   # username and hostname otherwise.
   def Gem2Rpm.packager()
-    packager = `rpmdev-packager`.chomp rescue ''
+    packager = `rpmdev-packager 2> /dev/null`.chomp rescue ''
 
     if packager.empty?
       packager = `rpm --eval '%{packager}' 2> /dev/null`.chomp rescue ''
