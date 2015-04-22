@@ -19,6 +19,27 @@ module Gem2Rpm
       end
     end
 
+    def self.find(name = nil, options = {})
+      if name.nil?
+        case options[:gem_file]
+        when /^vagrant(-|_).*/
+          Gem2Rpm::VAGRANT_PLUGIN_TEMPLATE
+        else
+          Gem2Rpm::RUBYGEM_TEMPLATE
+        end
+      else
+        begin
+	  if File.exists?(name)
+            Gem2Rpm::Template.new(name)
+          else
+            Gem2Rpm::Template.new(File.join(Gem2Rpm::Template::default_location, name + '.spec.erb'))
+          end
+        rescue TemplateError
+          raise TemplateError, "Could not locate template #{name}"
+        end
+      end
+    end
+
     def initialize(filename)
       if File.exists? filename
         @filename = filename

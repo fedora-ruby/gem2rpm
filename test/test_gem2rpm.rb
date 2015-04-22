@@ -5,7 +5,7 @@ class TestGem2Rpm < Minitest::Test
 
   Dir.glob(File.join(File.dirname(__FILE__), '..', 'templates', '*')).each do |t|
     template_name = File.basename(t).split.first.gsub(/[.-]/, '_')
-    template = File.read t
+    template = Gem2Rpm::Template.new t
 
     define_method :"test_#{template_name}_omitting_development_requirements_from_spec" do
       # Only run this test if rubygems 1.2.0 or later.

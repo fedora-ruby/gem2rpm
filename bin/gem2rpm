@@ -66,27 +66,15 @@ opts.separator("")
 
 rest = opts.permute(ARGV)
 
-template = nil
-if template_file.nil?
-  template = case rest[0]
-  when /^vagrant(-|_).*/
-    Gem2Rpm::VAGRANT_PLUGIN_TEMPLATE
-  else
-    Gem2Rpm::RUBYGEM_TEMPLATE
-  end
-else
-  begin
-      t = Gem2Rpm::Template.new(template_file) if File.exists?(template_file)
-      t = Gem2Rpm::Template.new(File.join(Gem2Rpm::Template::default_location, template_file + '.spec.erb')) unless t
-  rescue Gem2Rpm::Template::TemplateError
-      $stderr.puts "Could not open template #{template_file}. Aborting"
-      exit(1)
-  end
-  template = t.read
+template = begin
+  Gem2Rpm::Template.find template_file, :gem_file => rest[0]
+rescue Gem2Rpm::Template::TemplateError
+  $stderr.puts "Could not open template #{template_file}. Aborting"
+  exit(1)
 end
 
 if print_template_file
-  puts template
+  puts template.read
   exit 0
 end
 

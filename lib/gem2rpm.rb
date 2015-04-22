@@ -59,8 +59,8 @@ module Gem2Rpm
       end
     end
 
-    template = ERB.new(template, 0, '-')
-    out.puts template.result(binding)
+    erb = ERB.new(template.read, 0, '-')
+    out.puts erb.result(binding)
   rescue Gem::Exception => e
     puts e
   end
@@ -83,10 +83,10 @@ module Gem2Rpm
     packager
   end
 
-  RUBYGEM_TEMPLATE = Template.new(File.join(Template::default_location, "#{Distro.nature.to_s}.spec.erb")).read
+  RUBYGEM_TEMPLATE = Template.new(File.join(Template::default_location, "#{Distro.nature.to_s}.spec.erb"))
   VAGRANT_PLUGIN_TEMPLATE = begin
     file = File.join(Template::default_location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
-    Template.new(file).read if File.exist? file
+    Template.new(file) if File.exist? file
   end
 
 end
