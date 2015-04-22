@@ -19,6 +19,10 @@ module Gem2Rpm
       end
     end
 
+    # Returns instance of Template class. If the 'name' parameter is specified
+    # it tries to instantiate the template of specific name first. When
+    # options[:gem_file] is specified, it can be taken into consideration
+    # when looking for vagrant templates for example.
     def self.find(name = nil, options = {})
       if name.nil?
         case options[:gem_file]
@@ -40,6 +44,8 @@ module Gem2Rpm
       end
     end
 
+    # Create instance of Template class of specified template filename.
+    # TemplateError is raised when the template file does not exists.
     def initialize(filename)
       if File.exists? filename
         @filename = filename
@@ -48,6 +54,7 @@ module Gem2Rpm
       end
     end
 
+    # Read the content of the template file.
     def read
       File.read @filename, :mode => OPEN_MODE
     end
