@@ -72,7 +72,7 @@ module Gem2Rpm
     packager = `rpmdev-packager`.chomp rescue ''
 
     if packager.empty?
-      packager = `rpm --eval '%{packager}'`.chomp rescue ''
+      packager = `rpm --eval '%{packager}' 2> /dev/null`.chomp rescue ''
     end
 
     if packager.empty? or packager == '%{packager}'
