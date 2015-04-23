@@ -4,39 +4,61 @@ module Gem2Rpm
     PLD = :pld
     OPENSUSE = :opensuse
     DEFAULT = :default
+
     ROLLING_RELEASES = ['rawhide', 'factory', 'tumbleweed']
 
-    def self.nature
-      if !release_files.grep(/fedora/).empty?
-        versions = []
+    OsRelease = Struct.new :os, :version
 
-        release_files.each do |file|
-          /\d+/ =~ File.open(file, OPEN_MODE).readline
-          versions << Regexp.last_match.to_s if Regexp.last_match
+    def self.os_release
+      @os_release ||= begin
+        os_release = OsRelease.new DEFAULT
+
+        # Try os-release first.
+        if !release_files.grep(/os-release/).empty?
+          content = File.open(release_files.grep(/os-release/).first, Gem2Rpm::OPEN_MODE) do |f|
+            f.read
+          end
+
+          os_release.os = content[/^ID=(.*)$/, 1].to_sym rescue
+          os_release.version = content[/^VERSION_ID=(.*)$/, 1]
         end
 
-        versions.uniq!
+        # If os-release failed (it is empty or has not enough information),
+        # try some other release files.
+        if os_release.os == DEFAULT
+          if !release_files.grep(/fedora/).empty?
+            os_release.os = FEDORA
+            versions = []
 
-        if versions.length == 1
-          template_by_os_version(FEDORA, versions.first) || FEDORA
-        else # no version or more versions (=> don't know what to do)
-          FEDORA
+            release_files.each do |file|
+              /\d+/ =~ File.open(file, OPEN_MODE).readline
+              versions << Regexp.last_match.to_s if Regexp.last_match
+            end
+
+            versions.uniq!
+
+            os_release.version = versions.first if versions.length == 1
+          elsif !release_files.grep(/redhat/).empty?
+            # Use Fedora's template for RHEL ATM.
+            os_release.os = FEDORA
+          elsif !release_files.grep(/SuSE/).empty?
+            os_release.os = OPENSUSE
+          elsif !release_files.grep(/pld/).empty?
+            os_release.os = PLD
+          end
         end
-      elsif !release_files.grep(/redhat/).empty?
-        # Use Fedora's template for RHEL ATM.
-        FEDORA
-      elsif !release_files.grep(/SuSE/).empty?
-        OPENSUSE
-      elsif !release_files.grep(/pld/).empty?
-        PLD
-      else
-        DEFAULT
+
+        os_release
       end
+    end
+
+    def self.nature
+      template_by_os_version(os_release.os, os_release.version) || DEFAULT
     end
 
     def self.release_files
       @release_files ||=
-        Dir.glob('/etc/*{_version,-release}*').select {|e| File.file? e}
+        Dir.glob('/etc/{os-release,*{_version,-release}}*').uniq.select {|e| File.file? e}
     end
 
     def self.release_files=(files)
