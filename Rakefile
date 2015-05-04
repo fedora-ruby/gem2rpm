@@ -61,6 +61,11 @@ spec = Gem::Specification.new do |s|
   s.email = "gem2rpm-devel@rubyforge.org"
   s.homepage = "https://github.com/fedora-ruby/gem2rpm"
   s.license = "GPLv2+"
+
+  #### Signing properties.
+
+  s.signing_key = File.expand_path("~/.ssh/voxik-private_key.pem")
+  s.cert_chain = ["../../voxik-public_cert.pem"]
 end
 
 Gem::PackageTask.new(spec) do |pkg|
