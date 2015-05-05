@@ -19,8 +19,11 @@ module Gem2Rpm
             f.read
           end
 
-          os_release.os = content[/^ID=(.*)$/, 1].to_sym rescue
-          os_release.version = content[/^VERSION_ID=(.*)$/, 1]
+          begin
+            os_release.os = content[/^ID=(.*)$/, 1].to_sym
+            os_release.version = content[/^VERSION_ID=(.*)$/, 1]
+          rescue
+          end
         end
 
         # If os-release failed (it is empty or has not enough information),
