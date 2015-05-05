@@ -62,6 +62,7 @@ module Gem2Rpm
     end
 
     def self.release_files=(files)
+      @os_release = nil
       @release_files = files
     end
 
