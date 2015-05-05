@@ -15,25 +15,27 @@ class TestDistro < Minitest::Test
   end
 
   def test_get_template_for_unavailable_version
-    assert_nil Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 16)
-    assert_nil Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 0)
+    assert_nil Gem2Rpm::Distro.template_by_os_version('foo', 16)
   end
 
   def test_get_template_for_available_version
-    assert Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 17)
-    assert Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 177)
+    assert_equal "fedora-13-14", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 13)
+    assert_equal "fedora-17-rawhide", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 17)
+    assert_equal "fedora-17-rawhide", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 177)
+    assert_equal "fedora", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 0)
+    assert_equal "opensuse", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::OPENSUSE, 11)
   end
 
   def test_nature_for_unavailable_template
-    Gem2Rpm::Distro.release_files = [File.join(File.dirname(__FILE__), 'templates', 'fake_files', 'fedora-release15')]
+    Gem2Rpm::Distro.release_files = [File.join(File.dirname(__FILE__), 'templates', 'fake_files', 'unknown-release15')]
 
-    assert "fedora", Gem2Rpm::Distro.nature.to_s
+    assert_equal "default", Gem2Rpm::Distro.nature.to_s
   end
 
   def test_nature_for_available_template
     Gem2Rpm::Distro.release_files = [File.join(File.dirname(__FILE__), 'templates', 'fake_files', 'fedora-release17')]
 
-    assert "fedora-17-rawhide", Gem2Rpm::Distro.nature.to_s
+    assert_equal "fedora-17-rawhide", Gem2Rpm::Distro.nature.to_s
   end
 
   def test_nature_for_two_release_files
@@ -42,7 +44,13 @@ class TestDistro < Minitest::Test
       File.join(File.dirname(__FILE__), 'templates', 'fake_files', 'fedora-release17')
     ]
 
-    assert "fedora", Gem2Rpm::Distro.nature.to_s
+    assert_equal "fedora", Gem2Rpm::Distro.nature.to_s
+  end
+
+  def test_nature_for_os_release_files
+    Gem2Rpm::Distro.release_files = [File.join(File.dirname(__FILE__), 'templates', 'fake_files', 'os-release')]
+
+    assert_equal "fedora-17-rawhide", Gem2Rpm::Distro.nature.to_s
   end
 
   def test_release_files_is_memoized
