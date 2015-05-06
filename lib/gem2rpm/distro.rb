@@ -13,9 +13,13 @@ module Gem2Rpm
       @os_release ||= begin
         os_release = OsRelease.new DEFAULT
 
+        grouped_release_files = release_files.group_by do |file|
+          File.basename(file)[/os-release|fedora|redhat|SuSE|pld/] || 'unrecognized'
+        end
+
         # Try os-release first.
-        if !release_files.grep(/os-release/).empty?
-          content = File.open(release_files.grep(/os-release/).first, Gem2Rpm::OPEN_MODE) do |f|
+        if os_release_files = grouped_release_files['os-release']
+          content = File.open(os_release_files.first, Gem2Rpm::OPEN_MODE) do |f|
             f.read
           end
 
@@ -29,11 +33,11 @@ module Gem2Rpm
         # If os-release failed (it is empty or has not enough information),
         # try some other release files.
         if os_release.os == DEFAULT
-          if !release_files.grep(/fedora/).empty?
+          if fedora_release_files = grouped_release_files['fedora']
             os_release.os = FEDORA
             versions = []
 
-            release_files.each do |file|
+            fedora_release_files.each do |file|
               /\d+/ =~ File.open(file, OPEN_MODE).readline
               versions << Regexp.last_match.to_s if Regexp.last_match
             end
@@ -41,12 +45,12 @@ module Gem2Rpm
             versions.uniq!
 
             os_release.version = versions.first if versions.length == 1
-          elsif !release_files.grep(/redhat/).empty?
+          elsif grouped_release_files['redhat']
             # Use Fedora's template for RHEL ATM.
             os_release.os = FEDORA
-          elsif !release_files.grep(/SuSE/).empty?
+          elsif grouped_release_files['SuSE']
             os_release.os = OPENSUSE
-          elsif !release_files.grep(/pld/).empty?
+          elsif grouped_release_files['pld']
             os_release.os = PLD
           end
         end
