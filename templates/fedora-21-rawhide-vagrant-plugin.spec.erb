@@ -14,9 +14,6 @@ Source0: <%= download_path %>%{vagrant_plugin_name}-%{version}.gem
 Requires(posttrans): vagrant
 Requires(preun): vagrant
 Requires: vagrant
-BuildRequires: ruby(release)
-BuildRequires: rubygems-devel
-BuildRequires: ruby
 BuildRequires: vagrant
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
