@@ -9,6 +9,13 @@ module Gem2Rpm
 
     OsRelease = Struct.new :os, :version
 
+    # Returns struct with OS detected based on release files.
+    #
+    # Distro.os_release.os contains either one of supported distributions
+    # (:fedora, :pld, :opensuse) or :default for unrecognized/unsupported
+    # distributions.
+    #
+    # Distro.os_release.version contains version if it is possible to detect.
     def self.os_release
       @os_release ||= begin
         os_release = OsRelease.new DEFAULT
@@ -63,16 +70,19 @@ module Gem2Rpm
       template_by_os_version(os_release.os, os_release.version) || DEFAULT
     end
 
+    # Provides list of release files found on the system.
     def self.release_files
       @release_files ||=
         Dir.glob('/etc/{os-release,*{_version,-release}}*').uniq.select {|e| File.file? e}
     end
 
+    # Allows to override release files list.
     def self.release_files=(files)
       @os_release = nil
       @release_files = files
     end
 
+    # Tries to find best suitable template for specified os and version.
     def self.template_by_os_version(os, version)
       os_templates = Template.list.grep /#{os}.*\.spec\.erb/
 
