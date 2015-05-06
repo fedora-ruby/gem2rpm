@@ -27,7 +27,7 @@ class TestDistro < Minitest::Test
   end
 
   def test_nature_for_unavailable_template
-    Gem2Rpm::Distro.release_files = [File.join(File.dirname(__FILE__), 'templates', 'fake_files', 'unknown-release17')]
+    Gem2Rpm::Distro.release_files = [File.join(File.dirname(__FILE__), 'templates', 'fake_files', 'unknown-release15')]
 
     assert_equal "default", Gem2Rpm::Distro.nature.to_s
   end
