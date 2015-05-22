@@ -25,7 +25,7 @@ module Gem2Rpm
     # when looking for vagrant templates for example.
     def self.find(name = nil, options = {})
       if name.nil?
-        case options[:gem_file]
+        case File.basename(options[:gem_file])
         when /^vagrant(-|_).*/
           Gem2Rpm::VAGRANT_PLUGIN_TEMPLATE
         else
