@@ -36,8 +36,6 @@ class TestFedoraVagrantPlugin < Minitest::Test
 
   def test_build_requires
     assert_match(/^BuildRequires: vagrant/, @out_string)
-    assert_match(/^BuildRequires: rubygems-devel/, @out_string)
-    assert_match(/^BuildRequires: ruby/, @out_string)
   end
 
   def test_rubygems_is_not_required
