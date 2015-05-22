@@ -25,7 +25,8 @@ module Gem2Rpm
     # when looking for vagrant templates for example.
     def self.find(name = nil, options = {})
       if name.nil?
-        case File.basename(options[:gem_file])
+        gem_file = File.basename(options[:gem_file]) if options[:gem_file]
+        case gem_file
         when /^vagrant(-|_).*/
           Gem2Rpm::VAGRANT_PLUGIN_TEMPLATE
         else
@@ -33,7 +34,7 @@ module Gem2Rpm
         end
       else
         begin
-	  if File.exists?(name)
+          if File.exists?(name)
             Gem2Rpm::Template.new(name)
           else
             Gem2Rpm::Template.new(File.join(Gem2Rpm::Template::default_location, name + '.spec.erb'))
