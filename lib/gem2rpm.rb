@@ -41,8 +41,8 @@ module Gem2Rpm
     download_path
   end
 
-  def Gem2Rpm.convert(fname, template=RUBYGEM_TEMPLATE, out=$stdout,
-                      nongem=true, local=false, doc_subpackage = true)
+  def Gem2Rpm.convert(fname, template, out=$stdout, nongem=true, local=false,
+                      doc_subpackage = true)
     package = Gem2Rpm::Package.new(fname)
     # Deprecate, kept just for backward compatibility.
     format = Gem2Rpm::Format.new(package)
@@ -82,10 +82,13 @@ module Gem2Rpm
     packager
   end
 
-  RUBYGEM_TEMPLATE = Template.new(File.join(Template::default_location, "#{Distro.nature.to_s}.spec.erb"))
-  VAGRANT_PLUGIN_TEMPLATE = begin
+  def self.rubygem_template
+    Template.new(File.join(Template::default_location, "#{Distro.nature.to_s}.spec.erb"))
+  end
+
+  def self.vagrant_plugin_template
     file = File.join(Template::default_location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
-    Template.new(file) if File.exist? file
+    Template.new(file)
   end
 
 end

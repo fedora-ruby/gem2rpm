@@ -43,7 +43,8 @@ class TestTemplate < Minitest::Test
   def test_find_vagrant_template
     assert_match "vagrant",
       Gem2Rpm::Template.find(nil, :gem_file => 'vagrant-').read
-  end if Gem2Rpm::VAGRANT_PLUGIN_TEMPLATE
+  rescue Gem2Rpm::Template::TemplateError
+  end
 
   def test_new
     assert_raises(Gem2Rpm::Template::TemplateError) { Gem2Rpm::Template.new 'some_filename' }

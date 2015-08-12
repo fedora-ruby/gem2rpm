@@ -68,8 +68,8 @@ rest = opts.permute(ARGV)
 
 template = begin
   Gem2Rpm::Template.find template_file, :gem_file => rest[0]
-rescue Gem2Rpm::Template::TemplateError
-  $stderr.puts "Could not open template #{template_file}. Aborting"
+rescue Gem2Rpm::Template::TemplateError => e
+  $stderr.puts e
   exit(1)
 end
 

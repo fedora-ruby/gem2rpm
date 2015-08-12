@@ -28,9 +28,9 @@ module Gem2Rpm
         gem_file = File.basename(options[:gem_file]) if options[:gem_file]
         case gem_file
         when /^vagrant(-|_).*/
-          Gem2Rpm::VAGRANT_PLUGIN_TEMPLATE
+          Gem2Rpm.vagrant_plugin_template
         else
-          Gem2Rpm::RUBYGEM_TEMPLATE
+          Gem2Rpm.rubygem_template
         end
       else
         begin
