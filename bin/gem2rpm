@@ -32,6 +32,13 @@ end
 opts.on("-t", "--template TEMPLATE", "Use TEMPLATE for the specfile") do |val|
     template_file = val
 end
+opts.on("--templates", "List all available templates") do
+    puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
+    puts Gem2Rpm::Template.list.map{
+      |t| t.gsub(/(.*)\.spec.erb/, '\\1')
+    }.join("\n")
+    exit 0
+end
 opts.on("-v", "--version", "Print gem2rpm's version and exit") do
     puts Gem2Rpm::VERSION
     exit 0
