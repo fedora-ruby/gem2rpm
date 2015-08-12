@@ -64,8 +64,10 @@ spec = Gem::Specification.new do |s|
 
   #### Signing properties.
 
-  s.signing_key = File.expand_path("~/.ssh/voxik-private_key.pem")
-  s.cert_chain = ["../../voxik-public_cert.pem"]
+  if File.exist? "~/.ssh/voxik-private_key.pem"
+    s.signing_key = File.expand_path("~/.ssh/voxik-private_key.pem")
+    s.cert_chain = ["../../voxik-public_cert.pem"]
+  end
 end
 
 Gem::PackageTask.new(spec) do |pkg|
