@@ -63,6 +63,12 @@ $ gem2rpm -t rubygem-GEM.spec.template > rubygem-GEM.spec
 
 With this new template you can now build your RPM as usual and when a new version of the gem becomes available, you just edit the saved template and rerun gem2rpm over it.
 
+To see all available templates that are shipped and can be directly used with gem2rpm run:
+
+```
+$ gem2rpm --templates
+```
+
 ## Templates
 
 The template is a standard ERB file that comes with three main variables:
