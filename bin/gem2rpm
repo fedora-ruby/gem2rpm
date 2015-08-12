@@ -71,7 +71,13 @@ opts.separator("    GEM            The path to the locally stored gem package fi
 opts.separator("                   of the gem when using --fetch.")
 opts.separator("")
 
-rest = opts.permute(ARGV)
+begin
+  rest = opts.permute(ARGV)
+rescue OptionParser::InvalidOption => e
+  $stderr.puts "#{e}\n\n"
+  $stderr.puts opts
+  exit(1)
+end
 
 template = begin
   Gem2Rpm::Template.find template_file, :gem_file => rest[0]
