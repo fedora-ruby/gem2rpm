@@ -29,8 +29,8 @@ module Gem2Rpm
           content = File.open(os_release_files.first, Gem2Rpm::OPEN_MODE, &:read)
 
           begin
-            os_release.os = content[/^ID=(.*)$/, 1].to_sym
-            os_release.version = content[/^VERSION_ID=(.*)$/, 1]
+            os_release.os = content[/^ID=['"]?(.*?)['"]?$/, 1].to_sym
+            os_release.version = content[/^VERSION_ID=['"]?(.*?)['"]?$/, 1]
           rescue
           end
         end
