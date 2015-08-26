@@ -140,7 +140,7 @@ docker run -v `pwd`:/root/ gem2rpm [gem2rpm options and arguments]
 ```
 
 * Share current local folder with `-v` in container's `/root/` directory.
-* Output gem2rpm with `-o` option in `/root/` directory.
+* Output gem2rpm files with `-o` option in `/root/` directory.
 
 ## Limitations
 
