@@ -115,7 +115,7 @@ where GEM is the name of the packaged gem. The default template also makes
 sure that the resulting package provides 'ruby($GEM)', according to general
 packaging conventions for scripting languages.
 
-## Limitiations
+## Limitations
 
 Because of the differences between the two packaging schemes, it is impossible to come up with a completely automated way of doing the conversion, but the spec files produced by this package should be good enough for most pure-ruby gems.
 
