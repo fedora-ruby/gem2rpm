@@ -115,7 +115,34 @@ where GEM is the name of the packaged gem. The default template also makes
 sure that the resulting package provides 'ruby($GEM)', according to general
 packaging conventions for scripting languages.
 
-## Limitiations
+## Docker image
+
+You can also run gem2rpm with a docker container.
+
+### Requirements
+
+Install and configure [Docker](http://www.docker.com) for your platform.
+
+### Build image
+
+Run at project root:
+
+```
+docker build -t gem2rpm .
+```
+
+### Usage
+
+To use gem2rpm using the docker image, run:
+
+```
+docker run -v `pwd`:/root/ gem2rpm [gem2rpm options and arguments]
+```
+
+* Share current local folder with `-v` in container's `/root/` directory.
+* Output gem2rpm files with `-o` option in `/root/` directory.
+
+## Limitations
 
 Because of the differences between the two packaging schemes, it is impossible to come up with a completely automated way of doing the conversion, but the spec files produced by this package should be good enough for most pure-ruby gems.
 
