@@ -41,7 +41,7 @@ Provides: ruby(<%= spec.name.capitalize %>) = %{version}
 %install
 %{__rm} -rf %{buildroot}
 mkdir -p %{gembuilddir}
-gem install --local --install-dir %{gembuilddir} --force %{SOURCE0}
+gem install --local --build-dir %{gembuilddir} %{SOURCE0}
 <% if ! spec.executables.empty? -%>
 mkdir -p %{buildroot}/%{_bindir}
 mv %{gembuilddir}/bin/* %{buildroot}/%{_bindir}
