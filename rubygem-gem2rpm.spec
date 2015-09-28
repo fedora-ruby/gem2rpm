@@ -13,8 +13,8 @@ License: GPLv2+ or Ruby
 URL: http://rubyforge.org/projects/gem2rpm/
 Source0: http://gems.rubyforge.org/gems/%{gemname}-%{version}.gem
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires: rubygems
-BuildRequires: rubygems
+Requires: rubygems >= 2.4
+BuildRequires: rubygems >= 2.4
 BuildArch: noarch
 Provides: rubygem(%{gemname}) = %{version}
 
