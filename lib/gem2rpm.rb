@@ -90,7 +90,6 @@ module Gem2Rpm
     file = File.join(Template.default_location, "#{Distro.nature}-vagrant-plugin.spec.erb")
     Template.new(file)
   end
-
 end
 
 # Local Variables:
