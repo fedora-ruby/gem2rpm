@@ -27,37 +27,37 @@ fetch = false
 opts.separator("")
 opts.separator("  Options:")
 opts.on("-T", "--current-template", "Print the current template") do |val|
-    print_template_file = true
+  print_template_file = true
 end
 opts.on("-t", "--template TEMPLATE", "Use TEMPLATE for the specfile") do |val|
-    template_file = val
+  template_file = val
 end
 opts.on("--templates", "List all available templates") do
-    puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
-    puts Gem2Rpm::Template.list.map{
-      |t| t.gsub(/(.*)\.spec.erb/, '\\1')
-    }.join("\n")
-    exit 0
+  puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
+  puts Gem2Rpm::Template.list.map{
+    |t| t.gsub(/(.*)\.spec.erb/, '\\1')
+  }.join("\n")
+  exit 0
 end
 opts.on("-v", "--version", "Print gem2rpm's version and exit") do
-    puts Gem2Rpm::VERSION
-    exit 0
+  puts Gem2Rpm::VERSION
+  exit 0
 end
 opts.on("-o", "--output FILE", "Send the specfile to FILE") do |val|
-    output_file = val
+  output_file = val
 end
 opts.on("-s", "--srpm", "Create a source RPM") do |val|
-    srpm = true
+  srpm = true
 end
 opts.on("-l", "--local", "Do not retrieve Gem information over
 #{' '*36} the network. Use on disconnected machines") do |val|
-    local = true
+  local = true
 end
 opts.on("-d", "--dependencies", "Print the dependencies of the gem") do |val|
-    deps = true
+  deps = true
 end
 opts.on("-n", "--nongem", "Generate a subpackage for non-gem use") do |val|
-    nongem = true
+  nongem = true
 end
 opts.on("--no-doc", "Disable document subpackage") do |val|
   doc_subpackage = false
@@ -92,7 +92,7 @@ if print_template_file
 end
 
 if rest.size != 1
-    $stderr.puts "Missing GEMFILE\n\n"
+  $stderr.puts "Missing GEMFILE\n\n"
     $stderr.puts opts
     exit(1)
 end
@@ -114,34 +114,34 @@ gemname = nil
 srpmdir = nil
 specfile = nil
 if srpm
-    gemname = Gem2Rpm::Package.new(gemfile).spec.name
-    srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
-    specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
-    if output_file.nil?
-        output_file = specfile
-    end
+  gemname = Gem2Rpm::Package.new(gemfile).spec.name
+  srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
+  specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
+  if output_file.nil?
+    output_file = specfile
+  end
 end
 
 # Produce a specfile
 if output_file.nil?
-    Gem2Rpm.convert(gemfile, template, $stdout, nongem, local, doc_subpackage) unless deps
+  Gem2Rpm.convert(gemfile, template, $stdout, nongem, local, doc_subpackage) unless deps
 else
-    begin
-        out = open(output_file, "w")
-        Gem2Rpm.convert(gemfile, template, out, nongem, local, doc_subpackage)
-    ensure
-        out.close()
-    end
+  begin
+    out = open(output_file, "w")
+    Gem2Rpm.convert(gemfile, template, out, nongem, local, doc_subpackage)
+  ensure
+    out.close()
+  end
 end
 
 # Create a  source RPM
 if srpm
-    unless File.exist?(specfile)
-        FileUtils.copy(output_file, specfile)
-    end
-    FileUtils.copy(gemfile, srpmdir)
+  unless File.exist?(specfile)
+    FileUtils.copy(output_file, specfile)
+  end
+  FileUtils.copy(gemfile, srpmdir)
 
-    system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{Dir.pwd}' #{specfile}")
+  system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{Dir.pwd}' #{specfile}")
 end
 
 if deps
