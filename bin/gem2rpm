@@ -115,9 +115,7 @@ if srpm
   gemname = Gem2Rpm::Package.new(gemfile).spec.name
   srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
   specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
-  if output_file.nil?
-    output_file = specfile
-  end
+  output_file ||= specfile
 end
 
 # Produce a specfile
@@ -134,9 +132,7 @@ end
 
 # Create a  source RPM
 if srpm
-  unless File.exist?(specfile)
-    FileUtils.copy(output_file, specfile)
-  end
+  FileUtils.copy(output_file, specfile) unless File.exist?(specfile)
   FileUtils.copy(gemfile, srpmdir)
 
   system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{Dir.pwd}' #{specfile}")
