@@ -74,7 +74,7 @@ module Gem2Rpm
       packager = `rpm --eval '%{packager}' 2> /dev/null`.chomp rescue ''
     end
 
-    if packager.empty? or packager == '%{packager}'
+    if packager.empty? || (packager == '%{packager}')
       passwd_entry = Etc.getpwnam(Etc.getlogin)
       packager = "#{(passwd_entry && passwd_entry.gecos) || Etc.getlogin} <#{Etc.getlogin}@#{Socket.gethostname}>"
     end

@@ -105,7 +105,7 @@ module Gem2Rpm
         return true if range.first.to_s == version.to_s
       else # range: [xx, yy]
         if range[0].to_s <= version.to_s
-          return true if ROLLING_RELEASES.include? range[1] or version.to_s <= range[1].to_s
+          return true if ROLLING_RELEASES.include?(range[1]) || (version.to_s <= range[1].to_s)
         end
       end
 
