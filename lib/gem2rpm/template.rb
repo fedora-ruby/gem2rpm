@@ -34,7 +34,7 @@ module Gem2Rpm
         end
       else
         begin
-          if File.exists?(name)
+          if File.exist?(name)
             Gem2Rpm::Template.new(name)
           else
             Gem2Rpm::Template.new(File.join(Gem2Rpm::Template.default_location, name + '.spec.erb'))
@@ -48,7 +48,7 @@ module Gem2Rpm
     # Create instance of Template class of specified template filename.
     # TemplateError is raised when the template file does not exists.
     def initialize(filename)
-      if File.exists? filename
+      if File.exist? filename
         @filename = filename
       else
         raise TemplateError, "Could not locate template #{filename}"
