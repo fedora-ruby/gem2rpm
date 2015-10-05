@@ -85,15 +85,3 @@ Rake::TestTask.new(:test) do |t|
   t.libs << 'test'
   t.test_files = FileList['test/**/test_*.rb']
 end
-
-desc "Build (S)RPM for #{PKG_NAME}"
-task :rpm => [ :package ] do |t|
-    system("sed -e 's/@VERSION@/#{PKG_VERSION}/' #{SPEC_FILE} > pkg/#{SPEC_FILE}")
-    Dir::chdir("pkg") do |dir|
-        dir = File::expand_path(".")
-        system("rpmbuild --define '_topdir #{dir}' --define '_sourcedir #{dir}' --define '_srcrpmdir #{dir}' --define '_rpmdir #{dir}' -ba #{SPEC_FILE} > rpmbuild.log 2>&1")
-        if $? != 0
-            raise "rpmbuild failed"
-        end
-    end
-end
