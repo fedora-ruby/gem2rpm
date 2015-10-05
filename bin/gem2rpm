@@ -126,7 +126,7 @@ else
     out = open(output_file, "w")
     Gem2Rpm.convert(gemfile, template, out, nongem, local, doc_subpackage)
   ensure
-    out.close()
+    out.close
   end
 end
 
