@@ -41,7 +41,7 @@ module Gem2Rpm
     download_path
   end
 
-  def Gem2Rpm.convert(fname, template, out = $stdout, nongem = true, local = false,
+  def self.convert(fname, template, out = $stdout, nongem = true, local = false,
                       doc_subpackage = true)
     package = Gem2Rpm::Package.new(fname)
     # Deprecate, kept just for backward compatibility.
@@ -67,7 +67,7 @@ module Gem2Rpm
   # Returns the email address of the packager (i.e., the person running
   # gem2spec).  Taken from RPM macros if present, constructed from system
   # username and hostname otherwise.
-  def Gem2Rpm.packager()
+  def self.packager()
     packager = `rpmdev-packager 2> /dev/null`.chomp rescue ''
 
     if packager.empty?
