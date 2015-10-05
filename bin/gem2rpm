@@ -26,7 +26,7 @@ fetch = false
 
 opts.separator("")
 opts.separator("  Options:")
-opts.on("-T", "--current-template", "Print the current template") do |val|
+opts.on("-T", "--current-template", "Print the current template") do
   print_template_file = true
 end
 opts.on("-t", "--template TEMPLATE", "Use TEMPLATE for the specfile") do |val|
@@ -46,23 +46,23 @@ end
 opts.on("-o", "--output FILE", "Send the specfile to FILE") do |val|
   output_file = val
 end
-opts.on("-s", "--srpm", "Create a source RPM") do |val|
+opts.on("-s", "--srpm", "Create a source RPM") do
   srpm = true
 end
 opts.on("-l", "--local", "Do not retrieve Gem information over
-#{' '*36} the network. Use on disconnected machines") do |val|
+#{' '*36} the network. Use on disconnected machines") do
   local = true
 end
-opts.on("-d", "--dependencies", "Print the dependencies of the gem") do |val|
+opts.on("-d", "--dependencies", "Print the dependencies of the gem") do
   deps = true
 end
-opts.on("-n", "--nongem", "Generate a subpackage for non-gem use") do |val|
+opts.on("-n", "--nongem", "Generate a subpackage for non-gem use") do
   nongem = true
 end
-opts.on("--no-doc", "Disable document subpackage") do |val|
+opts.on("--no-doc", "Disable document subpackage") do
   doc_subpackage = false
 end
-opts.on("--fetch", "Fetch the gem from rubygems.org") do |val|
+opts.on("--fetch", "Fetch the gem from rubygems.org") do
   fetch = true
 end
 opts.separator("")
