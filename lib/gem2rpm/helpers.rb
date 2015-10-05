@@ -82,7 +82,7 @@ module Gem2Rpm
     # Returns a list of top level directories and files
     # out of an array of file_list
     def self.top_level_from_file_list(file_list)
-      file_list.map{ |f| f.gsub!(/([^\/]*).*/,"\\1") }.uniq
+      file_list.map{ |f| f.gsub!(/([^\/]*).*/, "\\1") }.uniq
     end
 
     # Compares string to the given regexp conditions

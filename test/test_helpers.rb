@@ -70,7 +70,7 @@ class TestHelpers < Minitest::Test
   end
 
   def test_top_level_from_file_list
-    file_list = ['foo.rb','first/bar.rb','first/second/bar.rb','first/foo.rb']
+    file_list = ['foo.rb', 'first/bar.rb', 'first/second/bar.rb', 'first/foo.rb']
     assert_equal ['foo.rb', 'first'], Gem2Rpm::Helpers.top_level_from_file_list(file_list)
   end
 

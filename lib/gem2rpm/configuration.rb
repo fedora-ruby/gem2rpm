@@ -15,7 +15,7 @@ module Gem2Rpm
 
     DEFAULT_RULES = {
       :doc => [/\/?CHANGELOG.*/i, /\/?CONTRIBUTING.*/i, /\/?CONTRIBUTORS.*/i,
-               /\/?AUTHORS.*/i,/\/?README.*/i, /\/?History.*/i, /\/?Release.*/i,
+               /\/?AUTHORS.*/i, /\/?README.*/i, /\/?History.*/i, /\/?Release.*/i,
                /\/?doc(\/.*)?/, 'NEWS'],
       :license => [/\/?MIT/, /\/?GPLv[0-9]+/, /\/?.*LICEN(C|S)E/, /\/?COPYING/],
       :ignore => ['.gemtest', '.gitignore', '.travis.yml', '.yardopts', '.rvmrc',
