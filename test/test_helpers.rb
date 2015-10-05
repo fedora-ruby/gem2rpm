@@ -53,12 +53,12 @@ class TestHelpers < Minitest::Test
 
   def test_file_entries_to_rpm
     entries = ['lib/foo.rb', 'LICENSE']
-    result = "#{config.macro_for(:instdir)}/#{entries[0]}\n" +
+    result = "#{config.macro_for(:instdir)}/#{entries[0]}\n" \
              "#{config.macro_for(:license)} #{config.macro_for(:instdir)}/#{entries[1]}"
     assert_equal result, Gem2Rpm::Helpers.file_entries_to_rpm(entries)
 
     entries = ['.gitignore', 'AUTHORS']
-    result = "#{config.macro_for(:ignore)} #{config.macro_for(:instdir)}/#{entries[0]}\n" +
+    result = "#{config.macro_for(:ignore)} #{config.macro_for(:instdir)}/#{entries[0]}\n" \
              "#{config.macro_for(:doc)} #{config.macro_for(:instdir)}/#{entries[1]}"
     assert_equal result, Gem2Rpm::Helpers.file_entries_to_rpm(entries)
   end
