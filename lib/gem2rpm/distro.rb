@@ -73,7 +73,7 @@ module Gem2Rpm
     # Provides list of release files found on the system.
     def self.release_files
       @release_files ||=
-        Dir.glob('/etc/{os-release,*{_version,-release}}*').uniq.select {|e| File.file? e}
+        Dir.glob('/etc/{os-release,*{_version,-release}}*').uniq.select { |e| File.file? e }
     end
 
     # Allows to override release files list.

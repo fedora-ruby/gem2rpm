@@ -16,12 +16,12 @@ module Gem2Rpm
     # A list of Gem::Dependency objects this gem depends on (includes every
     # runtime or development dependency).
     def dependencies
-      super.map {|d| Gem2Rpm::Dependency.new d}
+      super.map { |d| Gem2Rpm::Dependency.new d }
     end
 
     # List of dependencies that are used for development.
     def development_dependencies
-      super.map {|d| Gem2Rpm::Dependency.new d}
+      super.map { |d| Gem2Rpm::Dependency.new d }
     end
 
     # The license(s) for the library. Each license must be a short name,
@@ -35,7 +35,7 @@ module Gem2Rpm
 
     # List of dependencies that will automatically be activated at runtime.
     def runtime_dependencies
-      super.map {|d| Gem2Rpm::Dependency.new d}
+      super.map { |d| Gem2Rpm::Dependency.new d }
     end
 
     # The version of Ruby required by the gem. Returns array with
