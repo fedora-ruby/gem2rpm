@@ -25,7 +25,7 @@ module Gem2Rpm
         end
 
         # Try os-release first.
-        if os_release_files = grouped_release_files['os-release']
+        if (os_release_files = grouped_release_files['os-release'])
           content = File.open(os_release_files.first, Gem2Rpm::OPEN_MODE) do |f|
             f.read
           end
@@ -40,7 +40,7 @@ module Gem2Rpm
         # If os-release failed (it is empty or has not enough information),
         # try some other release files.
         if os_release.os == DEFAULT
-          if fedora_release_files = grouped_release_files['fedora']
+          if (fedora_release_files = grouped_release_files['fedora'])
             os_release.os = FEDORA
             versions = []
 
@@ -90,7 +90,7 @@ module Gem2Rpm
         # We want only distro RubyGems templates to get the right versions
         next unless file =~ /^#{os}((-([0-9]+\.{0,1}[0-9]+){0,}){0,}(-(#{ROLLING_RELEASES.join('|')})){0,1}).spec.erb/
 
-        if match = Regexp.last_match
+        if (match = Regexp.last_match)
           return file.gsub('.spec.erb', '') if in_range?(version, match[1].to_s.split('-').drop(1)) || match[1].empty?
         end
       end
