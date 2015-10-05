@@ -36,13 +36,13 @@ module Gem2Rpm
     # Converts Gem::Requirement into array of requirements strings compatible
     # with RPM .spec file.
     def self.requirement_versions_to_rpm(requirement)
-      self.expand_requirement(requirement.requirements).map do |op, version|
+      expand_requirement(requirement.requirements).map do |op, version|
         version == Gem::Version.new(0) ? "" : "#{op} #{version}"
       end
     end
 
     def self.file_entries_to_rpm(entries)
-      rpm_file_list = entries.map { |e| self.file_entry_to_rpm(e) }
+      rpm_file_list = entries.map { |e| file_entry_to_rpm(e) }
       rpm_file_list.join("\n")
     end
 
