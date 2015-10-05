@@ -29,7 +29,7 @@ module Gem2Rpm
 
     spec_and_source, errors = fetcher.spec_for_dependency(dep, false)
 
-    raise DownloadUrlError.new(errors.first.error.message) unless errors.empty?
+    fail DownloadUrlError.new(errors.first.error.message) unless errors.empty?
 
     _spec, source = spec_and_source.first
 

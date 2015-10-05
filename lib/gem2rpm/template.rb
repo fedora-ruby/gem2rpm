@@ -51,7 +51,7 @@ module Gem2Rpm
       if File.exist? filename
         @filename = filename
       else
-        raise TemplateError, "Could not locate template #{filename}"
+        fail TemplateError, "Could not locate template #{filename}"
       end
     end
 
