@@ -75,19 +75,19 @@ module Gem2Rpm
     end
 
     if packager.empty? or packager == '%{packager}'
-      passwd_entry = Etc::getpwnam(Etc::getlogin)
-      packager = "#{(passwd_entry && passwd_entry.gecos) || Etc::getlogin } <#{Etc::getlogin}@#{Socket::gethostname}>"
+      passwd_entry = Etc.getpwnam(Etc.getlogin)
+      packager = "#{(passwd_entry && passwd_entry.gecos) || Etc.getlogin } <#{Etc.getlogin}@#{Socket.gethostname}>"
     end
 
     packager
   end
 
   def self.rubygem_template
-    Template.new(File.join(Template::default_location, "#{Distro.nature.to_s}.spec.erb"))
+    Template.new(File.join(Template.default_location, "#{Distro.nature.to_s}.spec.erb"))
   end
 
   def self.vagrant_plugin_template
-    file = File.join(Template::default_location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
+    file = File.join(Template.default_location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
     Template.new(file)
   end
 

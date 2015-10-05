@@ -10,7 +10,7 @@ class TestFedoraVagrantPlugin < Minitest::Test
 
   def setup
     @out = StringIO.new
-    Gem2Rpm::convert(vagrant_plugin_path, template, @out, false)
+    Gem2Rpm.convert(vagrant_plugin_path, template, @out, false)
     @out_string = @out.string
   end
 

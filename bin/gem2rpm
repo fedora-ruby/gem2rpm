@@ -116,7 +116,7 @@ specfile = nil
 if srpm
     gemname = Gem2Rpm::Package.new(gemfile).spec.name
     srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
-    specfile = File::join(srpmdir, "rubygem-#{gemname}.spec")
+    specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
     if output_file.nil?
         output_file = specfile
     end
@@ -124,11 +124,11 @@ end
 
 # Produce a specfile
 if output_file.nil?
-    Gem2Rpm::convert(gemfile, template, $stdout, nongem, local, doc_subpackage) unless deps
+    Gem2Rpm.convert(gemfile, template, $stdout, nongem, local, doc_subpackage) unless deps
 else
     begin
         out = open(output_file, "w")
-        Gem2Rpm::convert(gemfile, template, out, nongem, local, doc_subpackage)
+        Gem2Rpm.convert(gemfile, template, out, nongem, local, doc_subpackage)
     ensure
         out.close()
     end
@@ -136,12 +136,12 @@ end
 
 # Create a  source RPM
 if srpm
-    unless File::exist?(specfile)
-        FileUtils::copy(output_file, specfile)
+    unless File.exist?(specfile)
+        FileUtils.copy(output_file, specfile)
     end
-    FileUtils::copy(gemfile, srpmdir)
+    FileUtils.copy(gemfile, srpmdir)
 
-    system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{Dir::pwd}' #{specfile}")
+    system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{Dir.pwd}' #{specfile}")
 end
 
 if deps

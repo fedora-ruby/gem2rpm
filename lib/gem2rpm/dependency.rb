@@ -11,7 +11,7 @@ module Gem2Rpm
         version_requirements # For RubyGems < 1.3.6
       end
 
-      Helpers::requirement_versions_to_rpm r
+      Helpers.requirement_versions_to_rpm r
     end
 
     # Dependency type. Needs to be explicitly reimplemented.

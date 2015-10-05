@@ -37,7 +37,7 @@ module Gem2Rpm
           if File.exists?(name)
             Gem2Rpm::Template.new(name)
           else
-            Gem2Rpm::Template.new(File.join(Gem2Rpm::Template::default_location, name + '.spec.erb'))
+            Gem2Rpm::Template.new(File.join(Gem2Rpm::Template.default_location, name + '.spec.erb'))
           end
         rescue TemplateError
           raise TemplateError, "Could not locate template #{name}"

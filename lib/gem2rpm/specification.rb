@@ -10,7 +10,7 @@ module Gem2Rpm
       d = super.to_s.chomp
       d = summary.to_s.chomp if d.empty?
       d.gsub!(/([^.!?])\Z/, "\\1.")
-      Helpers::word_wrap(d, 78) + "\n"
+      Helpers.word_wrap(d, 78) + "\n"
     end
 
     # A list of Gem::Dependency objects this gem depends on (includes every
@@ -52,7 +52,7 @@ module Gem2Rpm
     # array with empty string. However, this should happen only in rare cases.
     def required_rubygems_version
       @required_rubygems_version ||= begin
-        Helpers::requirement_versions_to_rpm(super)
+        Helpers.requirement_versions_to_rpm(super)
       rescue
         ['']
       end
