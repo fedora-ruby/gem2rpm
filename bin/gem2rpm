@@ -93,8 +93,8 @@ end
 
 if rest.size != 1
   $stderr.puts "Missing GEMFILE\n\n"
-    $stderr.puts opts
-    exit(1)
+  $stderr.puts opts
+  exit(1)
 end
 gemfile = rest[0]
 
