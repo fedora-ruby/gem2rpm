@@ -26,9 +26,7 @@ module Gem2Rpm
 
         # Try os-release first.
         if (os_release_files = grouped_release_files['os-release'])
-          content = File.open(os_release_files.first, Gem2Rpm::OPEN_MODE) do |f|
-            f.read
-          end
+          content = File.open(os_release_files.first, Gem2Rpm::OPEN_MODE, &:read)
 
           begin
             os_release.os = content[/^ID=(.*)$/, 1].to_sym
