@@ -76,7 +76,7 @@ module Gem2Rpm
 
     if packager.empty? or packager == '%{packager}'
       passwd_entry = Etc.getpwnam(Etc.getlogin)
-      packager = "#{(passwd_entry && passwd_entry.gecos) || Etc.getlogin } <#{Etc.getlogin}@#{Socket.gethostname}>"
+      packager = "#{(passwd_entry && passwd_entry.gecos) || Etc.getlogin} <#{Etc.getlogin}@#{Socket.gethostname}>"
     end
 
     packager
