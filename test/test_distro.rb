@@ -1,7 +1,6 @@
 require 'helper'
 
 class TestDistro < Minitest::Test
-
   def setup
     @original_default_location = Gem2Rpm::Template.default_location
     Gem2Rpm::Template.default_location = File.join(File.dirname(__FILE__), 'templates', 'fake_files')

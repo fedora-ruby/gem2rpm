@@ -1,7 +1,6 @@
 require 'helper'
 
 class TestFedoraVagrantPlugin < Minitest::Test
-
   def template
     @template ||= begin
       t = Dir.glob(File.join(File.dirname(__FILE__), '..', '..', 'templates', '*rawhide-vagrant-plugin.spec.erb')).first

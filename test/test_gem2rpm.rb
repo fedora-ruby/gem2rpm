@@ -2,7 +2,6 @@ require 'helper'
 require 'stringio'
 
 class TestGem2Rpm < Minitest::Test
-
   Dir.glob(File.join(File.dirname(__FILE__), '..', 'templates', '*')).each do |t|
     template_name = File.basename(t).split.first.gsub(/[.-]/, '_')
     template = Gem2Rpm::Template.new t
@@ -23,5 +22,4 @@ class TestGem2Rpm < Minitest::Test
   def test_find_download_url_for_source_address
     assert_match %r{https?://rubygems.org/gems/}, Gem2Rpm::find_download_url("gem2rpm", "0.8.0")
   end
-
 end

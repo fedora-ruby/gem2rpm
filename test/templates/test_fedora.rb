@@ -1,7 +1,6 @@
 require 'helper'
 
 class TestFedora < Minitest::Test
-
   def template
     @template ||= begin
       fedora_rawhide_template = Dir.glob(File.join(File.dirname(__FILE__), '..', '..', 'templates', '*rawhide.spec.erb')).first
@@ -63,5 +62,4 @@ class TestFedora < Minitest::Test
     assert_match(/\s%doc %\{gem_instdir\}\/README/, @out_string)
     assert_match(/\s%exclude %\{gem_instdir\}\/\.travis\.yml/, @out_string)
   end
-
 end

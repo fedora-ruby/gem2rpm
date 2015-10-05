@@ -50,6 +50,5 @@ module Gem2Rpm
     def rule_for(category)
       rules[category] ||= ''
     end
-
   end
 end

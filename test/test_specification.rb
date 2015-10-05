@@ -1,7 +1,6 @@
 require 'helper'
 
 class TestSpecification < Minitest::Test
-
   def setup
     @gemspec = Gem::Specification.new
     @spec = Gem2Rpm::Specification.new @gemspec
@@ -41,5 +40,4 @@ class TestSpecification < Minitest::Test
     @gemspec.summary = "summary"
     assert_equal "summary.\n", @spec.description
   end
-
 end

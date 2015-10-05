@@ -5,7 +5,6 @@ require 'gem2rpm/helpers'
 
 module Gem2Rpm
   class Specification < SimpleDelegator
-
     # A long description of gem wrapped to 78 characters.
     def description
       d = super.to_s.chomp
