@@ -67,7 +67,7 @@ module Gem2Rpm
   # Returns the email address of the packager (i.e., the person running
   # gem2spec).  Taken from RPM macros if present, constructed from system
   # username and hostname otherwise.
-  def self.packager()
+  def self.packager
     packager = `rpmdev-packager 2> /dev/null`.chomp rescue ''
 
     if packager.empty?
