@@ -83,11 +83,11 @@ module Gem2Rpm
   end
 
   def self.rubygem_template
-    Template.new(File.join(Template.default_location, "#{Distro.nature.to_s}.spec.erb"))
+    Template.new(File.join(Template.default_location, "#{Distro.nature}.spec.erb"))
   end
 
   def self.vagrant_plugin_template
-    file = File.join(Template.default_location, "#{Distro.nature.to_s}-vagrant-plugin.spec.erb")
+    file = File.join(Template.default_location, "#{Distro.nature}-vagrant-plugin.spec.erb")
     Template.new(file)
   end
 
