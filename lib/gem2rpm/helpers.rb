@@ -64,7 +64,7 @@ module Gem2Rpm
 
     def self.file_entry_to_rpm(entry)
       config = Gem2Rpm::Configuration.instance
-      case true
+      case
       when doc_file?(entry)
         "#{config.macro_for(:doc)} #{config.macro_for(:instdir)}/#{entry}".strip
       when license_file?(entry)
