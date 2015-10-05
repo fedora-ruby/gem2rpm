@@ -6,7 +6,7 @@ module Gem2Rpm
     # Find and fetch specs that match +dependency+.
     #
     # If +matching_platform+ is false, gems for all platforms are returned.
-    def spec_for_dependency(dependency, matching_platform=true)
+    def spec_for_dependency(dependency, matching_platform = true)
       super
     rescue
       errors = []

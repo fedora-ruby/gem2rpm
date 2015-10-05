@@ -41,7 +41,7 @@ module Gem2Rpm
     download_path
   end
 
-  def Gem2Rpm.convert(fname, template, out=$stdout, nongem=true, local=false,
+  def Gem2Rpm.convert(fname, template, out = $stdout, nongem = true, local = false,
                       doc_subpackage = true)
     package = Gem2Rpm::Package.new(fname)
     # Deprecate, kept just for backward compatibility.
