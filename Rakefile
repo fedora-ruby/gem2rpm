@@ -29,7 +29,6 @@ PKG_FILES = FileList[
 ]
 
 spec = Gem::Specification.new do |s|
-
   #### Basic information.
 
   s.name = 'gem2rpm'
