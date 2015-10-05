@@ -31,7 +31,7 @@ module Gem2Rpm
 
     raise DownloadUrlError.new(errors.first.error.message) unless errors.empty?
 
-    spec, source = spec_and_source.first
+    _spec, source = spec_and_source.first
 
     if source && source.uri
       download_path = source.uri.to_s

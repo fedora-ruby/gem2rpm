@@ -110,8 +110,6 @@ if fetch
 end
 
 srpmdir = nil
-gemname = nil
-srpmdir = nil
 specfile = nil
 if srpm
   gemname = Gem2Rpm::Package.new(gemfile).spec.name
