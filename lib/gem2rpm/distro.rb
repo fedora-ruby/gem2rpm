@@ -84,7 +84,7 @@ module Gem2Rpm
 
     # Tries to find best suitable template for specified os and version.
     def self.template_by_os_version(os, version)
-      os_templates = Template.list.grep /#{os}.*\.spec\.erb/
+      os_templates = Template.list.grep(/#{os}.*\.spec\.erb/)
 
       os_templates.each do |file|
         # We want only distro RubyGems templates to get the right versions
