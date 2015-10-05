@@ -50,7 +50,7 @@ opts.on("-s", "--srpm", "Create a source RPM") do
   srpm = true
 end
 opts.on("-l", "--local", "Do not retrieve Gem information over
-#{' '*36} the network. Use on disconnected machines") do
+#{' ' * 36} the network. Use on disconnected machines") do
   local = true
 end
 opts.on("-d", "--dependencies", "Print the dependencies of the gem") do
