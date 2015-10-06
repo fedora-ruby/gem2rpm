@@ -14,16 +14,45 @@ module Gem2Rpm
     }
 
     DEFAULT_RULES = {
-      :doc => [/\/?CHANGELOG.*/i, /\/?CONTRIBUTING.*/i, /\/?CONTRIBUTORS.*/i,
-               /\/?AUTHORS.*/i, /\/?README.*/i, /\/?History.*/i, /\/?Release.*/i,
-               /\/?doc(\/.*)?/, 'NEWS'],
-      :license => [/\/?MIT/, /\/?GPLv[0-9]+/, /\/?.*LICEN(C|S)E/, /\/?COPYING/],
-      :ignore => ['.gemtest', '.gitignore', '.travis.yml', '.yardopts', '.rvmrc',
-                  '.rubocop.yml', /^\..*rc$/i],
+      :doc => [
+        /\/?CHANGELOG.*/i,
+        /\/?CONTRIBUTING.*/i,
+        /\/?CONTRIBUTORS.*/i,
+        /\/?AUTHORS.*/i,
+        /\/?README.*/i,
+        /\/?History.*/i,
+        /\/?Release.*/i,
+        /\/?doc(\/.*)?/,
+        'NEWS',
+      ],
+      :license => [
+        /\/?MIT/,
+        /\/?GPLv[0-9]+/,
+        /\/?.*LICEN(C|S)E/,
+        /\/?COPYING/,
+      ],
+      :ignore => [
+        '.gemtest',
+        '.gitignore',
+        '.travis.yml',
+        '.yardopts',
+        '.rvmrc',
+        '.rubocop.yml',
+        /^\..*rc$/i,
+      ],
       # Other files including test files that are not required for
       # runtime and therefore currently included in -doc
-      :misc => [/.*.gemspec/, /Gemfile.*/, 'Rakefile', 'rakefile.rb', 'Vagrantfile',
-                /^spec.*/, /^rspec.*/, /^test(s|)/, /^examples.*/]
+      :misc => [
+        /.*.gemspec/,
+        /Gemfile.*/,
+        'Rakefile',
+        'rakefile.rb',
+        'Vagrantfile',
+        /^spec.*/,
+        /^rspec.*/,
+        /^test(s|)/,
+        /^examples.*/,
+      ]
     }
 
     # Set the configuration back to default
