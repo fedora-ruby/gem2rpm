@@ -55,8 +55,8 @@ module Gem2Rpm
       ]
     }
 
-    # Set the configuration back to default
-    def to_default
+    # Set the configuration back to default values
+    def reset
       @_macros = nil
       @_rules = nil
       self

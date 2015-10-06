@@ -47,7 +47,7 @@ module Gem2Rpm
     # Deprecate, kept just for backward compatibility.
     format = Gem2Rpm::Format.new(package)
     spec = Gem2Rpm::Specification.new(package.spec)
-    config = Gem2Rpm::Configuration.instance.to_default
+    config = Gem2Rpm::Configuration.instance.reset
     download_path = ""
     unless local
       begin
