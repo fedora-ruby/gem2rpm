@@ -22,4 +22,20 @@ class TestGem2Rpm < Minitest::Test
   def test_find_download_url_for_source_address
     assert_match %r{https?://rubygems.org/gems/}, Gem2Rpm.find_download_url("gem2rpm", "0.8.0")
   end
+
+  def test_print_dependencies
+    dependencies = <<-END.gsub(/^ */, '')
+      rubygem(test_runtime) >= 1.0.0
+      rubygem(test_development) >= 1.0.0
+    END
+
+    out = StringIO.new
+
+    Gem2Rpm.print_dependencies(
+      File.join(File.dirname(__FILE__), 'artifacts', 'testing_gem', 'testing_gem-1.0.0.gem'),
+      out
+    )
+
+    assert_equal dependencies, out.string
+  end
 end

@@ -138,10 +138,4 @@ if srpm
   system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{Dir.pwd}' #{specfile}")
 end
 
-if deps
-  Gem2Rpm::Package.new(gemfile).spec.dependencies.each do |dep|
-    Gem2Rpm::Dependency.new(dep).requirement.each do |r|
-      puts "rubygem(#{dep.name}) #{r}"
-    end
-  end
-end
+Gem2Rpm.print_dependencies(gemfile) if deps
