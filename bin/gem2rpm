@@ -9,77 +9,8 @@ require 'fileutils'
 require 'open-uri'
 require 'uri'
 
-opts = OptionParser.new("Usage: #{$PROGRAM_NAME} [OPTIONS] GEM")
-opts.separator("  Convert Ruby gems to source RPMs and specfiles.")
-opts.separator("  Uses a template to generate the RPM specfile")
-opts.separator("  from the gem specification.")
-
-options = {
-  :print_template_file => nil,
-  :template_file => nil,
-  :output_file => nil,
-  :local => false,
-  :srpm => false,
-  :deps => false,
-  :nongem => false,
-  :doc_subpackage => true,
-  :fetch => false,
-}
-
-opts.separator("")
-opts.separator("  Options:")
-opts.on("-T", "--current-template", "Print the current template") do
-  options[:print_template_file] = true
-end
-opts.on("-t", "--template TEMPLATE", "Use TEMPLATE for the specfile") do |val|
-  options[:template_file] = val
-end
-opts.on("--templates", "List all available templates") do
-  puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
-  puts Gem2Rpm::Template.list.map do |t|
-    t.gsub(/(.*)\.spec.erb/, '\\1')
-  end.join("\n")
-  exit 0
-end
-opts.on("-v", "--version", "Print gem2rpm's version and exit") do
-  puts Gem2Rpm::VERSION
-  exit 0
-end
-opts.on("-o", "--output FILE", "Send the specfile to FILE") do |val|
-  options[:output_file] = val
-end
-opts.on("-s", "--srpm", "Create a source RPM") do
-  options[:srpm] = true
-end
-opts.on("-l", "--local", "Do not retrieve Gem information over
-#{' ' * 36} the network. Use on disconnected machines") do
-  options[:local] = true
-end
-opts.on("-d", "--dependencies", "Print the dependencies of the gem") do
-  options[:deps] = true
-end
-opts.on("-n", "--nongem", "Generate a subpackage for non-gem use") do
-  options[:nongem] = true
-end
-opts.on("--no-doc", "Disable document subpackage") do
-  options[:doc_subpackage] = false
-end
-opts.on("--fetch", "Fetch the gem from rubygems.org") do
-  options[:fetch] = true
-end
-opts.separator("")
-opts.separator("  Arguments:")
-opts.separator("    GEM            The path to the locally stored gem package file or the name")
-opts.separator("                   of the gem when using --fetch.")
-opts.separator("")
-
-begin
-  rest = opts.permute(ARGV)
-rescue OptionParser::InvalidOption => e
-  $stderr.puts "#{e}\n\n"
-  $stderr.puts opts
-  exit(1)
-end
+options = Gem2Rpm::Configuration.instance.options
+rest = options[:args]
 
 template = begin
   Gem2Rpm::Template.find options[:template_file], :gem_file => rest[0]
