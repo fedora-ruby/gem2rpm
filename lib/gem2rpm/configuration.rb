@@ -163,7 +163,7 @@ module Gem2Rpm
         exit 0
       end
 
-      parser.on('-o', '--output FILE", "Send the specfile to FILE') do |val|
+      parser.on('-o', '--output FILE', 'Send the specfile to FILE') do |val|
         options[:output_file] = val
       end
 
