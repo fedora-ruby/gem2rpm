@@ -14,23 +14,25 @@ opts.separator("  Convert Ruby gems to source RPMs and specfiles.")
 opts.separator("  Uses a template to generate the RPM specfile")
 opts.separator("  from the gem specification.")
 
-print_template_file = nil
-template_file = nil
-output_file = nil
-local = false
-srpm = false
-deps = false
-nongem = false
-doc_subpackage = true
-fetch = false
+options = {
+  :print_template_file => nil,
+  :template_file => nil,
+  :output_file => nil,
+  :local => false,
+  :srpm => false,
+  :deps => false,
+  :nongem => false,
+  :doc_subpackage => true,
+  :fetch => false,
+}
 
 opts.separator("")
 opts.separator("  Options:")
 opts.on("-T", "--current-template", "Print the current template") do
-  print_template_file = true
+  options[:print_template_file] = true
 end
 opts.on("-t", "--template TEMPLATE", "Use TEMPLATE for the specfile") do |val|
-  template_file = val
+  options[:template_file] = val
 end
 opts.on("--templates", "List all available templates") do
   puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
@@ -44,26 +46,26 @@ opts.on("-v", "--version", "Print gem2rpm's version and exit") do
   exit 0
 end
 opts.on("-o", "--output FILE", "Send the specfile to FILE") do |val|
-  output_file = val
+  options[:output_file] = val
 end
 opts.on("-s", "--srpm", "Create a source RPM") do
-  srpm = true
+  options[:srpm] = true
 end
 opts.on("-l", "--local", "Do not retrieve Gem information over
 #{' ' * 36} the network. Use on disconnected machines") do
-  local = true
+  options[:local] = true
 end
 opts.on("-d", "--dependencies", "Print the dependencies of the gem") do
-  deps = true
+  options[:deps] = true
 end
 opts.on("-n", "--nongem", "Generate a subpackage for non-gem use") do
-  nongem = true
+  options[:nongem] = true
 end
 opts.on("--no-doc", "Disable document subpackage") do
-  doc_subpackage = false
+  options[:doc_subpackage] = false
 end
 opts.on("--fetch", "Fetch the gem from rubygems.org") do
-  fetch = true
+  options[:fetch] = true
 end
 opts.separator("")
 opts.separator("  Arguments:")
@@ -80,13 +82,13 @@ rescue OptionParser::InvalidOption => e
 end
 
 template = begin
-  Gem2Rpm::Template.find template_file, :gem_file => rest[0]
+  Gem2Rpm::Template.find options[:template_file], :gem_file => rest[0]
 rescue Gem2Rpm::Template::TemplateError => e
   $stderr.puts e
   exit(1)
 end
 
-if print_template_file
+if options[:print_template_file]
   puts template.read
   exit 0
 end
@@ -98,7 +100,7 @@ if rest.size != 1
 end
 gemfile = rest[0]
 
-if fetch
+if options[:fetch]
   gem_uri = ''
   open("http://rubygems.org/api/v1/gems/#{gemfile}.json") do |f|
     gem_uri = f.read.match(/"gem_uri":\s*"(.*?)",/m)[1]
@@ -111,31 +113,31 @@ end
 
 srpmdir = nil
 specfile = nil
-if srpm
+if options[:srpm]
   gemname = Gem2Rpm::Package.new(gemfile).spec.name
   srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
   specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
-  output_file ||= specfile
+  options[:output_file] ||= specfile
 end
 
 # Produce a specfile
-if output_file.nil?
-  Gem2Rpm.convert(gemfile, template, $stdout, nongem, local, doc_subpackage) unless deps
+if options[:output_file].nil?
+  Gem2Rpm.convert(gemfile, template, $stdout, options[:nongem], options[:local], options[:doc_subpackage]) unless options[:deps]
 else
   begin
-    out = open(output_file, "w")
-    Gem2Rpm.convert(gemfile, template, out, nongem, local, doc_subpackage)
+    out = open(options[:output_file], "w")
+    Gem2Rpm.convert(gemfile, template, out, options[:nongem], options[:local], options[:doc_subpackage])
   ensure
     out.close
   end
 end
 
 # Create a  source RPM
-if srpm
-  FileUtils.copy(output_file, specfile) unless File.exist?(specfile)
+if options[:srpm]
+  FileUtils.copy(options[:output_file], specfile) unless File.exist?(specfile)
   FileUtils.copy(gemfile, srpmdir)
 
   system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{Dir.pwd}' #{specfile}")
 end
 
-Gem2Rpm.print_dependencies(gemfile) if deps
+Gem2Rpm.print_dependencies(gemfile) if options[:deps]
