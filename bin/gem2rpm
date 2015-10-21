@@ -33,7 +33,7 @@ gemfile = rest[0]
 
 if options[:fetch]
   gem_uri = ''
-  open("http://rubygems.org/api/v1/gems/#{gemfile}.json") do |f|
+  open("https://rubygems.org/api/v1/gems/#{gemfile}.json") do |f|
     gem_uri = f.read.match(/"gem_uri":\s*"(.*?)",/m)[1]
     gemfile = URI.parse(gem_uri).path.split('/').last
     open(gemfile, 'w') do |gf|
