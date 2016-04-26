@@ -11,7 +11,7 @@ require 'gem2rpm/template'
 module Gem2Rpm
   extend Gem2Rpm::TemplateHelpers
 
-  Gem2Rpm::VERSION = "0.11.2"
+  Gem2Rpm::VERSION = "0.11.3"
 
   class Exception < RuntimeError; end
   class DownloadUrlError < Exception; end
