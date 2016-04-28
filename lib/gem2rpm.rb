@@ -23,6 +23,11 @@ module Gem2Rpm
       'r'
     end
 
+  def self.show_message(message, obj = nil, out = $stderr)
+    out.puts("#{message}\n\n")
+    out.puts obj if obj
+  end
+
   def self.find_download_url(name, version)
     dep = Gem::Dependency.new(name, "=#{version}")
     fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)

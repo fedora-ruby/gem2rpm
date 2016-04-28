@@ -4,6 +4,8 @@ module Gem2Rpm
   class Configuration
     include Singleton
 
+    CURRENT_DIR = Dir.pwd
+
     DEFAULT_OPTIONS = {
       :print_template_file => nil,
       :template_file => nil,
@@ -14,6 +16,7 @@ module Gem2Rpm
       :nongem => false,
       :doc_subpackage => true,
       :fetch => false,
+      :directory => CURRENT_DIR,
     }
 
     # The defaults should mostly work
@@ -190,6 +193,10 @@ module Gem2Rpm
 
       parser.on('--fetch', 'Fetch the gem from rubygems.org') do
         options[:fetch] = true
+      end
+
+      parser.on('-C', '--directory DIR', 'Change to directory DIR') do |val|
+        options[:directory] = val
       end
 
       parser.separator('')

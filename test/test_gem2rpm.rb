@@ -20,6 +20,23 @@ class TestGem2Rpm < Minitest::Test
     end
   end
 
+  def test_show_message_for_message
+    expected = <<-'END'
+foo
+
+    END
+
+    Gem2Rpm.show_message("foo", nil, @out)
+    assert_equal expected, @out.string
+  end
+
+  def test_show_message_for_obj
+    obj = 'bar'
+    Gem2Rpm.show_message("foo", obj, @out)
+    assert_equal("foo\n\nbar\n", @out.string)
+  end
+
+
   # TODO: Make this test work offline.
   def test_find_download_url_for_source_address
     assert_match %r{https?://rubygems.org/gems/}, Gem2Rpm.find_download_url("gem2rpm", "0.8.0")
