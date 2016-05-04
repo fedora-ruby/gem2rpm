@@ -47,6 +47,10 @@ if options[:fetch]
   end
 end
 
+unless File.exist?(gemfile)
+  Gem2Rpm.show_message('Invalid GEMFILE', options)
+  exit(1)
+end
 srpmdir = nil
 specfile = nil
 if options[:srpm]
