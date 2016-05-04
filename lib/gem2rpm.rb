@@ -28,6 +28,12 @@ module Gem2Rpm
     out.puts obj if obj
   end
 
+  def self.file_content(file_name)
+    begin
+      File.open(file_name, OPEN_MODE, &:read)
+    end
+  end
+
   def self.find_download_url(name, version)
     dep = Gem::Dependency.new(name, "=#{version}")
     fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)

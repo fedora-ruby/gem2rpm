@@ -57,9 +57,7 @@ module Gem2Rpm
 
     # Read the content of the template file.
     def read
-      @content ||= begin
-        File.open(@filename, OPEN_MODE, &:read)
-      end
+      @content ||= Gem2Rpm.file_content(@filename)
     end
   end
 end

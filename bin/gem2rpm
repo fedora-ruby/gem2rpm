@@ -30,7 +30,7 @@ if rest.size != 1
 end
 gemfile = rest[0]
 out_dir = options[:directory]
-unless Dir.exist?(out_dir)
+unless File.exist?(out_dir)
   Gem2Rpm.show_message("No such directory #{out_dir}")
   exit(1)
 end
@@ -81,6 +81,8 @@ if options[:srpm]
     "--define '_srcrpmdir #{out_dir}' #{specfile}"
   unless system(command)
     Gem2Rpm.show_message("Command failed: #{command}")
+    content = Gem2Rpm.file_content(specfile)
+    Gem2Rpm.show_message("RPM spec file Content:\n#{content}")
     exit(1)
   end
 end
