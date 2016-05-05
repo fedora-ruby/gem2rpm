@@ -25,13 +25,13 @@ if options[:print_template_file]
 end
 
 if rest.size != 1
-  Gem2Rpm.show_message('Missing GEMFILE', options)
+  Gem2Rpm.show_message('Missing GEMFILE')
   exit(1)
 end
 gemfile = rest[0]
 out_dir = options[:directory]
 unless Dir.exist?(out_dir)
-  Gem2Rpm.show_message('No such directory', options)
+  Gem2Rpm.show_message("No such directory #{out_dir}")
   exit(1)
 end
 
@@ -48,7 +48,7 @@ if options[:fetch]
 end
 
 unless File.exist?(gemfile)
-  Gem2Rpm.show_message('Invalid GEMFILE', options)
+  Gem2Rpm.show_message("Invalid GEMFILE #{gemfile}")
   exit(1)
 end
 srpmdir = nil
