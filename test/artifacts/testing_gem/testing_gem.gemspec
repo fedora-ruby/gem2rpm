@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.description = <<-EOF
   This is for use with gem2rpm's unit tests.
   EOF
+  s.license = "MIT"
 
   #### Dependencies and requirements.
 
