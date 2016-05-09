@@ -153,10 +153,11 @@ module Gem2Rpm
 
       # TODO: This does not belong here.
       parser.on('--templates', 'List all available templates') do
-        puts 'Available templates in #{Gem2Rpm::Template.default_location}:\n\n'
-        puts Gem2Rpm::Template.list.map do |t|
+        puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
+        template_list = Gem2Rpm::Template.list.map do |t|
           t.gsub(/(.*)\.spec.erb/, '\\1')
         end.join("\n")
+        puts template_list
         exit 0
       end
 
