@@ -1,3 +1,6 @@
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y rpm
 language: ruby
 rvm:
   - "1.8.7"
@@ -5,4 +8,6 @@ rvm:
   - "2.1.4"
   - "2.2.0"
   - "ruby-head"
-script: rake
+script:
+  - rpmbuild --version
+  - rake
