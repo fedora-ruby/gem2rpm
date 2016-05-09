@@ -77,7 +77,12 @@ if options[:srpm]
   FileUtils.copy(options[:output_file], specfile) unless File.exist?(specfile)
   FileUtils.copy(gemfile, srpmdir)
 
-  system("rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' --define '_srcrpmdir #{out_dir}' #{specfile}")
+  command = "rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' " +
+    "--define '_srcrpmdir #{out_dir}' #{specfile}"
+  unless system(command)
+    Gem2Rpm.show_message("Command failed: #{command}")
+    exit(1)
+  end
 end
 
 Gem2Rpm.print_dependencies(gemfile) if options[:deps]
