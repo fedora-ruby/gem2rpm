@@ -15,7 +15,7 @@ def local_test?
 end
 
 def skip_if_offline
-  skip('Skip fetch test in off line') if local_test?
+  skip('Skip test because of off line') if local_test?
 end
 
 def config

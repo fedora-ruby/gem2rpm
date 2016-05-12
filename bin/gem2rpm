@@ -81,8 +81,6 @@ if options[:srpm]
     "--define '_srcrpmdir #{out_dir}' #{specfile}"
   unless system(command)
     Gem2Rpm.show_message("Command failed: #{command}")
-    content = Gem2Rpm.file_content(specfile)
-    Gem2Rpm.show_message("RPM spec file Content:\n#{content}")
     exit(1)
   end
 end

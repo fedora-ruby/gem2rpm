@@ -16,7 +16,6 @@ class TestTemplate < Minitest::Test
         fedora.spec.erb
         opensuse.spec.erb
         pld.spec.erb
-        ubuntu.spec.erb
       ), Gem2Rpm::Template.list
   end
 
