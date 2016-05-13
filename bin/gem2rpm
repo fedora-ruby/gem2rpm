@@ -9,7 +9,15 @@ require 'fileutils'
 require 'open-uri'
 require 'uri'
 
-options = Gem2Rpm::Configuration.instance.options
+options = begin
+  config = Gem2Rpm::Configuration.instance
+  exit(0) if config.finish?
+  config.options
+rescue Gem2Rpm::Configuration::ConfigurationError => e
+  Gem2Rpm.show_message(e)
+  exit(1)
+end
+
 rest = options[:args]
 
 template = begin
