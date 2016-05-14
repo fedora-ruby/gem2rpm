@@ -30,7 +30,7 @@ if rest.size != 1
 end
 gemfile = rest[0]
 out_dir = options[:directory]
-unless Dir.exist?(out_dir)
+unless File.exist?(out_dir)
   Gem2Rpm.show_message("No such directory #{out_dir}")
   exit(1)
 end

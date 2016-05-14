@@ -36,9 +36,9 @@ foo
     assert_equal("foo\n\nbar\n", @out.string)
   end
 
-
-  # TODO: Make this test work offline.
   def test_find_download_url_for_source_address
+    skip_if_offline
+
     assert_match %r{https?://rubygems.org/gems/}, Gem2Rpm.find_download_url("gem2rpm", "0.8.0")
   end
 
