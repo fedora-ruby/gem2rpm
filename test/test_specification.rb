@@ -40,4 +40,24 @@ class TestSpecification < Minitest::Test
     @gemspec.summary = "summary"
     assert_equal "summary.\n", @spec.description
   end
+
+  def test_homepage
+    @gemspec.homepage = 'https://github.com/fedora-ruby/testing'
+    assert_equal @gemspec.homepage, @spec.homepage
+  end
+
+  def test_homepage_nil
+    @gemspec.homepage = nil
+    assert_nil @spec.homepage
+  end
+
+  def test_homepage_empty
+    @gemspec.homepage = ''
+    assert_nil @spec.homepage
+  end
+
+  def test_homepage_blank
+    @gemspec.homepage = ' '
+    assert_nil @spec.homepage
+  end
 end
