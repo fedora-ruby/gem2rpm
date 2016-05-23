@@ -52,6 +52,12 @@ class TestDistro < Minitest::Test
     assert_equal "fedora-17-rawhide", Gem2Rpm::Distro.nature.to_s
   end
 
+  def test_nature_for_quoted_os_release_file
+    Gem2Rpm::Distro.release_files = [File.join(File.dirname(__FILE__), 'templates', 'fake_files', 'quoted-os-release')]
+
+    assert_equal "pld", Gem2Rpm::Distro.nature.to_s
+  end
+
   def test_release_files_is_memoized
     assert_same Gem2Rpm::Distro.release_files, Gem2Rpm::Distro.release_files
   end
