@@ -7,6 +7,11 @@ require 'minitest/autorun'
 
 require 'gem2rpm'
 
+# If you want to test in off line environment, set environment variable.
+def skip_if_offline
+  skip('Skip test because of off line') if ENV['TEST_GEM2RPM_LOCAL']
+end
+
 def config
   Gem2Rpm::Configuration.instance
 end
