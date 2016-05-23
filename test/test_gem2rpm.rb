@@ -36,6 +36,18 @@ foo
     assert_equal("foo\n\nbar\n", @out.string)
   end
 
+  def test_show_templates
+    Gem2Rpm.show_templates(@out)
+    assert_match(/^Available templates/, @out.string)
+    assert_match(/\AAvailable templates.*\npld\n\Z/m, @out.string)
+  end
+
+  def test_show_version
+    Gem2Rpm.show_version(@out)
+    assert_match(/^\d/, @out.string)
+    assert_equal("#{Gem2Rpm::VERSION}\n", @out.string)
+  end
+
   def test_find_download_url_for_source_address
     skip_if_offline
 

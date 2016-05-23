@@ -28,6 +28,18 @@ module Gem2Rpm
     out.puts obj if obj
   end
 
+  def self.show_templates(out = $stdout)
+    out.puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
+    template_list = Gem2Rpm::Template.list.map do |t|
+      t.gsub(/(.*)\.spec.erb/, '\\1')
+    end.join("\n")
+    out.puts template_list
+  end
+
+  def self.show_version(out = $stdout)
+    out.puts Gem2Rpm::VERSION
+  end
+
   def self.find_download_url(name, version)
     dep = Gem::Dependency.new(name, "=#{version}")
     fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)

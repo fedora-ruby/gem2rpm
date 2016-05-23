@@ -4,11 +4,15 @@ module Gem2Rpm
   class Configuration
     include Singleton
 
+    class InvalidOption < Exception; end
+
     CURRENT_DIR = Dir.pwd
 
     DEFAULT_OPTIONS = {
       :print_template_file => nil,
       :template_file => nil,
+      :templates => false,
+      :version => false,
       :output_file => nil,
       :local => false,
       :srpm => false,
@@ -115,9 +119,8 @@ module Gem2Rpm
       @options[:args] = args
     # TODO: Refactor, this is probably not the best palce.
     rescue OptionParser::InvalidOption => e
-      $stderr.puts "#{e}\n\n"
-      $stderr.puts parser
-      exit(1)
+      message = "#{e}\n\n#{parser}\n"
+      fail(InvalidOption, message)
     end
 
     # Creates an option parser.
@@ -151,20 +154,12 @@ module Gem2Rpm
         options[:template_file] = val
       end
 
-      # TODO: This does not belong here.
       parser.on('--templates', 'List all available templates') do
-        puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
-        template_list = Gem2Rpm::Template.list.map do |t|
-          t.gsub(/(.*)\.spec.erb/, '\\1')
-        end.join("\n")
-        puts template_list
-        exit 0
+        options[:templates] = true
       end
 
-      # TODO: This does not belong here.
       parser.on('-v', '--version', 'Print gem2rpm\'s version and exit') do
-        puts Gem2Rpm::VERSION
-        exit 0
+        options[:version] = true
       end
 
       parser.on('-o', '--output FILE', 'Send the specfile to FILE') do |val|

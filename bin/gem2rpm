@@ -9,7 +9,21 @@ require 'fileutils'
 require 'open-uri'
 require 'uri'
 
-options = Gem2Rpm::Configuration.instance.options
+options = begin
+  Gem2Rpm::Configuration.instance.options
+rescue Gem2Rpm::Configuration::InvalidOption => e
+  Gem2Rpm.show_message(e)
+  exit(1)
+end
+if options[:templates]
+  Gem2Rpm.show_templates
+  exit(0)
+end
+if options[:version]
+  Gem2Rpm.show_version
+  exit(0)
+end
+
 rest = options[:args]
 
 template = begin
