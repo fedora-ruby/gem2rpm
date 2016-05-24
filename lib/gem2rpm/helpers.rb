@@ -24,7 +24,7 @@ module Gem2Rpm
     # '<' pair.
     def self.expand_pessimistic_requirement(requirement)
       next_version = Gem::Version.create(requirement.last).bump
-      return ['=>', requirement.last], ['<', next_version]
+      return ['>=', requirement.last], ['<', next_version]
     end
 
     # Expands the not equal version operator '!=' into equivalent '<' and
