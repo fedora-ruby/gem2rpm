@@ -5,12 +5,21 @@ require 'gem2rpm/helpers'
 
 module Gem2Rpm
   class Specification < SimpleDelegator
+    BLANK_RE = /\A[[:space:]]*\z/
+
     # A long description of gem wrapped to 78 characters.
     def description
       d = super.to_s.chomp
       d = summary.to_s.chomp if d.empty?
       d.gsub!(/([^.!?])\Z/, "\\1.")
       Helpers.word_wrap(d, 78) + "\n"
+    end
+
+    # The URL of this gem's home page
+    def homepage
+      h = super
+      h = nil if h && BLANK_RE =~ h
+      h
     end
 
     # A list of Gem::Dependency objects this gem depends on (includes every
