@@ -39,7 +39,7 @@ foo
   def test_show_templates
     Gem2Rpm.show_templates(@out)
     assert_match(/^Available templates/, @out.string)
-    assert_match(/\AAvailable templates.*\npld\n\Z/m, @out.string)
+    assert_match(/\AAvailable templates.*\nredhat-7\n\Z/m, @out.string)
   end
 
   def test_show_version

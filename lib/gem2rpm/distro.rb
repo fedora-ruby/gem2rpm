@@ -4,6 +4,7 @@ module Gem2Rpm
     PLD = :pld
     OPENSUSE = :opensuse
     DEFAULT = :default
+    REDHAT = :redhat
 
     ROLLING_RELEASES = ['rawhide', 'factory', 'tumbleweed']
 
@@ -51,8 +52,7 @@ module Gem2Rpm
 
             os_release.version = versions.first if versions.length == 1
           elsif grouped_release_files['redhat']
-            # Use Fedora's template for RHEL ATM.
-            os_release.os = FEDORA
+            os_release.os = REDHAT
           elsif grouped_release_files['SuSE']
             os_release.os = OPENSUSE
           elsif grouped_release_files['pld']
@@ -83,13 +83,16 @@ module Gem2Rpm
     # Tries to find best suitable template for specified os and version.
     def self.template_by_os_version(os, version)
       os_templates = Template.list.grep(/#{os}.*\.spec\.erb/)
-
       os_templates.each do |file|
         # We want only distro RubyGems templates to get the right versions
-        next unless file =~ /^#{os}((-([0-9]+\.{0,1}[0-9]+){0,}){0,}(-(#{ROLLING_RELEASES.join('|')})){0,1}).spec.erb/
+        unless file =~ /^#{os}((-([0-9]+\.{0,1}[0-9]+){0,}){0,}(-(#{ROLLING_RELEASES.join('|')})){0,1}).spec.erb/
+          # the above regexp matches "redhat-77-77.spec.erb" but not "redhat-7.spec.erb"
+          # not quite sure how to fix that regexp without breaking something, so add another check here
+          next unless file =~ /^#{os}-([0-9]+).spec.erb/
+        end
 
         if (match = Regexp.last_match)
-          return file.gsub('.spec.erb', '') if in_range?(version, match[1].to_s.split('-').drop(1)) || match[1].empty?
+          return file.gsub('.spec.erb', '') if in_range?(version, match[1].to_s.split('-').drop(1)) || (version.to_s == match[1]) || match[1].empty?
         end
       end
 
