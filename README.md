@@ -15,7 +15,7 @@ $ gem install gem2rpm
 or download gem2rpm from Fedora repositories as RPM package:
 
 ```
-# yum install rubygem-gem2rpm
+# dnf install rubygem-gem2rpm
 ```
 
 ## Usage
