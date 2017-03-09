@@ -13,7 +13,8 @@ def skip_if_offline
 end
 
 def config
-  Gem2Rpm::Configuration.instance
+  # Templates might modify the configuration, better to reset it.
+  Gem2Rpm::Configuration.instance.reset
 end
 
 def gem_path

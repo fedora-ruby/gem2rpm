@@ -41,50 +41,6 @@ module Gem2Rpm
       end
     end
 
-    def self.file_entries_to_rpm(entries)
-      rpm_file_list = entries.map { |e| file_entry_to_rpm(e) }
-      rpm_file_list.join("\n")
-    end
-
-    def self.doc_file?(file)
-      check_str_on_conditions(file, Gem2Rpm::Configuration.instance.rule_for(:doc))
-    end
-
-    def self.license_file?(file)
-      check_str_on_conditions(file, Gem2Rpm::Configuration.instance.rule_for(:license))
-    end
-
-    def self.ignore_file?(file)
-      check_str_on_conditions(file, Gem2Rpm::Configuration.instance.rule_for(:ignore))
-    end
-
-    def self.misc_file?(file)
-      check_str_on_conditions(file, Gem2Rpm::Configuration.instance.rule_for(:misc))
-    end
-
-    def self.file_entry_to_rpm(entry)
-      config = Gem2Rpm::Configuration.instance
-      case
-      when doc_file?(entry)
-        "#{config.macro_for(:doc)} #{config.macro_for(:instdir)}/#{entry}".strip
-      when license_file?(entry)
-        "#{config.macro_for(:license)} #{config.macro_for(:instdir)}/#{entry}".strip
-      when ignore_file?(entry)
-        "#{config.macro_for(:ignore)} #{config.macro_for(:instdir)}/#{entry}".strip
-      # /lib should have its own macro
-      when entry == 'lib'
-        "#{config.macro_for(:libdir)}"
-      else
-        "#{config.macro_for(:instdir)}/#{entry}"
-      end
-    end
-
-    # Returns a list of top level directories and files
-    # out of an array of file_list
-    def self.top_level_from_file_list(file_list)
-      file_list.map { |f| f.gsub!(/([^\/]*).*/, '\1') }.uniq
-    end
-
     # Compares string to the given regexp conditions
     def self.check_str_on_conditions(str, conditions)
       conditions.any? do |condition|
