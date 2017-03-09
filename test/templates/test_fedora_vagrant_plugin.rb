@@ -45,9 +45,18 @@ class TestFedoraVagrantPlugin < Minitest::Test
     assert_match(/\sProvides: vagrant\(%\{vagrant_plugin_name\}\) = %\{version\}/, @out_string)
   end
 
-  def test_transactions
-    assert_match(/\s%posttrans\n%vagrant_plugin_register %\{vagrant_plugin_name\}/, @out_string)
-    assert_match(/\s%preun\n%vagrant_plugin_unregister %\{vagrant_plugin_name\}/, @out_string)
+  def test_no_transactions_in_fedora_gte_26
+    refute_match(/\s%posttrans\n%vagrant_plugin_register %\{vagrant_plugin_name\}/, @out_string)
+    refute_match(/\s%preun\n%vagrant_plugin_unregister %\{vagrant_plugin_name\}/, @out_string)
+  end
+
+  def test_transactions_in_fedora_lte_25
+    out = StringIO.new
+    t = Dir.glob(File.join(File.dirname(__FILE__), '..', '..', 'templates', '*25-vagrant-plugin.spec.erb')).first
+    Gem2Rpm.convert(vagrant_plugin_path, Gem2Rpm::Template.new(t), out, false)
+
+    assert_match(/\s%posttrans\n%vagrant_plugin_register %\{vagrant_plugin_name\}/, out.string)
+    assert_match(/\s%preun\n%vagrant_plugin_unregister %\{vagrant_plugin_name\}/, out.string)
   end
 
   def test_file_list
