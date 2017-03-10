@@ -5,7 +5,7 @@ module Gem2Rpm
     include Enumerable
 
     def initialize(files)
-      @items = top_level_entries(files.dup)
+      @items = files.map { |f| RpmFile.new(f) }
     end
 
     def each
@@ -13,6 +13,11 @@ module Gem2Rpm
       return to_enum(__callee__) unless block_given?
 
       @items.each { |item| yield item }
+    end
+
+    # Returns a list of top level directories and files, omit all subdirectories.
+    def top_level_entries
+      self.class.new(entries.map { |f| f.gsub!(/([^\/]*).*/, '\1') }.uniq)
     end
 
     def main_entries
@@ -25,13 +30,6 @@ module Gem2Rpm
 
     def to_rpm
       entries.map(&:to_rpm).join("\n")
-    end
-
-    private
-
-    # Returns a list of top level directories and files, omit all subdirectories.
-    def top_level_entries(files)
-      files.map { |f| f.gsub!(/([^\/]*).*/, '\1') }.uniq.map { |f| RpmFile.new(f) }
     end
   end
 end
