@@ -28,5 +28,11 @@ def gem_path
 end
 
 def vagrant_plugin_path
-  @vagrant_plugin_path ||= File.join(File.dirname(__FILE__), "artifacts", "vagrant_plugin", "vagrant_plugin-1.0.0.gem")
+  @vagrant_plugin_path ||= begin
+    path = File.join(File.dirname(__FILE__), "artifacts", "vagrant_plugin")
+    Dir.chdir path do
+      `gem build vagrant_plugin.gemspec`
+    end
+    File.join(path, "vagrant_plugin-1.0.0.gem")
+  end
 end
