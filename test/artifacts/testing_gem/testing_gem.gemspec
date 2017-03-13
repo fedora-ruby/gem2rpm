@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   #### Dependencies and requirements.
 
-  s.files = ['lib/testing_gem.rb', 'runtime/foo.rb', 'Rakefile', 'Gemfile', 'README', '.travis.yml']
+  s.files = ['lib/testing_gem.rb', 'runtime/foo.rb', 'Rakefile', 'Gemfile', 'README', '.travis.yml', 'testing_gem.gemspec']
   s.required_rubygems_version = ">= 1.3.6"
   s.required_ruby_version = ">= 1.8.6"
   s.add_runtime_dependency('test_runtime', ["~> 1.0", ">= 1.0.0"])

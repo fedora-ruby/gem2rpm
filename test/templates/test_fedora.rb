@@ -61,6 +61,7 @@ class TestFedora < Minitest::Test
     assert_match(/\s%doc %\{gem_docdir\}/, @out_string)
     assert_match(/\s%doc %\{gem_instdir\}\/README/, @out_string)
     assert_match(/\s%exclude %\{gem_instdir\}\/\.travis\.yml/, @out_string)
+    assert_match(/\s%exclude %\{gem_instdir\}\/testing_gem.gemspec/, @out_string)
   end
 
   def test_rawhide_does_not_provide_group_tag

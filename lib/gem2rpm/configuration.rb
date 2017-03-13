@@ -58,11 +58,11 @@ module Gem2Rpm
         '.rvmrc',
         '.rubocop.yml',
         /^\..*rc$/i,
+        /\/?.*\.gemspec$/,
       ],
       # Other files including test files that are not required for
       # runtime and therefore currently included in -doc
       :misc => [
-        /.*.gemspec/,
         /Gemfile.*/,
         'Rakefile',
         'rakefile.rb',
