@@ -51,6 +51,10 @@ class TestFedora < Minitest::Test
     refute_match(/\sProvides:\s*rubygem\(%\{gem_name\}\)/, @out_string)
   end
 
+  def test_gcc_build_requires
+    assert_match(/\sBuildRequires: gcc$/, @out_string)
+  end
+
   def test_file_list
     assert_match(/\s%dir %\{gem_instdir\}/, @out_string)
     assert_match(/\s%\{gem_libdir\}/, @out_string)

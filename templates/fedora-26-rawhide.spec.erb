@@ -17,6 +17,11 @@ BuildRequires: <%= requirement 'rubygems-devel', req %>
 <% for req in spec.required_ruby_version -%>
 BuildRequires: <%= requirement "ruby#{'-devel' unless spec.extensions.empty?}", req %>
 <% end -%>
+<% unless spec.extensions.empty? -%>
+# Compiler is required for build of gem binary extension.
+# https://fedoraproject.org/wiki/Packaging:C_and_C++#BuildRequires_and_Requires
+BuildRequires: gcc
+<% end -%>
 <% for d in spec.development_dependencies -%>
 <% unless ["rdoc", "rake", "bundler"].include? d.name -%>
 <% for req in d.requirement -%>
