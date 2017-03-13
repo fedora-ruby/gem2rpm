@@ -22,7 +22,10 @@ Gem::Specification.new do |s|
 
   s.require_path = 'lib'                         # Use these for libraries.
 
-  s.bindir = "bin"                               # Use these for applications.
+  #### Executable
+
+  s.bindir = "exe"                               # Use these for applications.
+  s.executable = "testing_gem"
 
   #### Binary extension.
 

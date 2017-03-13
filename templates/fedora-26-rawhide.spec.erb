@@ -80,10 +80,8 @@ rm -rf %{buildroot}%{gem_instdir}/<%= ext.split(File::SEPARATOR).first %>/
 mkdir -p %{buildroot}%{_bindir}
 cp -pa .%{_bindir}/* \
         %{buildroot}%{_bindir}/
-<% end -%>
 
-<% unless spec.executables.empty? -%>
-find %{buildroot}%{gem_instdir}/bin -type f | xargs chmod a+x
+find %{buildroot}%{gem_instdir}/<%= spec.bindir %> -type f | xargs chmod a+x
 <% end -%>
 
 # Run the test suite

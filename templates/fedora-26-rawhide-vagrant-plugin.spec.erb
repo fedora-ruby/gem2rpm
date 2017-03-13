@@ -64,10 +64,8 @@ rm -rf %{buildroot}%{vagrant_plugin_instdir}/<%= ext.split(File::SEPARATOR).firs
 mkdir -p %{buildroot}%{_bindir}
 cp -pa .%{_bindir}/* \
         %{buildroot}%{_bindir}/
-<% end -%>
 
-<% unless spec.executables.empty? -%>
-find %{buildroot}%{vagrant_plugin_instdir}/bin -type f | xargs chmod a+x
+find %{buildroot}%{vagrant_plugin_instdir}/<%= spec.bindir %> -type f | xargs chmod a+x
 <% end -%>
 
 # Run the test suite

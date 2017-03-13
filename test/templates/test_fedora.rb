@@ -55,6 +55,10 @@ class TestFedora < Minitest::Test
     assert_match(/\sBuildRequires: gcc$/, @out_string)
   end
 
+  def test_permissions_fixed_in_right_bindir
+    assert_match(/\sfind %\{buildroot\}%\{gem_instdir\}\/exe/, @out_string)
+  end
+
   def test_file_list
     assert_match(/\s%dir %\{gem_instdir\}/, @out_string)
     assert_match(/\s%\{gem_libdir\}/, @out_string)
