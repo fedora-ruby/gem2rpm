@@ -64,11 +64,13 @@ module Gem2Rpm
       # runtime and therefore currently included in -doc
       :misc => [
         /Gemfile.*/,
+        'cucumber.yml',
         'Rakefile',
         'rakefile.rb',
         'Vagrantfile',
-        /^spec.*/,
+        /^features.*/,
         /^rspec.*/,
+        /^spec.*/,
         /^test(s|)/,
         /^examples.*/,
       ]
