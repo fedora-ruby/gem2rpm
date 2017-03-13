@@ -62,4 +62,14 @@ class TestFedora < Minitest::Test
     assert_match(/\s%doc %\{gem_instdir\}\/README/, @out_string)
     assert_match(/\s%exclude %\{gem_instdir\}\/\.travis\.yml/, @out_string)
   end
+
+  def test_rawhide_does_not_provide_group_tag
+    rawhide_templates = Gem2Rpm::Template.list.grep(/.*rawhide.*\.spec\.erb/)
+    rawhide_templates.each do |t|
+      out = StringIO.new
+      t = File.join Gem2Rpm::Template.default_location, t
+      Gem2Rpm.convert(gem_path, Gem2Rpm::Template.new(t), out, false)
+      refute_match(/Group:/, out.string)
+    end
+  end
 end
