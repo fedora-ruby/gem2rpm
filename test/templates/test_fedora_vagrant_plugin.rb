@@ -28,8 +28,8 @@ class TestFedoraVagrantPlugin < Minitest::Test
   end
 
   def test_requires
-    assert_match(/\sRequires\(posttrans\): vagrant/, @out_string)
-    assert_match(/\sRequires\(preun\): vagrant/, @out_string)
+    refute_match(/\sRequires\(posttrans\): vagrant/, @out_string)
+    refute_match(/\sRequires\(preun\): vagrant/, @out_string)
     assert_match(/\sRequires: vagrant/, @out_string)
   end
 

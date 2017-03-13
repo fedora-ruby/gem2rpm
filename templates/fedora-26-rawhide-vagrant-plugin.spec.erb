@@ -10,8 +10,6 @@ License: <%= spec.licenses.join(" and ") %>
 URL: <%= spec.homepage %>
 <% end -%>
 Source0: <%= download_path %>%{vagrant_plugin_name}-%{version}.gem
-Requires(posttrans): vagrant
-Requires(preun): vagrant
 Requires: vagrant
 BuildRequires: vagrant
 <% if spec.extensions.empty? -%>
