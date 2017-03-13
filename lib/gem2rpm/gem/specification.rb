@@ -1,6 +1,6 @@
 require 'delegate'
 require 'gem2rpm/configuration'
-require 'gem2rpm/dependency'
+require 'gem2rpm/gem/dependency'
 require 'gem2rpm/helpers'
 
 module Gem2Rpm
