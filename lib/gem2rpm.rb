@@ -65,6 +65,11 @@ module Gem2Rpm
     format = Gem2Rpm::Format.new(package)
     spec = Gem2Rpm::Specification.new(package.spec)
     config = Gem2Rpm::Configuration.instance.reset
+
+    files = RpmFileList.new(spec.files)
+    main_files = files.top_level_entries.main_entries
+    doc_files = files.top_level_entries.doc_entries
+
     download_path = ""
     unless local
       begin
