@@ -23,6 +23,7 @@ class TestDistro < Minitest::Test
     assert_equal "fedora-17-rawhide", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 177)
     assert_equal "fedora", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::FEDORA, 0)
     assert_equal "opensuse", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::OPENSUSE, 11)
+    assert_equal "redhat-7", Gem2Rpm::Distro.template_by_os_version(Gem2Rpm::Distro::REDHAT, 7)
   end
 
   def test_nature_for_unavailable_template
