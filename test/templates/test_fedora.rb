@@ -69,12 +69,6 @@ class TestFedora < Minitest::Test
   end
 
   def test_rawhide_does_not_provide_group_tag
-    rawhide_templates = Gem2Rpm::Template.list.grep(/.*rawhide.*\.spec\.erb/)
-    rawhide_templates.each do |t|
-      out = StringIO.new
-      t = File.join Gem2Rpm::Template.default_location, t
-      Gem2Rpm.convert(gem_path, Gem2Rpm::Template.new(t), out, false)
-      refute_match(/Group:/, out.string)
-    end
+    refute_match(/Group:/, @out_string)
   end
 end
