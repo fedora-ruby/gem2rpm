@@ -1,4 +1,4 @@
-# Generated from <%= package.spec.file_name %> by gem2rpm -*- rpm-spec -*-
+# Generated from <%= spec.file_name %> by gem2rpm -*- rpm-spec -*-
 %global vagrant_plugin_name <%= spec.name %>
 
 Name: %{vagrant_plugin_name}
@@ -60,7 +60,7 @@ rm -rf %{buildroot}%{vagrant_plugin_instdir}/<%= ext.split(File::SEPARATOR).firs
 <% end -%>
 <% end -%>
 
-<% unless spec.executables.nil? or spec.executables.empty? -%>
+<% unless spec.executables.empty? -%>
 mkdir -p %{buildroot}%{_bindir}
 cp -pa .%{_bindir}/* \
         %{buildroot}%{_bindir}/
@@ -81,10 +81,8 @@ config.macros[:libdir] = '%{vagrant_plugin_libdir}'
 -%>
 %files
 %dir %{vagrant_plugin_instdir}
-<% unless spec.executables.nil? or spec.executables.empty? -%>
 <% for f in spec.executables -%>
 %{_bindir}/<%= f %>
-<% end -%>
 <% end -%>
 <% unless spec.extensions.empty? -%>
 %{vagrant_plugin_extdir_mri}
