@@ -56,7 +56,11 @@ foo
 
   def test_print_dependencies
     dependencies = <<-END.gsub(/^ */, '')
+      rubygem(test_runtime) >= 1.0
+      rubygem(test_runtime) < 2
       rubygem(test_runtime) >= 1.0.0
+      rubygem(test_development) >= 1.0
+      rubygem(test_development) < 2
       rubygem(test_development) >= 1.0.0
     END
 

@@ -14,8 +14,8 @@ class TestFedora < Minitest::Test
     @out_string = @out.string
   end
 
-  def test_omitting_url_from_rpm_spec
-    refute_match(/\sURL: /, @out_string)
+  def test_url
+    assert_match(/\sURL: /, @out_string)
   end
 
   def test_rubys_version_build_requirement
