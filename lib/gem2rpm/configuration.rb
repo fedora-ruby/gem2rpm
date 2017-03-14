@@ -55,23 +55,26 @@ module Gem2Rpm
         '.gitignore',
         '.travis.yml',
         '.yardopts',
+        '.rspec',
         '.rvmrc',
         '.rubocop.yml',
         /^\..*rc$/i,
         /\/?.*\.gemspec$/,
       ],
+      :test => [
+        '.rspec',
+        'cucumber.yml',
+        /^features.*/,
+        /^r?spec.*/,
+        /^tests?/,
+      ],
       # Other files including test files that are not required for
       # runtime and therefore currently included in -doc
       :misc => [
         /Gemfile.*/,
-        'cucumber.yml',
         'Rakefile',
         'rakefile.rb',
         'Vagrantfile',
-        /^features.*/,
-        /^rspec.*/,
-        /^spec.*/,
-        /^test(s|)/,
         /^examples.*/,
       ]
     }

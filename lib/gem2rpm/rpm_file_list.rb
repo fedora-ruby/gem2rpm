@@ -21,11 +21,11 @@ module Gem2Rpm
     end
 
     def main_entries
-      self.class.new(entries.delete_if { |f| f.doc? || f.misc? })
+      self.class.new(entries.delete_if { |f| f.doc? || f.misc? || f.test? })
     end
 
     def doc_entries
-      self.class.new(entries.delete_if { |f| !(f.doc? || f.misc?) })
+      self.class.new(entries.delete_if { |f| !(f.doc? || f.misc? || f.test?) })
     end
 
     def to_rpm

@@ -33,6 +33,10 @@ module Gem2Rpm
       Helpers.check_str_on_conditions(self, Gem2Rpm::Configuration.instance.rule_for(:ignore))
     end
 
+    def test?
+      Helpers.check_str_on_conditions(self, Gem2Rpm::Configuration.instance.rule_for(:test))
+    end
+
     def misc?
       Helpers.check_str_on_conditions(self, Gem2Rpm::Configuration.instance.rule_for(:misc))
     end
