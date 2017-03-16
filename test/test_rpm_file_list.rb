@@ -40,6 +40,15 @@ class TestRpmFileList < Minitest::Test
       @file_list.top_level_entries.to_a
   end
 
+  def test_license
+    license_files = %w(License.rdoc)
+
+    file_list = Gem2Rpm::RpmFileList.new(license_files)
+
+    assert_equal license_files, file_list.main_entries.entries
+    assert_empty file_list.doc_entries.entries
+  end
+
   def test_to_rpm
     results =
       "#{config.macro_for(:instdir)}/#{files[0]}\n" \
