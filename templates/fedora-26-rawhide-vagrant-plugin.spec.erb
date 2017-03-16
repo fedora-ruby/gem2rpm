@@ -91,7 +91,9 @@ config.macros[:libdir] = '%{vagrant_plugin_libdir}'
 <% unless spec.extensions.empty? -%>
 %{vagrant_plugin_extdir_mri}
 <% end -%>
-<%= main_files.to_rpm %>
+<%= main_files.reject do |item|
+  spec.extensions.detect { |extension| item =~ /^#{extension.split(File::SEPARATOR).first}$/}
+end.to_rpm %>
 <% unless doc_subpackage -%>
 %doc %{vagrant_plugin_docdir}
 <%= doc_files.to_rpm %>

@@ -66,5 +66,6 @@ class TestFedoraVagrantPlugin < Minitest::Test
     assert_match(/\s%doc %\{vagrant_plugin_docdir\}/, @out_string)
     assert_match(/\s%license %\{vagrant_plugin_instdir\}\/MIT/, @out_string)
     assert_match(/\s%doc %\{vagrant_plugin_instdir\}\/AUTHORS/, @out_string)
+    refute_match(/\s%\{gem_instdir\}\/ext/, @out_string)
   end
 end
