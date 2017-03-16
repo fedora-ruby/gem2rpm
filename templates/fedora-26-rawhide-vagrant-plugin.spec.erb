@@ -91,10 +91,10 @@ config.macros[:libdir] = '%{vagrant_plugin_libdir}'
 <% unless spec.extensions.empty? -%>
 %{vagrant_plugin_extdir_mri}
 <% end -%>
-<%= files.top_level_entries.main_entries.to_rpm %>
+<%= main_files.to_rpm %>
 <% unless doc_subpackage -%>
 %doc %{vagrant_plugin_docdir}
-<%= files.top_level_entries.doc_entries.to_rpm %>
+<%= doc_files.to_rpm %>
 <% end -%>
 %exclude %{vagrant_plugin_cache}
 %{vagrant_plugin_spec}
