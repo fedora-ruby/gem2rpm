@@ -51,13 +51,18 @@ end
 
 if options[:fetch]
   gem_uri = ''
-  open("https://rubygems.org/api/v1/gems/#{gemfile}.json") do |f|
-    gem_uri = f.read.match(/"gem_uri":\s*"(.*?)",/m)[1]
-    gemfile = URI.parse(gem_uri).path.split('/').last
-    gemfile = File.join(out_dir, gemfile)
-    open(gemfile, 'w') do |gf|
-      gf.write(open(gem_uri).read)
+  begin
+    open("https://rubygems.org/api/v1/gems/#{gemfile}.json") do |f|
+      gem_uri = f.read.match(/"gem_uri":\s*"(.*?)",/m)[1]
+      gemfile = URI.parse(gem_uri).path.split('/').last
+      gemfile = File.join(out_dir, gemfile)
+      open(gemfile, 'w') do |gf|
+        gf.write(open(gem_uri).read)
+      end
     end
+  rescue OpenURI::HTTPError => e
+    Gem2Rpm.show_message("Gem fetch failed with error: #{e.message}")
+    exit(1)
   end
 end
 
