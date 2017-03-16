@@ -17,6 +17,18 @@ class TestRpmFileList < Minitest::Test
     )
   end
 
+  def test_reject
+    file_to_exclude = files.last
+
+    new_file_list = @file_list.reject { |file| file == file_to_exclude }
+
+    assert_equal @file_list.entries.size - 1, new_file_list.entries.size
+    refute_includes new_file_list, file_to_exclude
+
+    assert_instance_of Gem2Rpm::RpmFileList, new_file_list
+    refute_same @file_list, new_file_list
+  end
+
   def test_converts_to_rpm_files
     @file_list.entries.each do |e|
       assert_instance_of Gem2Rpm::RpmFile, e

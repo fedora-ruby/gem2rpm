@@ -15,6 +15,13 @@ module Gem2Rpm
       @items.each { |item| yield item }
     end
 
+    def reject
+      # Return Enumerator when called withoug block.
+      return to_enum(__callee__) unless block_given?
+
+      self.class.new(@items.reject { |item| yield item })
+    end
+
     # Returns a list of top level directories and files, omit all subdirectories.
     def top_level_entries
       self.class.new(entries.map { |f| f.gsub!(/([^\/]*).*/, '\1') }.uniq)
