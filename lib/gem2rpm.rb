@@ -65,7 +65,8 @@ module Gem2Rpm
     # Deprecate, kept just for backward compatibility.
     format = Gem2Rpm::Format.new(package)
     spec = Gem2Rpm::Specification.new(package.spec)
-    config = Gem2Rpm::Configuration.instance.reset
+
+    config = Configuration.instance.reset
 
     tests = TestSuite.new(spec)
 
