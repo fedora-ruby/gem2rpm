@@ -47,7 +47,7 @@ module Gem2Rpm
       :license => [
         /\/?MIT/,
         /\/?GPLv[0-9]+/,
-        /\/?.*LICEN(C|S)E/,
+        /\/?.*LICEN(C|S)E/i,
         /\/?COPYING/,
       ],
       :ignore => [

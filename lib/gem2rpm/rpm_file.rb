@@ -7,10 +7,10 @@ module Gem2Rpm
       config = Gem2Rpm::Configuration.instance
 
       case
-      when doc?
-        "#{config.macro_for(:doc)} #{config.macro_for(:instdir)}/#{self}".strip
       when license?
         "#{config.macro_for(:license)} #{config.macro_for(:instdir)}/#{self}".strip
+      when doc?
+        "#{config.macro_for(:doc)} #{config.macro_for(:instdir)}/#{self}".strip
       when ignore?
         "#{config.macro_for(:ignore)} #{config.macro_for(:instdir)}/#{self}".strip
       # /lib should have its own macro
