@@ -7,6 +7,7 @@ require 'gem2rpm/gem/spec_fetcher'
 require 'gem2rpm/gem/specification'
 require 'gem2rpm/template_helpers'
 require 'gem2rpm/template'
+require 'gem2rpm/test_suite'
 
 module Gem2Rpm
   extend Gem2Rpm::TemplateHelpers
@@ -65,6 +66,8 @@ module Gem2Rpm
     format = Gem2Rpm::Format.new(package)
     spec = Gem2Rpm::Specification.new(package.spec)
     config = Gem2Rpm::Configuration.instance.reset
+
+    tests = TestSuite.new(spec)
 
     files = RpmFileList.new(spec.files)
     main_files = files.top_level_entries.main_entries

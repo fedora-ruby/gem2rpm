@@ -68,10 +68,14 @@ cp -pa .%{_bindir}/* \
 find %{buildroot}%{vagrant_plugin_instdir}/<%= spec.bindir %> -type f | xargs chmod a+x
 <% end -%>
 
-# Run the test suite
 %check
-pushd .%{vagrant_plugin_instdir}
-
+pushd .%{gem_instdir}
+<% if tests.entries.empty? -%>
+# Run the test suite.
+<% end -%>
+<% for t in tests -%>
+# <%= t.command %>
+<% end -%>
 popd
 
 <%
