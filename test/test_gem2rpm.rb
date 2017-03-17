@@ -37,9 +37,11 @@ foo
   end
 
   def test_show_templates
-    Gem2Rpm.show_templates(@out)
+    Gem2Rpm::Distro.stub :nature, 'default' do
+      Gem2Rpm.show_templates(@out)
+    end
     assert_match(/^Available templates/, @out.string)
-    assert_match(/\AAvailable templates.*\npld\n\Z/m, @out.string)
+    assert_match(/\AAvailable templates.*\n* default\n.*\n  pld\n\Z/m, @out.string)
   end
 
   def test_show_version

@@ -65,7 +65,7 @@ module Gem2Rpm
     end
 
     def self.nature
-      template_by_os_version(os_release.os, os_release.version) || DEFAULT
+      template_by_os_version(os_release.os, os_release.version) || DEFAULT.to_s
     end
 
     # Provides list of release files found on the system.

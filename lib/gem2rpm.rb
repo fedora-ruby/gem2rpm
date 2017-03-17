@@ -32,7 +32,8 @@ module Gem2Rpm
   def self.show_templates(out = $stdout)
     out.puts "Available templates in #{Gem2Rpm::Template.default_location}:\n\n"
     template_list = Gem2Rpm::Template.list.map do |t|
-      t.gsub(/(.*)\.spec.erb/, '\\1')
+      t = t.gsub(/(.*)\.spec.erb/, '\\1')
+      t.gsub(/^/, t == Distro.nature ? '* ': '  ')
     end.join("\n")
     out.puts template_list
   end
