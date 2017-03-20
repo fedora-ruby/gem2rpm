@@ -1,3 +1,4 @@
+require 'optparse'
 require 'singleton'
 
 module Gem2Rpm
