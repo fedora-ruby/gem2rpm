@@ -70,6 +70,12 @@ unless File.exist?(gemfile)
   Gem2Rpm.show_message("Invalid GEMFILE #{gemfile}")
   exit(1)
 end
+
+if options[:deps]
+  Gem2Rpm.print_dependencies(gemfile)
+  exit 0
+end
+
 srpmdir = nil
 specfile = nil
 if options[:srpm]
@@ -81,7 +87,7 @@ end
 
 # Produce a specfile
 if options[:output_file].nil?
-  Gem2Rpm.convert(gemfile, template, $stdout, options[:nongem], options[:local], options[:doc_subpackage]) unless options[:deps]
+  Gem2Rpm.convert(gemfile, template, $stdout, options[:nongem], options[:local], options[:doc_subpackage])
 else
   begin
     out = open(options[:output_file], "w")
@@ -103,5 +109,3 @@ if options[:srpm]
     exit(1)
   end
 end
-
-Gem2Rpm.print_dependencies(gemfile) if options[:deps]
