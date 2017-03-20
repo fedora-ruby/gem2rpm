@@ -76,30 +76,28 @@ if options[:deps]
   exit 0
 end
 
-srpmdir = nil
-specfile = nil
+output_spec = StringIO.new
+Gem2Rpm.convert(gemfile, template, output_spec, options[:nongem], options[:local], options[:doc_subpackage])
+
+# Save or print a specfile.
+if options[:output_file]
+  File.open(options[:output_file], "w") do |f|
+    f.puts(output_spec.string)
+  end
+else
+  puts output_spec.string unless options[:srpm]
+end
+
+# Create a SRPM.
 if options[:srpm]
   gemname = Gem2Rpm::Package.new(gemfile).spec.name
   srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
   specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
-  options[:output_file] ||= specfile
-end
 
-# Produce a specfile
-if options[:output_file].nil?
-  Gem2Rpm.convert(gemfile, template, $stdout, options[:nongem], options[:local], options[:doc_subpackage])
-else
-  begin
-    out = open(options[:output_file], "w")
-    Gem2Rpm.convert(gemfile, template, out, options[:nongem], options[:local], options[:doc_subpackage])
-  ensure
-    out.close
+  File.open(specfile, "w") do |f|
+    f.puts(output_spec.string)
   end
-end
 
-# Create a  source RPM
-if options[:srpm]
-  FileUtils.copy(options[:output_file], specfile) unless File.exist?(specfile)
   FileUtils.copy(gemfile, srpmdir)
 
   command = "rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' " +
