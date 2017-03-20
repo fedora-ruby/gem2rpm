@@ -6,6 +6,7 @@ $LOAD_PATH.push(File.expand_path(File.dirname(__FILE__) + "/../lib"))
 require 'gem2rpm'
 require 'optparse'
 require 'fileutils'
+require 'tmpdir'
 require 'open-uri'
 require 'uri'
 
@@ -91,21 +92,20 @@ end
 # Create a SRPM.
 if options[:srpm]
   gemname = Gem2Rpm::Package.new(gemfile).spec.name
-  srpmdir = `/bin/mktemp -t -d gem2rpm-#{gemname}.XXXXXX`.chomp
-  specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
+  Dir.mktmpdir "gem2rpm-#{gemname}-" do |srpmdir|
+    specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
 
-  File.open(specfile, "w") do |f|
-    f.puts(output_spec.string)
+    File.open(specfile, "w") do |f|
+      f.puts(output_spec.string)
+    end
+
+    FileUtils.copy(gemfile, srpmdir)
+
+    command = "rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' " +
+      "--define '_srcrpmdir #{out_dir}' #{specfile}"
+    unless system(command)
+      Gem2Rpm.show_message("Command failed: #{command}")
+      exit(1)
+    end
   end
-
-  FileUtils.copy(gemfile, srpmdir)
-
-  command = "rpmbuild -bs --nodeps --define '_sourcedir #{srpmdir}' " +
-    "--define '_srcrpmdir #{out_dir}' #{specfile}"
-  unless system(command)
-    Gem2Rpm.show_message("Command failed: #{command}")
-    exit(1)
-  end
-
-  FileUtils.rm_rf(srpmdir)
 end
