@@ -26,6 +26,8 @@ module Gem2Rpm
       @items.each { |item| yield item }
     end
 
+    private
+
     def detect_test_frameworks(spec)
       from_development_dependencies(spec)
       # TODO: Try to guess the test framework from spec.files. This could
