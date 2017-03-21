@@ -3,6 +3,8 @@ require 'gem2rpm/helpers'
 
 module Gem2Rpm
   class RpmFile < String
+    # Returns string with entry suitable for RPM .spec file. This typically
+    # includes all necessary macros depending on file categorization.
     def to_rpm
       config = Gem2Rpm::Configuration.instance
 
@@ -21,22 +23,27 @@ module Gem2Rpm
       end
     end
 
+    # Returs true for documentation files.
     def doc?
       Helpers.check_str_on_conditions(self, Gem2Rpm::Configuration.instance.rule_for(:doc))
     end
 
+    # Returns true for license files.
     def license?
       Helpers.check_str_on_conditions(self, Gem2Rpm::Configuration.instance.rule_for(:license))
     end
 
+    # Returns true for files which should be ommited from the package.
     def ignore?
       Helpers.check_str_on_conditions(self, Gem2Rpm::Configuration.instance.rule_for(:ignore))
     end
 
+    # Returns true for files which are part of package test suite.
     def test?
       Helpers.check_str_on_conditions(self, Gem2Rpm::Configuration.instance.rule_for(:test))
     end
 
+    # Returns true for other known miscellaneous files.
     def misc?
       Helpers.check_str_on_conditions(self, Gem2Rpm::Configuration.instance.rule_for(:misc))
     end

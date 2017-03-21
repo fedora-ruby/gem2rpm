@@ -15,10 +15,14 @@ module Gem2Rpm
       TestFramework.new('bacon', %|bacon -a|),
     ]
 
+    # Returns new test suite list detected from Gem::Specification.
     def initialize(spec)
       @items = detect_test_frameworks(spec)
     end
 
+    # Calls the given block once for each element in self, passing that
+    # element as a parameter. Returns the array itself.
+    # If no block is given, an Enumerator is returned.
     def each
       # Return Enumerator when called withoug block.
       return to_enum(__callee__) unless block_given?
