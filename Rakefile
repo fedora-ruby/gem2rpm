@@ -5,13 +5,13 @@ require 'rake/clean'
 require 'rake/testtask'
 
 # Determine the current version
-PKG_NAME = "gem2rpm"
-SPEC_FILE = "rubygem-gem2rpm.spec"
+PKG_NAME = "gem2rpm".freeze
+SPEC_FILE = "rubygem-gem2rpm.spec".freeze
 
 if `ruby -rubygems -Ilib ./bin/gem2rpm --version` =~ /\S+$/
   CURRENT_VERSION = $&
 else
-  CURRENT_VERSION = "0.0.0"
+  CURRENT_VERSION = "0.0.0".freeze
 end
 
 if ENV['REL']

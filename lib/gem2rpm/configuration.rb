@@ -22,7 +22,7 @@ module Gem2Rpm
       :doc_subpackage => true,
       :fetch => false,
       :directory => CURRENT_DIR,
-    }
+    }.freeze
 
     # The defaults should mostly work
     DEFAULT_MACROS = {
@@ -31,7 +31,7 @@ module Gem2Rpm
       :doc => '%doc',
       :license => '%license',
       :ignore => '%exclude'
-    }
+    }.freeze
 
     DEFAULT_RULES = {
       :doc => [
@@ -78,7 +78,7 @@ module Gem2Rpm
         'Vagrantfile',
         /^examples.*/,
       ]
-    }
+    }.freeze
 
     def initialize
       @options = nil

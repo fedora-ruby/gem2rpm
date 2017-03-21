@@ -13,7 +13,7 @@ module Gem2Rpm
       TestFramework.new('shindo', %|shindont|),
       TestFramework.new('test-unit', %|ruby -e 'Dir.glob "./test/**/*_test.rb", &method(:require)'|),
       TestFramework.new('bacon', %|bacon -a|),
-    ]
+    ].freeze
 
     # Returns new test suite list detected from Gem::Specification.
     def initialize(spec)
