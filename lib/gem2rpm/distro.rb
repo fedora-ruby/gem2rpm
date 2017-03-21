@@ -5,7 +5,7 @@ module Gem2Rpm
     OPENSUSE = :opensuse
     DEFAULT = :default
 
-    ROLLING_RELEASES = ['rawhide', 'factory', 'tumbleweed'].freeze
+    ROLLING_RELEASES = %w[rawhide factory tumbleweed].freeze
 
     OsRelease = Struct.new :os, :version
 
