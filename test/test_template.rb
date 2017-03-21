@@ -59,7 +59,8 @@ class TestTemplate < Minitest::Test
 
   def test_read_is_memoized
     template = Gem2Rpm::Template.new(
-      File.join(Gem2Rpm::Template.default_location, 'default.spec.erb'))
+      File.join(Gem2Rpm::Template.default_location, 'default.spec.erb')
+    )
 
     assert_same template.read, template.read
   end
