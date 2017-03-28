@@ -1,5 +1,7 @@
 module Gem2Rpm
   class RpmDependency
+    attr_reader :dependency
+
     def initialize(dependency)
       @dependency = dependency.dup
 

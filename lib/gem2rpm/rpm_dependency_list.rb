@@ -18,6 +18,15 @@ module Gem2Rpm
       @items.each { |item| yield item }
     end
 
+    # Convert to rubygem() virtual provide dependencies.
+    def virtualize
+      dep_list = self.map do |d|
+        d.virtualize.dependency
+      end
+
+      self.class.new dep_list
+    end
+
     # Returns string with all dependencies from the list converted into entries
     # suitable for RPM .spec file. Thise entries should include all necessary
     # macros depending on file categorization.
