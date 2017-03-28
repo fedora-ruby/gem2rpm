@@ -25,4 +25,9 @@ class TestRpmDependency < Minitest::Test
   def test_to_rpm
     assert_equal results, entries.map { |d| Gem2Rpm::RpmDependency.new(d).to_rpm }
   end
+
+  def test_virtual_provides
+    assert_equal "rubygem(#{results.first})",
+      Gem2Rpm::RpmDependency.new(entries.first).virtualize.to_rpm
+  end
 end

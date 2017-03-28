@@ -8,6 +8,14 @@ module Gem2Rpm
       end
     end
 
+    # Convert to rubygem() virtual provide dependency.
+    def virtualize
+      dep = @dependency.dup
+      dep.name = "rubygem(#{dep.name})"
+
+      self.class.new dep
+    end
+
     # Returns string with entry suitable for RPM .spec file.
     def to_rpm
       rpm_dependencies = @dependency.requirement.map do |version|
