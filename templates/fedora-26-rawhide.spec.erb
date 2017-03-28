@@ -22,13 +22,9 @@ BuildRequires: <%= requirement "ruby#{'-devel' unless spec.extensions.empty?}", 
 # https://fedoraproject.org/wiki/Packaging:C_and_C++#BuildRequires_and_Requires
 BuildRequires: gcc
 <% end -%>
-<% for d in spec.development_dependencies -%>
-<% unless ["rdoc", "rake", "bundler"].include? d.name -%>
-<% for req in d.requirement -%>
-# BuildRequires: <%= requirement "rubygem(#{d.name})", req %>
-<% end -%>
-<% end -%>
-<% end -%>
+<%= development_dependencies.reject do |d|
+  ["rdoc", "rake", "bundler"].include? d.gem_dependency.name
+end.virtualize.with_requires.comment_out.to_rpm -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
 <% end -%>

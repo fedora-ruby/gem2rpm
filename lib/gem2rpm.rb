@@ -5,6 +5,8 @@ require 'gem2rpm/gem/format'
 require 'gem2rpm/gem/package'
 require 'gem2rpm/gem/spec_fetcher'
 require 'gem2rpm/gem/specification'
+require 'gem2rpm/rpm_dependency_list'
+require 'gem2rpm/rpm_file_list'
 require 'gem2rpm/template_helpers'
 require 'gem2rpm/template'
 require 'gem2rpm/test_suite'
@@ -68,6 +70,9 @@ module Gem2Rpm
     spec = Gem2Rpm::Specification.new(package.spec)
 
     config = Configuration.instance.reset
+
+    runtime_dependencies = Gem2Rpm::RpmDependencyList.new(spec.runtime_dependencies)
+    development_dependencies = Gem2Rpm::RpmDependencyList.new(spec.development_dependencies)
 
     tests = TestSuite.new(spec)
 
