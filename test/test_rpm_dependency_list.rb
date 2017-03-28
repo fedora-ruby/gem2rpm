@@ -32,4 +32,13 @@ class TestRpmDependencyList < Minitest::Test
 
     assert_equal result, @dependency_list.virtualize.to_rpm
   end
+
+  def test_with_requires
+    result =
+      "Requires: empty_requirement\n" \
+      "Requires: pessimistic_constraint >= 1.0\nRequires: pessimistic_constraint < 2\n" \
+      "BuildRequires: development_dependency"
+
+    assert_equal result, @dependency_list.with_requires.to_rpm
+  end
 end

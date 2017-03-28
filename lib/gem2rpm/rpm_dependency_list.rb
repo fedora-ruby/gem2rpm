@@ -27,6 +27,15 @@ module Gem2Rpm
       self.class.new dep_list
     end
 
+    # Output dependencies with RPM requires tag.
+    def with_requires
+      dep_list = self.map do |d|
+        d.with_requires.dependency
+      end
+
+      self.class.new dep_list
+    end
+
     # Returns string with all dependencies from the list converted into entries
     # suitable for RPM .spec file. Thise entries should include all necessary
     # macros depending on file categorization.
