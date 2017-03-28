@@ -1,4 +1,5 @@
 require 'gem2rpm/rpm_file_list'
+require 'gem2rpm/rpm_dependency'
 
 module Gem2Rpm
   module TemplateHelpers
@@ -17,7 +18,7 @@ module Gem2Rpm
     # Provides well formatted requirement with version.
     def requirement(name, version = nil)
       version = nil if version && version.to_s.empty?
-      [name, version].compact.join(' ')
+      RpmDependency.new(Gem::Dependency.new(name, version)).to_rpm
     end
   end
 end

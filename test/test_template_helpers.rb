@@ -8,6 +8,6 @@ class TestTemplateHelpers < Minitest::Test
     assert_equal "rubygem(foo)", Gem2Rpm.requirement("rubygem(foo)", "")
 
     artificial_object = Object.new
-    assert_equal "rubygem(foo) #{artificial_object}", Gem2Rpm.requirement("rubygem(foo)", artificial_object)
+    assert_equal "rubygem(foo)", Gem2Rpm.requirement("rubygem(foo)", artificial_object)
   end
 end
