@@ -39,4 +39,9 @@ class TestRpmDependency < Minitest::Test
     assert_equal "BuildRequires: #{results.last}",
       Gem2Rpm::RpmDependency.new(entries.last).with_requires.to_rpm
   end
+
+  def test_comment_out
+    assert_equal "# #{results.first}",
+      Gem2Rpm::RpmDependency.new(entries.first).comment_out.to_rpm
+  end
 end

@@ -29,6 +29,14 @@ module Gem2Rpm
       self.class.new dep
     end
 
+    # Comment out the dependency.
+    def comment_out
+      dep = @dependency.dup
+      dep.name = "# #{dep.name}"
+
+      self.class.new dep
+    end
+
     # Returns string with entry suitable for RPM .spec file.
     def to_rpm
       rpm_dependencies = @dependency.requirement.map do |version|
