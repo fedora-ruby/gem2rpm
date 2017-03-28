@@ -36,6 +36,15 @@ module Gem2Rpm
       self.class.new dep_list
     end
 
+    # Comment out the dependency.
+    def comment_out
+      dep_list = self.map do |d|
+        d.comment_out.dependency
+      end
+
+      self.class.new dep_list
+    end
+
     # Returns string with all dependencies from the list converted into entries
     # suitable for RPM .spec file. Thise entries should include all necessary
     # macros depending on file categorization.

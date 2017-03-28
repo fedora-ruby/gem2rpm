@@ -41,4 +41,13 @@ class TestRpmDependencyList < Minitest::Test
 
     assert_equal result, @dependency_list.with_requires.to_rpm
   end
+
+  def test_comment_out
+    result =
+      "# empty_requirement\n" \
+      "# pessimistic_constraint >= 1.0\n# pessimistic_constraint < 2\n" \
+      "# development_dependency"
+
+    assert_equal result, @dependency_list.comment_out.to_rpm
+  end
 end
