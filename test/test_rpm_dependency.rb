@@ -5,7 +5,8 @@ class TestRpmDependency < Minitest::Test
   def entries
     @entries ||= [
       Gem::Dependency.new('empty_requirement'),
-      Gem::Dependency.new('pessimistic_constraint', Gem::Requirement.new('~> 1.0'))
+      Gem::Dependency.new('pessimistic_constraint', Gem::Requirement.new('~> 1.0')),
+      Gem::Dependency.new('development_dependency', :development)
     ]
   end
 
@@ -13,6 +14,7 @@ class TestRpmDependency < Minitest::Test
     @results ||= [
       "empty_requirement",
       "pessimistic_constraint >= 1.0\npessimistic_constraint < 2",
+      "development_dependency"
     ]
   end
 
@@ -29,5 +31,12 @@ class TestRpmDependency < Minitest::Test
   def test_virtual_provides
     assert_equal "rubygem(#{results.first})",
       Gem2Rpm::RpmDependency.new(entries.first).virtualize.to_rpm
+  end
+
+  def test_requires
+    assert_equal "Requires: #{results.first}",
+      Gem2Rpm::RpmDependency.new(entries.first).with_requires.to_rpm
+    assert_equal "BuildRequires: #{results.last}",
+      Gem2Rpm::RpmDependency.new(entries.last).with_requires.to_rpm
   end
 end

@@ -16,6 +16,19 @@ module Gem2Rpm
       self.class.new dep
     end
 
+    # Output dependency with RPM requires tag.
+    def with_requires
+      dep = @dependency.dup
+      dep.name = case dep.type
+      when :development
+        "BuildRequires: #{dep.name}"
+      else
+        "Requires: #{dep.name}"
+      end
+
+      self.class.new dep
+    end
+
     # Returns string with entry suitable for RPM .spec file.
     def to_rpm
       rpm_dependencies = @dependency.requirement.map do |version|
