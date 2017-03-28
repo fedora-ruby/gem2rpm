@@ -59,7 +59,8 @@ module Gem2Rpm
     # suitable for RPM .spec file. Thise entries should include all necessary
     # macros depending on file categorization.
     def to_rpm
-      entries.map(&:to_rpm).join("\n")
+      s = entries.map(&:to_rpm).join("\n")
+      s += "\n" unless s.empty?
     end
   end
 end

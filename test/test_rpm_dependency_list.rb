@@ -18,7 +18,7 @@ class TestRpmDependencyList < Minitest::Test
   def test_reject
     result =
       "empty_requirement\n" \
-      "development_dependency"
+      "development_dependency\n"
 
     new_dependency_list = @dependency_list.reject { |d| d.to_rpm =~ /pessimistic_constraint/ }
 
@@ -33,7 +33,7 @@ class TestRpmDependencyList < Minitest::Test
     result =
       "empty_requirement\n" \
       "pessimistic_constraint >= 1.0\npessimistic_constraint < 2\n" \
-      "development_dependency"
+      "development_dependency\n"
 
     assert_equal result, @dependency_list.to_rpm
   end
@@ -42,7 +42,7 @@ class TestRpmDependencyList < Minitest::Test
     result =
       "rubygem(empty_requirement)\n" \
       "rubygem(pessimistic_constraint) >= 1.0\nrubygem(pessimistic_constraint) < 2\n" \
-      "rubygem(development_dependency)"
+      "rubygem(development_dependency)\n"
 
     assert_equal result, @dependency_list.virtualize.to_rpm
   end
@@ -51,7 +51,7 @@ class TestRpmDependencyList < Minitest::Test
     result =
       "Requires: empty_requirement\n" \
       "Requires: pessimistic_constraint >= 1.0\nRequires: pessimistic_constraint < 2\n" \
-      "BuildRequires: development_dependency"
+      "BuildRequires: development_dependency\n"
 
     assert_equal result, @dependency_list.with_requires.to_rpm
   end
@@ -60,7 +60,7 @@ class TestRpmDependencyList < Minitest::Test
     result =
       "# empty_requirement\n" \
       "# pessimistic_constraint >= 1.0\n# pessimistic_constraint < 2\n" \
-      "# development_dependency"
+      "# development_dependency\n"
 
     assert_equal result, @dependency_list.comment_out.to_rpm
   end
