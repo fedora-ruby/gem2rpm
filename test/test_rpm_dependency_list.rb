@@ -15,6 +15,20 @@ class TestRpmDependencyList < Minitest::Test
     ]
   end
 
+  def test_reject
+    result =
+      "empty_requirement\n" \
+      "development_dependency"
+
+    new_dependency_list = @dependency_list.reject { |d| d.to_rpm =~ /pessimistic_constraint/ }
+
+    assert_equal @dependency_list.entries.size - 1, new_dependency_list.entries.size
+    assert_equal result, new_dependency_list.to_rpm
+
+    assert_instance_of Gem2Rpm::RpmDependencyList, new_dependency_list
+    refute_same @dependency_list, new_dependency_list
+  end
+
   def test_to_rpm
     result =
       "empty_requirement\n" \

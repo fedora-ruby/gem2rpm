@@ -18,6 +18,16 @@ module Gem2Rpm
       @items.each { |item| yield item }
     end
 
+    # Returns a new array containing the items in self for which the given
+    # block is not true. The ordering of non-rejected elements is maintained.
+    # If no block is given, an Enumerator is returned instead.
+    def reject
+      # Return Enumerator when called withoug block.
+      return to_enum(__callee__) unless block_given?
+
+      self.class.new(@items.reject { |item| yield item }.map { |item| item.dependency })
+    end
+
     # Convert to rubygem() virtual provide dependencies.
     def virtualize
       dep_list = self.map do |d|
