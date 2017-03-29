@@ -10,6 +10,16 @@ module Gem2Rpm
       end
     end
 
+    # Returns name of the dependency.
+    def name
+      @gem_dependency.name
+    end
+
+    # Provides list of requirements of this dependency.
+    def requirement
+      @gem_dependency.requirement
+    end
+
     # Convert to rubygem() virtual provide dependency.
     def virtualize
       dep = @gem_dependency.dup

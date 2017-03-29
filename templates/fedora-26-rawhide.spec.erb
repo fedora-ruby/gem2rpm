@@ -23,7 +23,7 @@ BuildRequires: <%= requirement "ruby#{'-devel' unless spec.extensions.empty?}", 
 BuildRequires: gcc
 <% end -%>
 <%= development_dependencies.reject do |d|
-  ["rdoc", "rake", "bundler"].include? d.gem_dependency.name
+  ["rdoc", "rake", "bundler"].include? d.name
 end.virtualize.with_requires.comment_out.to_rpm -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
