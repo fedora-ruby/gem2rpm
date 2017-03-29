@@ -98,11 +98,8 @@ module Gem2Rpm
 
   # Print gem dependencies to the specified output ($stdout by default).
   def self.print_dependencies(gemfile, out = $stdout)
-    Gem2Rpm::Package.new(gemfile).spec.dependencies.each do |dep|
-      Gem2Rpm::Dependency.new(dep).requirement.each do |r|
-        out.puts "rubygem(#{dep.name}) #{r}"
-      end
-    end
+    dl = RpmDependencyList.new(Gem2Rpm::Package.new(gemfile).spec.dependencies)
+    out.puts dl.virtualize.to_rpm
   end
 
   # Returns the email address of the packager (i.e., the person running
