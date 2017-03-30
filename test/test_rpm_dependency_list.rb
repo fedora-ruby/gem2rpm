@@ -20,13 +20,17 @@ class TestRpmDependencyList < Minitest::Test
       "empty_requirement\n" \
       "development_dependency\n"
 
-    new_dependency_list = @dependency_list.reject { |d| d.to_rpm =~ /pessimistic_constraint/ }
+    dependency_to_exclude = entries[1]
+
+    new_dependency_list = @dependency_list.reject { |d| d == dependency_to_exclude }
 
     assert_equal @dependency_list.entries.size - 1, new_dependency_list.entries.size
-    assert_equal result, new_dependency_list.to_rpm
+    refute_includes new_dependency_list, dependency_to_exclude
 
     assert_instance_of Gem2Rpm::RpmDependencyList, new_dependency_list
     refute_same @dependency_list, new_dependency_list
+
+    assert_equal result, new_dependency_list.to_rpm
   end
 
   def test_to_rpm

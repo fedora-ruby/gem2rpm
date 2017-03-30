@@ -1,28 +1,16 @@
 module Gem2Rpm
-  class RpmDependency
-    attr_reader :gem_dependency
-
+  class RpmDependency < Gem2Rpm::Dependency
     def initialize(dependency)
-      @gem_dependency = dependency.dup
-
-      unless dependency.respond_to? :__getobj__
-        @gem_dependency = Gem2Rpm::Dependency.new @gem_dependency
+      if dependency.respond_to? :__getobj__
+        super dependency.__getobj__
+      else
+        super
       end
-    end
-
-    # Returns name of the dependency.
-    def name
-      @gem_dependency.name
-    end
-
-    # Provides list of requirements of this dependency.
-    def requirement
-      @gem_dependency.requirement
     end
 
     # Convert to rubygem() virtual provide dependency.
     def virtualize
-      dep = @gem_dependency.dup
+      dep = __getobj__.dup
       dep.name = "rubygem(#{dep.name})"
 
       self.class.new dep
@@ -30,7 +18,7 @@ module Gem2Rpm
 
     # Output dependency with RPM requires tag.
     def with_requires
-      dep = @gem_dependency.dup
+      dep = __getobj__.dup
       dep.name = case dep.type
       when :development
         "BuildRequires: #{dep.name}"
@@ -43,7 +31,7 @@ module Gem2Rpm
 
     # Comment out the dependency.
     def comment_out
-      dep = @gem_dependency.dup
+      dep = __getobj__.dup
       dep.name = "# #{dep.name}"
 
       self.class.new dep
@@ -51,9 +39,9 @@ module Gem2Rpm
 
     # Returns string with entry suitable for RPM .spec file.
     def to_rpm
-      rpm_dependencies = @gem_dependency.requirement.map do |version|
+      rpm_dependencies = requirement.map do |version|
         version = nil if version && version.to_s.empty?
-        [@gem_dependency.name, version].compact.join(' ')
+        [name, version].compact.join(' ')
       end
       rpm_dependencies.join("\n")
     end

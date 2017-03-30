@@ -25,32 +25,26 @@ module Gem2Rpm
       # Return Enumerator when called withoug block.
       return to_enum(__callee__) unless block_given?
 
-      self.class.new(@items.reject { |item| yield item }.map { |item| item.gem_dependency })
+      self.class.new(@items.reject { |item| yield item })
     end
 
     # Convert to rubygem() virtual provide dependencies.
     def virtualize
-      dep_list = self.map do |d|
-        d.virtualize.gem_dependency
-      end
+      dep_list = self.map(&:virtualize)
 
       self.class.new dep_list
     end
 
     # Output dependencies with RPM requires tag.
     def with_requires
-      dep_list = self.map do |d|
-        d.with_requires.gem_dependency
-      end
+      dep_list = self.map(&:with_requires)
 
       self.class.new dep_list
     end
 
     # Comment out the dependency.
     def comment_out
-      dep_list = self.map do |d|
-        d.comment_out.gem_dependency
-      end
+      dep_list = self.map(&:comment_out)
 
       self.class.new dep_list
     end
