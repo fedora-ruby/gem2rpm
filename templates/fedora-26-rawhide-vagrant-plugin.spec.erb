@@ -62,7 +62,7 @@ rm -rf %{buildroot}%{vagrant_plugin_instdir}/<%= ext.split(File::SEPARATOR).firs
 
 <% unless spec.executables.empty? -%>
 mkdir -p %{buildroot}%{_bindir}
-cp -pa .%{_bindir}/* \
+cp -a .%{_bindir}/* \
         %{buildroot}%{_bindir}/
 
 find %{buildroot}%{vagrant_plugin_instdir}/<%= spec.bindir %> -type f | xargs chmod a+x
