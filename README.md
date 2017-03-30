@@ -41,8 +41,7 @@ You can also use the `--fetch` flag to fetch the (latest) gem before generating 
 $ gem2rpm --fetch GEM
 ```
 
-This will print an rpm spec file based on the information contained in the gem's spec file. In general, it is necessary to edit the generated spec file because the gem is missing some important information that is
-customarily provided in rpm's, most notably the license and the changelog.
+This will print an rpm spec file based on the information contained in the gem's spec file. In general, it is necessary to edit the generated spec file because the gem is missing some important information that is customarily provided in rpm's, most notably the license and the changelog.
 
 
 Rather than editing the generated specfile, edit the template from which
@@ -111,15 +110,11 @@ $ irb -rgem2rpm
 
 ## Conventions
 
-A typical source RPM for a gem should consist of three files: the gem file
-itself, the template for the spec file and the spec file. To ensure that
-the template will be included in the source RPM, it must be listed as one
-of the sources in the spec file.
+A typical source RPM for a gem should consist of two files: the gem file
+itself and the spec file.
 
 The resulting RPMs should follow the naming convention 'rubygem-$GEM'
-where GEM is the name of the packaged gem. The default template also makes
-sure that the resulting package provides 'ruby($GEM)', according to general
-packaging conventions for scripting languages.
+where GEM is the name of the packaged gem.
 
 ## Limitations
 
