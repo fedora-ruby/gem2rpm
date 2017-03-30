@@ -76,6 +76,8 @@ The template is a standard ERB file that comes with several variables:
 - `package` - the `Gem::Package` for the gem
 - `spec` - the `Gem::Specification` for the gem (the same as `format.spec`)
 - `config` - the `Gem2Rpm::Configuration` that can redefine default macros or rules used in `spec` template helpers
+- `runtime_dependencies` - the `Gem2Rpm::RpmDependencyList` providing list of package runtime dependencies
+- `development_dependencies` - the `Gem2Rpm::RpmDependencyList` providing list of package development dependencies
 - `tests` - the `Gem2Rpm::TestSuite` providing list of test frameworks allowing their execution
 - `files` - the `Gem2Rpm::RpmFileList` providing unfiltered list of files in package
 - `main_files` - the `Gem2Rpm::RpmFileList` providing list of files suitable for main package
