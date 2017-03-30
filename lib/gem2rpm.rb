@@ -14,7 +14,7 @@ require 'gem2rpm/test_suite'
 module Gem2Rpm
   extend Gem2Rpm::TemplateHelpers
 
-  Gem2Rpm::VERSION = "0.11.3".freeze
+  Gem2Rpm::VERSION = "1.0.0".freeze
 
   class Exception < RuntimeError; end
   class DownloadUrlError < Exception; end
