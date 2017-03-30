@@ -89,7 +89,7 @@ The following variables still work, but are now deprecated:
 
 ### Template Configuration
 
-To make the templates lighter and more complete, Gem2Rpm introduced in version 0.11.0 new configurable `spec` helpers such as `spec.main_file_entries` or `spec.doc_file_entries` that can be further configured via local `config` variable as follows:
+To make the templates lighter and more complete, Gem2Rpm introduced in version 0.11.0 new configurable template variables such as `main_files` or `doc_files` that can be further configured via local `config` variable as follows:
 
 ```ruby
 # Change macros for Vagrant packaging
