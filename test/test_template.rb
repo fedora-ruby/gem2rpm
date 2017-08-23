@@ -13,8 +13,10 @@ class TestTemplate < Minitest::Test
         fedora-19-20.spec.erb
         fedora-21-25-vagrant-plugin.spec.erb
         fedora-21-25.spec.erb
-        fedora-26-rawhide-vagrant-plugin.spec.erb
-        fedora-26-rawhide.spec.erb
+        fedora-26-vagrant-plugin.spec.erb
+        fedora-26.spec.erb
+        fedora-27-rawhide-vagrant-plugin.spec.erb
+        fedora-27-rawhide.spec.erb
         fedora.spec.erb
         opensuse.spec.erb
         pld.spec.erb
