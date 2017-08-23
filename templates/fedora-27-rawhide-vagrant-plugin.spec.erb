@@ -31,15 +31,11 @@ Documentation for %{name}.
 <% end # if doc_subpackage -%>
 
 %prep
-gem unpack %{SOURCE0}
-
-%setup -q -D -T -n  %{vagrant_plugin_name}-%{version}
-
-gem spec %{SOURCE0} -l --ruby > %{vagrant_plugin_name}.gemspec
+%setup -q -n  %{vagrant_plugin_name}-%{version}
 
 %build
 # Create the gem as gem install only works on a gem file
-gem build %{vagrant_plugin_name}.gemspec
+gem build ../%{vagrant_plugin_name}-%{version}.gemspec
 
 # %%vagrant_plugin_install compiles any C extensions and installs the gem into ./%%gem_dir
 # by default, so that we can move it into the buildroot in %%install
