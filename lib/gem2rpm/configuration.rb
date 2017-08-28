@@ -60,7 +60,6 @@ module Gem2Rpm
         '.rvmrc',
         '.rubocop.yml',
         /^\..*rc$/i,
-        /\/?.*\.gemspec$/,
       ],
       :test => [
         '.rspec',
@@ -77,6 +76,7 @@ module Gem2Rpm
         'rakefile.rb',
         'Vagrantfile',
         /^examples.*/,
+        /\/?.*\.gemspec$/,
       ]
     }.freeze
 
