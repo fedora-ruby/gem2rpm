@@ -45,5 +45,23 @@ module Gem2Rpm
       end
       rpm_dependencies.join("\n")
     end
+
+    def with_range_of_dependencies
+      dep = __getobj__.dup
+
+      rpm_dependencies = requirement.map do |version|
+        next if version && version.to_s.empty?
+        [dep.name, version].compact.join(' ')
+      end
+      dependencies_string = rpm_dependencies.compact.uniq.join(' with ')
+      dependencies_string.prepend('(').concat(')') if requirement.size > 1
+
+      dep.name = dependencies_string
+      self.class.new dep
+    end
+
+    def to_string
+      name.to_s
+    end
   end
 end
