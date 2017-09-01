@@ -54,7 +54,7 @@ module Gem2Rpm
         [dep.name, version].compact.join(' ')
       end
       dependencies_string = rpm_dependencies.compact.uniq.join(' with ')
-      dependencies_string.prepend('(').concat(')') if requirement.size > 1
+      dependencies_string = '(' << dependencies_string << ')' if requirement.size > 1
 
       dep.name = dependencies_string
       self.class.new dep
