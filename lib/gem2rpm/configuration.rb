@@ -55,10 +55,12 @@ module Gem2Rpm
         '.gemtest',
         '.gitignore',
         '.travis.yml',
+        '.hound.yml',
         '.yardopts',
         '.rspec',
         '.rvmrc',
         '.rubocop.yml',
+        '.rubocop_todo.yml',
         /^\..*rc$/i,
       ],
       :test => [
