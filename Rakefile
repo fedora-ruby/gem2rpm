@@ -8,7 +8,7 @@ require 'rake/testtask'
 PKG_NAME = "gem2rpm".freeze
 SPEC_FILE = "rubygem-gem2rpm.spec".freeze
 
-if `ruby -rubygems -Ilib ./bin/gem2rpm --version` =~ /\S+$/
+if `ruby -rrubygems -Ilib ./bin/gem2rpm --version` =~ /\S+$/
   CURRENT_VERSION = $&
 else
   CURRENT_VERSION = "0.0.0".freeze
