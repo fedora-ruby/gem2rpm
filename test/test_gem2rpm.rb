@@ -57,7 +57,7 @@ foo
   end
 
   def test_print_dependencies
-    dependencies = <<-END.gsub(/^ */, '')
+    dependencies = <<-END.gsub(/^ */, '').lines.sort
       rubygem(test_runtime) >= 1.0
       rubygem(test_runtime) < 2
       rubygem(test_runtime) >= 1.0.0
@@ -71,6 +71,6 @@ foo
       @out
     )
 
-    assert_equal dependencies, @out.string
+    assert_equal dependencies, @out.string.lines.sort
   end
 end
