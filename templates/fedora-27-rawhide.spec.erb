@@ -30,9 +30,9 @@ BuildArch: noarch
 <% end -%>
 
 %description
-<%= spec.description %>
-
+<%= spec.description -%>
 <% if doc_subpackage -%>
+
 %package doc
 Summary: Documentation for %{name}
 Requires: %{name} = %{version}-%{release}
@@ -57,18 +57,18 @@ gem build ../%{gem_name}-%{version}.gemspec
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
-
 <% unless spec.extensions.empty? -%>
+
 mkdir -p %{buildroot}%{gem_extdir_mri}
 cp -a .%{gem_extdir_mri}/{gem.build_complete,*.so} %{buildroot}%{gem_extdir_mri}/
-
 <% for ext in spec.extensions -%>
+
 # Prevent dangling symlink in -debuginfo (rhbz#878863).
 rm -rf %{buildroot}%{gem_instdir}/<%= ext.split(File::SEPARATOR).first %>/
 <% end -%>
 <% end -%>
-
 <% unless spec.executables.empty? -%>
+
 mkdir -p %{buildroot}%{_bindir}
 cp -a .%{_bindir}/* \
         %{buildroot}%{_bindir}/
