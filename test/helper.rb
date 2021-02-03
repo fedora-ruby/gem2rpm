@@ -5,6 +5,11 @@ require 'rubygems/version'
 
 require 'minitest/autorun'
 
+# Ruby 2.0 + 2.1 compatibility.
+module Minitest
+  Test = Unit::TestCase unless Minitest.const_defined?(:Test)
+end
+
 require 'gem2rpm'
 
 # If you want to test in off line environment, set environment variable.
