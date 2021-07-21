@@ -36,14 +36,18 @@ module Gem2Rpm
     DEFAULT_RULES = {
       :doc => [
         /\/?CHANGELOG.*/i,
+        /\/?CHANGES.*/i,
         /\/?CONTRIBUTING.*/i,
         /\/?CONTRIBUTORS.*/i,
         /\/?AUTHORS.*/i,
         /\/?README.*/i,
         /\/?History.*/i,
         /\/?Release.*/i,
+        /\/?SECURITY.*/i,
         /\/?doc(\/.*)?/,
+        'Appraisals',
         'NEWS',
+        'TODO',
       ],
       :license => [
         /\/?MIT/,
@@ -54,6 +58,7 @@ module Gem2Rpm
       :ignore => [
         '.gemtest',
         '.gitignore',
+        '.github',
         '.travis.yml',
         '.hound.yml',
         '.yardopts',
@@ -61,7 +66,11 @@ module Gem2Rpm
         '.rvmrc',
         '.rubocop.yml',
         '.rubocop_todo.yml',
+        '.ruby-version',
         /^\..*rc$/i,
+        'appveyor.yml',
+        'coveralls.yml',
+        'Guardfile',
       ],
       :test => [
         '.rspec',
