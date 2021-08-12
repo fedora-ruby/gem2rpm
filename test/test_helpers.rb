@@ -29,7 +29,7 @@ class TestHelpers < Minitest::Test
 
   def test_pessimistic_version_constraint_with_trailing_text
     # Trailing text was only allowed starting around rubygems 1.3.2.
-    gem_version = Gem::Version.create(Gem::RubyGemsVersion)
+    gem_version = Gem::Version.create(Gem::VERSION)
     return if gem_version >= Gem::Version.create("1.3.2")
 
     r = Gem::Requirement.new(["~> 1.2.3.beta.8"])

@@ -56,7 +56,7 @@ class TestTemplate < Minitest::Test
   end
 
   def test_read
-    assert Gem2Rpm::Template.new(File.join(Gem2Rpm::Template.default_location, 'default.spec.erb')).read.size == 1886
+    assert Gem2Rpm::Template.new(File.join(Gem2Rpm::Template.default_location, 'default.spec.erb')).read.size == 1870
   end
 
   def test_read_is_memoized
