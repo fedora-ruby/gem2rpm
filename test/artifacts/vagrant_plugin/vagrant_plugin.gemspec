@@ -22,10 +22,6 @@ Gem::Specification.new do |s|
 
   s.require_path = 'lib' # Use these for libraries.
 
-  #### Documentation and testing.
-
-  s.has_rdoc = false
-
   #### Author and project details.
 
   s.author = "Test"

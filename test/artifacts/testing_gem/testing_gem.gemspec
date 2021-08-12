@@ -31,10 +31,6 @@ Gem::Specification.new do |s|
 
   s.extensions = ["ext/testing_gem/extconf.rb"]
 
-  #### Documentation and testing.
-
-  s.has_rdoc = false
-
   #### Author and project details.
 
   s.author = "Test"
