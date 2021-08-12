@@ -16,14 +16,14 @@ Source0: %{rbname}-%{version}.gem
 Source1: ruby-gems-%{rbname}.spec.in
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Requires: ruby <%= spec.required_ruby_version %>
-Requires: ruby-gems >= <%= Gem::RubyGemsVersion %>
+Requires: ruby-gems >= <%= Gem::VERSION %>
 <% for d in spec.dependencies -%>
 <% for req in d.requirement -%>
 Requires: ruby-gems-<%= d.name %> <%= req %>
 <% end -%>
 <% end -%>
 BuildRequires: ruby <%= spec.required_ruby_version %>
-BuildRequires: ruby-gems >= <%= Gem::RubyGemsVersion %>
+BuildRequires: ruby-gems >= <%= Gem::VERSION %>
 BuildArch: noarch
 Provides: ruby(<%= spec.name.capitalize %>) = %{version}
 

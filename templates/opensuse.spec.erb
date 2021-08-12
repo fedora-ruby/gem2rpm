@@ -26,7 +26,7 @@ License:        GPLv2+ or Ruby
 #
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  rubygems_with_buildroot_patch
-Requires:       rubygems >= <%= Gem::RubyGemsVersion %>
+Requires:       rubygems >= <%= Gem::VERSION %>
 <%
 # no need to add a requires ruby >= 0 here. will be pulled in via rubygems already
   unless spec.required_ruby_version == ['']
