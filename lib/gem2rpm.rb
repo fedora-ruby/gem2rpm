@@ -90,7 +90,7 @@ module Gem2Rpm
       end
     end
 
-    erb = ERB.new(template.read, 0, '-')
+    erb = ERB.new(template.read, trim_mode: '-')
     out.puts erb.result(binding)
   rescue Gem::Exception => e
     puts e
