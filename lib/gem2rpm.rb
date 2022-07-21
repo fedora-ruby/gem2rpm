@@ -90,7 +90,11 @@ module Gem2Rpm
       end
     end
 
-    erb = ERB.new(template.read, 0, '-')
+    erb = if RUBY_VERSION >= '2.6'
+            ERB.new(template.read, trim_mode: '-')
+          else
+            ERB.new(template.read, 0, '-')
+          end
     out.puts erb.result(binding)
   rescue Gem::Exception => e
     puts e
