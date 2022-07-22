@@ -1,0 +1,11 @@
+<%-
+# Move runtime to the doc subpackage
+config.rules[:misc] << 'runtime'
+# %exclude Gemfile
+config.rules[:ignore] << 'Gemfile'
+-%>
+%files
+<%= main_files.to_rpm %>
+
+%files doc
+<%= doc_files.to_rpm %>

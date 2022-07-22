@@ -1,5 +1,6 @@
 require 'erb'
 require 'socket'
+require 'gem2rpm/context'
 require 'gem2rpm/distro'
 require 'gem2rpm/gem/format'
 require 'gem2rpm/gem/package'
@@ -12,8 +13,6 @@ require 'gem2rpm/template'
 require 'gem2rpm/test_suite'
 
 module Gem2Rpm
-  extend Gem2Rpm::TemplateHelpers
-
   Gem2Rpm::VERSION = "1.0.2".freeze
 
   class Exception < RuntimeError; end
@@ -64,31 +63,7 @@ module Gem2Rpm
 
   def self.convert(fname, template, out = $stdout, nongem = true, local = false,
                       doc_subpackage = true)
-    package = Gem2Rpm::Package.new(fname)
-    # Deprecate, kept just for backward compatibility.
-    format = Gem2Rpm::Format.new(package)
-    spec = Gem2Rpm::Specification.new(package.spec)
-
-    config = Configuration.instance.reset
-
-    runtime_dependencies = Gem2Rpm::RpmDependencyList.new(spec.runtime_dependencies)
-    development_dependencies = Gem2Rpm::RpmDependencyList.new(spec.development_dependencies)
-
-    tests = TestSuite.new(spec)
-
-    files = RpmFileList.new(spec.files)
-    main_files = files.top_level_entries.main_entries
-    doc_files = files.top_level_entries.doc_entries
-
-    download_path = ""
-    unless local
-      begin
-        download_path = find_download_url(spec.name, spec.version)
-      rescue DownloadUrlError => e
-        $stderr.puts "Warning: Could not retrieve full URL for #{spec.name}\nWarning: Edit the specfile and enter the full download URL as 'Source0' manually"
-        $stderr.puts e.inspect
-      end
-    end
+    context = Gem2Rpm::Context.new(fname, nongem, local, doc_subpackage)
 
     # Check if keyword arguments are used. The condition could let go as soon
     # as only Ruby 2.6+ is supported.
@@ -98,7 +73,7 @@ module Gem2Rpm
           else
             ERB.new(template.read, 0, '-')
           end
-    out.puts erb.result(binding)
+    out.puts erb.result(context.instance_eval { binding })
   rescue Gem::Exception => e
     puts e
   end
