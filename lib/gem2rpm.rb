@@ -90,7 +90,10 @@ module Gem2Rpm
       end
     end
 
-    erb = if RUBY_VERSION >= '2.6'
+    # Check if keyword arguments are used. The condition could let go as soon
+    # as only Ruby 2.6+ is supported.
+    kwargs = !(ERB.new("").method(:initialize).parameters & [[:key, :trim_mode]]).empty?
+    erb = if kwargs
             ERB.new(template.read, trim_mode: '-')
           else
             ERB.new(template.read, 0, '-')
