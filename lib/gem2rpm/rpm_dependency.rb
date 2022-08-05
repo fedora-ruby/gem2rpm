@@ -1,3 +1,5 @@
+require 'gem2rpm/gem/dependency'
+
 module Gem2Rpm
   class RpmDependency < Gem2Rpm::Dependency
     def initialize(dependency)
