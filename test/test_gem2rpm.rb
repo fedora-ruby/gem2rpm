@@ -66,10 +66,7 @@ foo
       rubygem(test_development) >= 1.0.0
     END
 
-    Gem2Rpm.print_dependencies(
-      File.join(File.dirname(__FILE__), 'artifacts', 'testing_gem', 'testing_gem-1.0.0.gem'),
-      @out
-    )
+    Gem2Rpm.print_dependencies(gem_path, @out)
 
     assert_equal dependencies, @out.string.lines.sort
   end
