@@ -32,6 +32,10 @@ if template_file.nil? && File.exist?('/etc/os-release')
   File.read('/etc/os-release').each_line(chomp: true) do |line|
     line.match(%r{^ID=(.*)$}) { |m| template_file = m[1] }
   end
+  if template_file.eql? '"opensuse-tumbleweed"'
+    $stderr.puts 'Using template opensuse on Tumbleweed'
+    template_file = 'opensuse'
+  end
 end
 if template_file.nil?
   template = Gem2Rpm::TEMPLATE
