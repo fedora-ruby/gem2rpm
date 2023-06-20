@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # -*- ruby -*-
 
-$LOAD_PATH.push(File.expand_path(File.dirname(__FILE__) + "/../lib"))
+$LOAD_PATH.push(File.expand_path("#{File.dirname(__FILE__)}/../lib"))
 
 require 'gem2rpm'
 require 'fileutils'
@@ -97,7 +97,7 @@ Gem2Rpm.convert(gemfile, template, output_spec, options[:nongem], options[:local
 
 # Save or print a specfile.
 if options[:output_file]
-  File.open(options[:output_file], "w") do |f|
+  File.open(options[:output_file], 'w') do |f|
     f.puts(output_spec.string)
   end
 else
@@ -110,15 +110,15 @@ if options[:srpm]
   Dir.mktmpdir "gem2rpm-#{gemname}-" do |srpmdir|
     specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
 
-    File.open(specfile, "w") do |f|
+    File.open(specfile, 'w') do |f|
       f.puts(output_spec.string)
     end
 
     FileUtils.copy(gemfile, srpmdir)
 
     command =
-      "rpmbuild -bs --nodeps " +
-      "--define '_sourcedir #{srpmdir}' " +
+      'rpmbuild -bs --nodeps ' \
+      "--define '_sourcedir #{srpmdir}' " \
       "--define '_srcrpmdir #{out_dir}' " +
       specfile
 
