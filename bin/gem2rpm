@@ -26,11 +26,23 @@ end
 
 rest = options[:args]
 
-template = begin
-  Gem2Rpm::Template.find options[:template_file], :gem_file => rest[0]
-rescue Gem2Rpm::Template::TemplateError => e
-  $stderr.puts e
-  exit(1)
+template = nil
+template_file = options[:template_file]
+if template_file.nil? && File.exist?('/etc/os-release')
+  File.read('/etc/os-release').each_line(chomp: true) do |line|
+    line.match(%r{^ID=(.*)$}) { |m| template_file = m[1] }
+  end
+end
+if template_file.nil?
+  template = Gem2Rpm::TEMPLATE
+else
+  template_file = File.join(Gem2Rpm.template_dir, "#{template_file}.spec.erb") unless File.exist?(template_file)
+  begin
+    template = File.read(template_file)
+  rescue Errno::ENOENT
+    $stderr.puts "Could not open template #{template_file}. Aborting"
+    exit(1)
+  end
 end
 
 if options[:print_template_file]
