@@ -123,7 +123,7 @@ Because of the differences between the two packaging schemes, it is impossible t
 ## See also
 
 Fedora ruby and rubygem packaging guidelines:
--  http://fedoraproject.org/wiki/Packaging/Ruby
+-  https://docs.fedoraproject.org/en-US/packaging-guidelines/Ruby
 
 Project website
 -  https://github.com/fedora-ruby/gem2rpm
