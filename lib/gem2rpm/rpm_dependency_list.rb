@@ -50,10 +50,20 @@ module Gem2Rpm
     end
 
     # Returns string with all dependencies from the list converted into entries
-    # suitable for RPM .spec file. Thise entries should include all necessary
+    # suitable for RPM .spec file. These entries should include all necessary
     # macros depending on file categorization.
     def to_rpm
       s = entries.map(&:to_rpm).join("\n")
+      s += "\n" unless s.empty?
+    end
+
+    # Returns a string with all dependencies from the list converted into entries
+    # suitable for RPM .spec file with RPM 4.14+. Thise entries should include
+    # all necessary macros depending on file categorization.
+    def to_rich_rpm(with_requires: false, commented_out: false)
+      s = entries.map do |entry|
+        entry.to_rich_rpm(with_requires: with_requires, commented_out: comment_out)
+      end.join("\n")
       s += "\n" unless s.empty?
     end
   end
