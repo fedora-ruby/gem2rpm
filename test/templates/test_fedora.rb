@@ -36,7 +36,7 @@ class TestFedora < Minitest::Test
   end
 
   def test_build_requires
-    assert_includes(@out_string, "\n# BuildRequires: rubygem(test_development) >= 1.0.0\n")
+    assert_includes(@out_string, "\n# BuildRequires: (rubygem(test_development) >= 1.0 with rubygem(test_development) < 2 with rubygem(test_development) >= 1.0.0)\n")
   end
 
   def test_rubygems_is_not_required
