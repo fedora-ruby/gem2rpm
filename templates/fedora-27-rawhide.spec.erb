@@ -24,7 +24,7 @@ BuildRequires: gcc
 <% end -%>
 <%= development_dependencies.reject do |d|
   ["rdoc", "rake", "bundler"].include? d.name
-end.virtualize.with_requires.comment_out.to_rpm -%>
+end.virtualize.to_rich_rpm(with_requires: true, commented_out: true) -%>
 <% if spec.extensions.empty? -%>
 BuildArch: noarch
 <% end -%>

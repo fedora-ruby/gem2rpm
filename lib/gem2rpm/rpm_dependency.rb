@@ -47,5 +47,23 @@ module Gem2Rpm
       end
       rpm_dependencies.join("\n")
     end
+
+    # Returns string with entry suitable for RPM .spec file with RPM 4.14+.
+    def to_rich_rpm(with_requires: false, commented_out: false)
+      rpm_dependencies = requirement.map do |version|
+        version.to_s.empty? ? name : "#{name} #{version}"
+      end
+      result = rpm_dependencies.size == 1 ? rpm_dependencies.first : "(#{rpm_dependencies.join(' with ')})"
+
+      if with_requires
+        result.prepend(__getobj__.type == :development ? 'BuildRequires: ' : 'Requires: ')
+      end
+
+      if commented_out
+        result.prepend('# ')
+      end
+
+      result
+    end
   end
 end
