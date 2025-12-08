@@ -12,7 +12,7 @@ require 'gem2rpm/template'
 require 'gem2rpm/test_suite'
 
 module Gem2Rpm
-  Gem2Rpm::VERSION = "1.0.2".freeze
+  Gem2Rpm::VERSION = "2.0.0".freeze
 
   class Exception < RuntimeError; end
   class DownloadUrlError < Exception; end
