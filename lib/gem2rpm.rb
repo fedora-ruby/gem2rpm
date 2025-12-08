@@ -4,7 +4,6 @@ require 'gem2rpm/context'
 require 'gem2rpm/distro'
 require 'gem2rpm/gem/format'
 require 'gem2rpm/gem/package'
-require 'gem2rpm/gem/spec_fetcher'
 require 'gem2rpm/gem/specification'
 require 'gem2rpm/rpm_dependency_list'
 require 'gem2rpm/rpm_file_list'
@@ -45,7 +44,7 @@ module Gem2Rpm
 
   def self.find_download_url(name, version)
     dep = Gem::Dependency.new(name, "=#{version}")
-    fetcher = Gem2Rpm::SpecFetcher.new(Gem::SpecFetcher.fetcher)
+    fetcher = Gem::SpecFetcher.fetcher
 
     spec_and_source, errors = fetcher.spec_for_dependency(dep, false)
 
