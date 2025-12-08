@@ -90,7 +90,7 @@ end
 
 # Create a SRPM.
 if options[:srpm]
-  gemname = Gem2Rpm::Package.new(gemfile).spec.name
+  gemname = Gem::Package.new(gemfile).spec.name
   Dir.mktmpdir "gem2rpm-#{gemname}-" do |srpmdir|
     specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
 
