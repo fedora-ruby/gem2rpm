@@ -4,7 +4,7 @@ module Gem2Rpm
   class Context
     include Gem2Rpm::TemplateHelpers
 
-    attr_reader :nongem, :local, :doc_subpackage, :package, :format, :spec,
+    attr_reader :nongem, :local, :doc_subpackage, :package, :spec,
       :config, :runtime_dependencies, :development_dependencies, :tests,
       :files, :download_path
 
@@ -14,8 +14,6 @@ module Gem2Rpm
       @doc_subpackage = doc_subpackage
 
       @package = Gem::Package.new(fname)
-      # Deprecate, kept just for backward compatibility.
-      @format = Gem2Rpm::Format.new(@package)
       @spec = Gem2Rpm::Specification.new(@package.spec)
 
       @config = Configuration.instance.reset

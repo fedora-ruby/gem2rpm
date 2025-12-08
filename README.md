@@ -73,7 +73,7 @@ $ gem2rpm --templates
 The template is a standard ERB file that comes with several variables:
 
 - `package` - the `Gem::Package` for the gem
-- `spec` - the `Gem::Specification` for the gem (the same as `format.spec`)
+- `spec` - the `Gem::Specification` for the gem
 - `config` - the `Gem2Rpm::Configuration` that can redefine default macros or rules used in `spec` template helpers
 - `runtime_dependencies` - the `Gem2Rpm::RpmDependencyList` providing list of package runtime dependencies
 - `development_dependencies` - the `Gem2Rpm::RpmDependencyList` providing list of package development dependencies
@@ -81,10 +81,6 @@ The template is a standard ERB file that comes with several variables:
 - `files` - the `Gem2Rpm::RpmFileList` providing unfiltered list of files in package
 - `main_files` - the `Gem2Rpm::RpmFileList` providing list of files suitable for main package
 - `doc_files` - the `Gem2Rpm::RpmFileList` providing list of files suitable for -doc subpackage
-
-The following variables still work, but are now deprecated:
-
-- `format` - The `Gem::Format` for the gem. Please note that this is kept just for compatibility reasons, since RubyGems 2.0 removed this class.
 
 ### Template Configuration
 
