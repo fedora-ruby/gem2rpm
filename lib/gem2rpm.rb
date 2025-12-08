@@ -1,9 +1,9 @@
 require 'erb'
 require 'socket'
+require 'rubygems/package'
 require 'gem2rpm/context'
 require 'gem2rpm/distro'
 require 'gem2rpm/gem/format'
-require 'gem2rpm/gem/package'
 require 'gem2rpm/gem/specification'
 require 'gem2rpm/rpm_dependency_list'
 require 'gem2rpm/rpm_file_list'
@@ -79,7 +79,7 @@ module Gem2Rpm
 
   # Print gem dependencies to the specified output ($stdout by default).
   def self.print_dependencies(gemfile, out = $stdout)
-    dl = RpmDependencyList.new(Gem2Rpm::Package.new(gemfile).spec.dependencies)
+    dl = RpmDependencyList.new(Gem::Package.new(gemfile).spec.dependencies)
     out.puts dl.virtualize.to_rpm
   end
 

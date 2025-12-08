@@ -13,7 +13,7 @@ module Gem2Rpm
       @local = local
       @doc_subpackage = doc_subpackage
 
-      @package = Gem2Rpm::Package.new(fname)
+      @package = Gem::Package.new(fname)
       # Deprecate, kept just for backward compatibility.
       @format = Gem2Rpm::Format.new(@package)
       @spec = Gem2Rpm::Specification.new(@package.spec)
