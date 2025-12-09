@@ -34,14 +34,26 @@ and run gem2rpm:
 ```
 $ gem2rpm GEM-1.2.3.gem
 ```
+This will print an rpm spec file based on the information contained in the gem's spec file.
 
-You can also use the `--fetch` flag to fetch the (latest) gem before generating the spec file, achieving the same effect as running 'gem fetch GEM' plus 'gem2rpm GEM-1.2.3.gem':
+You can also use the `--fetch` flag to fetch the (latest) gem before generating the spec file,
+achieving similar effect as running 'gem fetch GEM' plus 'gem2rpm GEM-1.2.3.gem':
 
 ```
 $ gem2rpm --fetch GEM
 ```
 
-This will print an rpm spec file based on the information contained in the gem's spec file. In general, it is necessary to edit the generated spec file because the gem is missing some important information that is customarily provided in rpm's, most notably the license and the changelog.
+>[!TIP]
+> For gems that include prebuilt binary extension (e.g. for `nokogiri`),
+> the `gem fetch` downloads its platform-specific version.
+> gem2rpm, however, always fetches plain Ruby version (which includes the full source code but no prebuilt binaries).
+> To replicate this behavior with `gem fetch`, use the `--platform ruby` option:
+>
+> ```
+> $ gem fetch GEM --platform ruby
+> ```
+
+In general, it is necessary to edit the generated spec file because the gem is missing some important information that is customarily provided in rpm's, most notably the license and the changelog.
 
 
 Rather than editing the generated specfile, edit the template from which
