@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # -*- ruby -*-
 
-$LOAD_PATH.push(File.expand_path(File.dirname(__FILE__) + "/../lib"))
+$LOAD_PATH.push(File.expand_path("#{File.dirname(__FILE__)}/../lib"))
 
 require 'gem2rpm'
 require 'fileutils'
@@ -26,11 +26,27 @@ end
 
 rest = options[:args]
 
-template = begin
-  Gem2Rpm::Template.find options[:template_file], :gem_file => rest[0]
-rescue Gem2Rpm::Template::TemplateError => e
-  $stderr.puts e
-  exit(1)
+template = nil
+template_file = options[:template_file]
+if template_file.nil? && File.exist?('/etc/os-release')
+  File.read('/etc/os-release').each_line(chomp: true) do |line|
+    line.match(%r{^ID=(.*)$}) { |m| template_file = m[1] }
+  end
+  if template_file.match? '^"opensuse'
+    $stderr.puts 'Using template opensuse on openSUSE variant'
+    template_file = 'opensuse'
+  end
+end
+if template_file.nil?
+  template = Gem2Rpm::TEMPLATE
+else
+  template_file = File.join(Gem2Rpm.template_dir, "#{template_file}.spec.erb") unless File.exist?(template_file)
+  begin
+    template = File.read(template_file)
+  rescue Errno::ENOENT
+    $stderr.puts "Could not open template #{template_file}. Aborting"
+    exit(1)
+  end
 end
 
 if options[:print_template_file]
@@ -81,7 +97,7 @@ Gem2Rpm.convert(gemfile, template, output_spec, options[:nongem], options[:local
 
 # Save or print a specfile.
 if options[:output_file]
-  File.open(options[:output_file], "w") do |f|
+  File.open(options[:output_file], 'w') do |f|
     f.puts(output_spec.string)
   end
 else
@@ -94,15 +110,15 @@ if options[:srpm]
   Dir.mktmpdir "gem2rpm-#{gemname}-" do |srpmdir|
     specfile = File.join(srpmdir, "rubygem-#{gemname}.spec")
 
-    File.open(specfile, "w") do |f|
+    File.open(specfile, 'w') do |f|
       f.puts(output_spec.string)
     end
 
     FileUtils.copy(gemfile, srpmdir)
 
     command =
-      "rpmbuild -bs --nodeps " +
-      "--define '_sourcedir #{srpmdir}' " +
+      'rpmbuild -bs --nodeps ' \
+      "--define '_sourcedir #{srpmdir}' " \
       "--define '_srcrpmdir #{out_dir}' " +
       specfile
 
