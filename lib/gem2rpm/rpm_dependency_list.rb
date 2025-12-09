@@ -56,5 +56,16 @@ module Gem2Rpm
       s = entries.map(&:to_rpm).join("\n")
       s += "\n" unless s.empty?
     end
+
+    def with_range_of_dependencies
+      dep_list = self.map(&:with_range_of_dependencies)
+
+      self.class.new dep_list
+    end
+
+    def to_string
+      s = entries.map(&:to_string).join("\n")
+      s += "\n" unless s.empty?
+    end
   end
 end
