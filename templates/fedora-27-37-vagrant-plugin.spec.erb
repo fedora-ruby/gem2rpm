@@ -1,0 +1,108 @@
+# Generated from <%= spec.file_name %> by gem2rpm -*- rpm-spec -*-
+%global vagrant_plugin_name <%= spec.name %>
+
+Name: %{vagrant_plugin_name}
+Version: <%= spec.version %>
+Release: 1%{?dist}
+Summary: <%= spec.summary.gsub(/\.$/, "") %>
+License: <%= spec.licenses.join(" and ") %>
+<% if spec.homepage -%>
+URL: <%= spec.homepage %>
+<% end -%>
+Source0: <%= download_path %>%{vagrant_plugin_name}-%{version}.gem
+Requires: vagrant
+BuildRequires: vagrant
+<% if spec.extensions.empty? -%>
+BuildArch: noarch
+<% end -%>
+Provides: vagrant(%{vagrant_plugin_name}) = %{version}
+
+%description
+<%= spec.description %>
+
+<% if doc_subpackage -%>
+%package doc
+Summary: Documentation for %{name}
+Requires: %{name} = %{version}-%{release}
+BuildArch: noarch
+
+%description doc
+Documentation for %{name}.
+<% end # if doc_subpackage -%>
+
+%prep
+%setup -q -n  %{vagrant_plugin_name}-%{version}
+
+%build
+# Create the gem as gem install only works on a gem file
+gem build ../%{vagrant_plugin_name}-%{version}.gemspec
+
+# %%vagrant_plugin_install compiles any C extensions and installs the gem into ./%%gem_dir
+# by default, so that we can move it into the buildroot in %%install
+%vagrant_plugin_install
+
+%install
+mkdir -p %{buildroot}%{vagrant_plugin_dir}
+cp -a .%{vagrant_plugin_dir}/* \
+        %{buildroot}%{vagrant_plugin_dir}/
+
+<% unless spec.extensions.empty? -%>
+mkdir -p %{buildroot}%{vagrant_plugin_extdir_mri}
+cp -a .%{vagrant_plugin_extdir_mri}/{gem.build_complete,*.so} %{buildroot}%{vagrant_plugin_extdir_mri}/
+
+<% for ext in spec.extensions -%>
+# Prevent dangling symlink in -debuginfo (rhbz#878863).
+rm -rf %{buildroot}%{vagrant_plugin_instdir}/<%= ext.split(File::SEPARATOR).first %>/
+<% end -%>
+<% end -%>
+
+<% unless spec.executables.empty? -%>
+mkdir -p %{buildroot}%{_bindir}
+cp -a .%{_bindir}/* \
+        %{buildroot}%{_bindir}/
+
+find %{buildroot}%{vagrant_plugin_instdir}/<%= spec.bindir %> -type f | xargs chmod a+x
+<% end -%>
+
+%check
+pushd .%{gem_instdir}
+<% if tests.entries.empty? -%>
+# Run the test suite.
+<% end -%>
+<% for t in tests -%>
+# <%= t.command %>
+<% end -%>
+popd
+
+<%
+# Change macros for Vagrant packaging
+config.macros[:instdir] = '%{vagrant_plugin_instdir}'
+config.macros[:libdir] = '%{vagrant_plugin_libdir}'
+-%>
+%files
+%dir %{vagrant_plugin_instdir}
+<% for f in spec.executables -%>
+%{_bindir}/<%= f %>
+<% end -%>
+<% unless spec.extensions.empty? -%>
+%{vagrant_plugin_extdir_mri}
+<% end -%>
+<%= main_files.reject do |item|
+  spec.extensions.detect { |extension| item =~ /^#{extension.split(File::SEPARATOR).first}$/}
+end.to_rpm %>
+<% unless doc_subpackage -%>
+%doc %{vagrant_plugin_docdir}
+<%= doc_files.to_rpm %>
+<% end -%>
+%exclude %{vagrant_plugin_cache}
+%{vagrant_plugin_spec}
+
+<% if doc_subpackage -%>
+%files doc
+%doc %{vagrant_plugin_docdir}
+<%= files.top_level_entries.doc_entries.to_rpm %>
+<% end # if doc_subpackage -%>
+
+%changelog
+* <%= Time.now.strftime("%a %b %d %Y") %> <%= packager %> - <%= spec.version %>-1
+- Initial package
