@@ -12,31 +12,28 @@ module Gem2Rpm
 
     # Convert to rubygem() virtual provide dependency.
     def virtualize
-      dep = __getobj__.dup
-      dep.name = "rubygem(#{dep.name})"
-
-      self.class.new dep
+      clone.tap do |dep|
+        dep.name = "rubygem(#{dep.name})"
+      end
     end
 
     # Output dependency with RPM requires tag.
     def with_requires
-      dep = __getobj__.dup
-      dep.name = case dep.type
-      when :development
-        "BuildRequires: #{dep.name}"
-      else
-        "Requires: #{dep.name}"
+      clone.tap do |dep|
+        dep.name = case dep.type
+        when :development
+          "BuildRequires: #{dep.name}"
+        else
+          "Requires: #{dep.name}"
+        end
       end
-
-      self.class.new dep
     end
 
     # Comment out the dependency.
     def comment_out
-      dep = __getobj__.dup
-      dep.name = "# #{dep.name}"
-
-      self.class.new dep
+      clone.tap do |dep|
+        dep.name = "# #{dep.name}"
+      end
     end
 
     # Returns string with entry suitable for RPM .spec file.
