@@ -12,7 +12,7 @@ module Gem2Rpm
     # element as a parameter. Returns the array itself.
     # If no block is given, an Enumerator is returned.
     def each
-      # Return Enumerator when called withoug block.
+      # Return Enumerator when called without block.
       return to_enum(__callee__) unless block_given?
 
       @items.each { |item| yield item }
@@ -22,7 +22,7 @@ module Gem2Rpm
     # block is not true. The ordering of non-rejected elements is maintained.
     # If no block is given, an Enumerator is returned instead.
     def reject
-      # Return Enumerator when called withoug block.
+      # Return Enumerator when called without block.
       return to_enum(__callee__) unless block_given?
 
       self.class.new(@items.reject { |item| yield item })
