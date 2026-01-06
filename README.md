@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/fedora-ruby/gem2rpm.svg?branch=master)](https://travis-ci.org/fedora-ruby/gem2rpm)
-
 # gem2rpm
 
 gem2rpm converts RubyGems packages to RPM spec files.
