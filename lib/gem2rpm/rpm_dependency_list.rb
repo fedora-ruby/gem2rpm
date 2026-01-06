@@ -49,6 +49,13 @@ module Gem2Rpm
       self.class.new dep_list
     end
 
+    # Represent as boolean RPM dependency.
+    def booleanize
+      dep_list = self.map(&:booleanize)
+
+      self.class.new dep_list
+    end
+
     # Returns string with all dependencies from the list converted into entries
     # suitable for RPM .spec file. Thise entries should include all necessary
     # macros depending on file categorization.

@@ -44,4 +44,9 @@ class TestRpmDependency < Minitest::Test
     assert_equal "# #{results.first}",
       Gem2Rpm::RpmDependency.new(entries.first).comment_out.to_rpm
   end
+
+  def test_booleanize
+    assert_equal %|(#{results[1].split("\n").join(' with ')})|,
+      Gem2Rpm::RpmDependency.new(entries[1]).booleanize.to_rpm
+  end
 end

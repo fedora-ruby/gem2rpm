@@ -68,4 +68,20 @@ class TestRpmDependencyList < Minitest::Test
 
     assert_equal result, @dependency_list.comment_out.to_rpm
   end
+
+  def test_booleanize
+    result =
+      "empty_requirement\n" \
+      "(pessimistic_constraint >= 1.0 with pessimistic_constraint < 2)\n" \
+      "development_dependency\n"
+    assert_equal result, @dependency_list.booleanize.to_rpm
+  end
+
+  def test_full_conversion_chain
+    result =
+      "# Requires: rubygem(empty_requirement)\n" \
+      "# Requires: (rubygem(pessimistic_constraint) >= 1.0 with rubygem(pessimistic_constraint) < 2)\n" \
+      "# BuildRequires: rubygem(development_dependency)\n"
+    assert_equal result, @dependency_list.virtualize.booleanize.with_requires.comment_out.to_rpm
+  end
 end
