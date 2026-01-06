@@ -4,6 +4,7 @@ require 'rubygems'
 require 'rubygems/version'
 
 require 'minitest/autorun'
+require 'minitest/mock'
 
 # Ruby 2.0 + 2.1 compatibility.
 module Minitest
